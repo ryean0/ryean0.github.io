@@ -1,3 +1,6 @@
+// Filename: src/app/layout.tsx
+// This version correctly uses the Geist font variables with the gradient background.
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -23,20 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="!scroll-smooth">
       <body 
-        className={`${geistSans.variable} ${geistMono.variable}bg-gray-900 text-gray-100 font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 to-gray-900 text-gray-100 font-sans antialiased`}
       >
         {children}
       </body>
     </html>
   );
 }
-
-
-
-
-
-
-
-
