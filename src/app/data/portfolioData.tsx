@@ -1,5 +1,6 @@
 // Filename: src/data/portfolioData.ts
 import { Briefcase, Code, Server, Cloud, BrainCircuit, ShieldCheck } from 'lucide-react';
+import { JSX } from 'react';
 
 // --- TYPE DEFINITIONS ---
 export interface Skill {
