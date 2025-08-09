@@ -1,10 +1,19 @@
+# Filename: .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
-  # Run this workflow every time a change is pushed to the `main` branch
   push:
     branches: [main]
-  # Allows you to run this workflow manually from the Actions tab on GitHub
+    # Add this paths configuration:
+    paths:
+      - 'content/**'           # trigger on new json added/removed
+      - 'src/**'               # Trigger on code changes
+      - 'public/**'
+      - 'package.json'
+      - 'next.config.ts'
+      - 'tailwind.config.ts'   # Include tailwind config changes
+      - '.github/workflows/deploy.yml'
+      
   workflow_dispatch:
 
 # Allow one concurrent deployment
@@ -22,21 +31,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # Use a recent stable version of Node.js
+          node-version: "20"
           cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
 
+      # The build process will now read the filesystem via src/lib/dataLoader.ts
       - name: Build Project
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out # Next.js exports to the 'out' directory
+          path: ./out
 
   deploy:
+    # ... (rest of the deploy job remains the same)
     needs: build
     permissions:
       pages: write

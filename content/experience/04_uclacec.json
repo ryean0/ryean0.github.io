@@ -1,0 +1,24 @@
+{
+  "title": "Backend Web Developer",
+  "company": "Campus Events Commission | UCLA ",
+  "startDate": "2022-04-01",
+  "image": "/images/experiences/uclacec.png",
+  "displayDate": "2022 | 2024 | 2025",
+  "achievements": [
+    "Streamlined the development environment using Docker and Kubernetes orchestration, reducing new developer onboarding overhead by ~75% (4 weeks to 1 week).",
+    "Integrated Redis caching for high-throughput API endpoints, cutting database query load by 30% and boosting response latency by 20%.",
+    "Resolved critical connection timeouts by optimizing MongoDB configurations (pooling and indexing strategies) on DigitalOcean droplets.",
+    "Developed reusable React.js components and integrated a hidden Keystone CMS interface for secure content modification.",
+    "Key Achievement: Served as Backend Lead, introducing Agile/Scrum methodologies via Jira, which fast-tracked the deliverable timeline by 3 weeks."
+  ],
+  "tech": ["Docker", "AWS", "Next.js", "Typescript"],
+  "gridSpan": { "col": 3 },
+  "keyMetric": [
+    { "text": "Shortened onboarding process for new developers from initial", "type": "filler" },
+    { "text": "4 weeks to less than a week,", "type": "quantifier" },
+    { "text": "by streamlining code environments via", "type": "filler" },
+        { "text": "Docker", "type": "metric" },
+        { "text": "container orchestration.", "type": "filler" }
+  ],
+  "keyTech": "Docker"
+}

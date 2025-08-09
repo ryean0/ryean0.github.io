@@ -1,0 +1,26 @@
+{
+  "title": "Software Engineering Intern",
+  "company": "Solarbrio Inc | Los Angeles (Hybrid)",
+  "startDate": "2024-06-01",
+  "image": "/images/experiences/solarbrio.png",
+  "displayDate": "2024 | Summer",
+  "achievements": [
+    "Led system migration from AWS Amplify V1 to V2, resolving critical versioning issues with custom GraphQL endpoints.",
+    "Designed scalable GraphQL APIs in TypeScript using AWS AppSync and DynamoDB.",
+    "Achieved 20% faster deployments and a 45% reduction in AWS resource costs."
+  ],
+  "tech": [
+    "AWS Amplify",
+    "GraphQL",
+    "Typescript"
+  ],
+  "gridSpan": { "col": 3 },
+  "keyMetric": [
+    { "text": "Designed custom GraphQL APIs to facilitate system migration from", "type": "filler" },
+    { "text": "AWS Amplify V1 to V2.", "type": "metric" },
+    { "text": "API endpoint optimisations led to", "type": "filler" },
+    { "text": "45% reduction", "type": "quantifier" },
+    { "text": "in overall API fees.", "type": "filler" }
+  ],
+  "keyTech": "AWS Amplify"
+}

@@ -1,0 +1,71 @@
+{
+  "title": "Backend Developer @ UCLA Campus Events Commission",
+  "startDate": "2023-09-01",
+  "image": "/images/projects/cec-docker.png",
+  "displayDate": "~312 hrs",
+  "achievements": [
+    "Reduced new developer onboarding overhead by ~75% (4 weeks to 1 week) by orchestrating development environment with Docker & Kubernetes.",
+    "Cut query load on the main database by 30% and boosted API response latency by 20% by integrating Redis caching.",
+    "Fast-tracked deliverable timeline by 3 weeks as Backend Lead by facilitating Scrum sprints on Jira."
+  ],
+  "tech": ["Docker", "Kubernetes", "Redis", "Jira", "Scrum", "Backend"],
+  "details": {
+    "headline": "From Fragile Monolith to Modern Microservices",
+    "problem": "The developer onboarding process was crippled by a fragile legacy architecture. The tangled monolith, built on an outdated Keystone.js version, was incompatible with modern Node.js, bringing local development to a halt and taking up to four weeks to onboard a single developer.",
+    "solution": "I architected and led a complete overhaul by decoupling the monolith into a Keystone 6 Headless CMS and a modern Next.js frontend. I then containerized the entire stack using Docker and Docker Compose, creating a fully isolated, reproducible environment condensed into a single `docker-compose up` command.",
+    "impact": [
+      {
+        "value": "75%",
+        "text": "Reduction in new developer onboarding time (4 weeks to 1)"
+      },
+      {
+        "value": "30%",
+        "text": "Reduction in database query load via Redis caching"
+      },
+      { "value": "27%", "text": "Improvement in API response latency" }
+    ],
+    "techHighlight": {
+      "title": "Code Spotlight: docker-compose.yml",
+      "language": "yaml",
+      "code": "version: '3'\nservices:\n  backend:\n    build:\n      context: ./backend\n      dockerfile: Dockerfile.dev\n    ports:\n      - \"3000:3000\"\n    # ... (environment variables and volumes)\n    command: yarn dev\n\n  frontend:\n    build:\n      context: ./frontend\n      dockerfile: Dockerfile.dev\n    ports:\n      - \"3001:3001\"\n    depends_on:\n      - backend\n    # ... (environment variables and volumes)\n    command: yarn dev\n\nvolumes:\n  backend_data: # Persists the database\n  # ... (node_modules volumes for caching)",
+      "points": [
+        {
+          "title": "depends_on",
+          "description": "Ensures the backend is healthy before the frontend starts, preventing race conditions."
+        },
+        {
+          "title": "Named Volumes",
+          "description": "Persists critical data (SQLite DB) and cached dependencies, separating the container's lifecycle from its data."
+        },
+        {
+          "title": "Docker Networking",
+          "description": "Services communicate using service names (e.g., 'backend') as hostnames, demonstrating an understanding of Docker's internal DNS."
+        },
+        {
+          "title": "Environment Variables",
+          "description": "Decouples configuration from code, following the 12-Factor App methodology for portability and security."
+        }
+      ]
+    },
+    "links": [
+      {
+        "label": "Migrated Repo",
+        "url": "https://github.com/uclacec/gallery-frontend/tree/monorepo",
+        "icon": "GitBranch"
+      },
+      {
+        "label": "Original Repo",
+        "url": "https://github.com/uclacec/website",
+        "icon": "ExternalLink"
+      }
+    ]
+  },
+  "gridSpan": { "col": 3 },
+  "keyMetric": [
+    { "text": "Reduced the", "type": "filler" },
+    { "text": "onboarding time", "type": "metric" },
+    { "text": "for new developers", "type": "filler" },
+    { "text": "from 3 weeks to 1", "type": "quantifier" }
+  ],
+  "keyTech": "Docker | Typescript | Redis"
+}

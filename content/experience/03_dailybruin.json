@@ -1,0 +1,28 @@
+{
+  "title": "Frontend Developer",
+  "company": "The Daily Bruin | UCLA",
+  "startDate": "2021-09-01",
+  "image": "/images/experiences/daily-bruin.png",
+  "displayDate": "2021 | 2022 ",
+  "achievements": [
+    "Migrated backend infrastructure from legacy DigitalOcean droplets to Firebase and dockerized multiple microservices, maintaining 100% feature parity.",
+    "Improved site render speed by 15% by implementing lazy loading and optimizing asynchronous operations (Promises).",
+    "Modernized legacy frontend code by adopting React Hooks for efficient state management and standardized CSS libraries.",
+    "Translated complex Figma designs and animations into performant React.js components using CSS Transitions and Transformations.",
+    "Key Achievement: Upgraded the CI/CD pipeline from Docker-Compose to GitHub Actions, reducing build times by ~50% and cutting deployment failures by 25%."
+  ],
+  "tech": [
+    "DevOps",
+    "DigitalOcean"
+  ],
+  "gridSpan": { "col": 3 },
+  "keyMetric": [
+    { "text": "Migrated legacy backend architecture", "type": "filler" },
+    { "text": "from DigitalOcean to Firebase,", "type": "metric" },
+    { "text": "improving", "type": "quantifier" },
+    { "text": "site render speed by", "type": "filler" },
+    { "text": "15%", "type": "quantifier" },
+    { "text": "via server-side rendering", "type": "filler" }
+  ],
+  "keyTech": "React.js | Docker | GitHub Actions"
+}
