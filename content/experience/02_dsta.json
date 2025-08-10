@@ -3,28 +3,24 @@
   "company": "Defence Science & Technology Agency | Singapore",
   "startDate": "2020-11-01",
   "image": "/images/experiences/dsta.png",
-  "displayDate": "2022 | Summer ",
-  "achievements": [
-    "Developed deep-learning algorithms for 2D segmentation of ArcGIS satellite imagery; rectified flawed loss functions to achieve 95% test accuracy.",
-    "Enhanced model training efficiency by 40% using TensorFlow and Horovod for distributed training across 4 NVIDIA V100 GPUs.",
-    "Automated parallel processing of geospatial imagery using Python and Apache Spark, reducing data pre-processing time by 20%.",
-    "Facilitated migration from Docker Swarm to Kubernetes (Helm charts/YAML); automated deployment using Amazon EKS within a secure AWS environment (VPC/EC2).",
-    "Automated monitoring and debugging workflows using Grafana and Prometheus.",
-    "Key Achievement: Deployed a self-sustaining Kubernetes instance in an air-gapped environment, cutting manual overhead by 30%."
-  ],
-  "tech": [
-    "Python",
-    "Apache Spark",
-    "Kubernetes"
-  ],
+  "displayDate": "2022 | Summer",
+  "category": "Distributed Systems",
+  "tech": ["Python", "Apache Spark", "Docker"],
   "gridSpan": { "col": 3 },
-  "keyMetric": [
-    { "text": "Automated parallel processing of image segmentation data using", "type": "filler" },
-    { "text": "Pytorch, Apache Spark & Docker", "type": "metric" },
-    { "text": "achieving a", "type": "filler" },
-    { "text": "25% increase", "type": "quantifier" },
-    { "text": "in data pre-processing efficiency.", "type": "filler" }
-    
+  "keyTech": "Apache Spark | Docker | Kubernetes",
+  "icon": "BrainCircuit",
+  "cardSpotlight": [
+    { "value": "+40%", "label": "Data Pipeline Efficiency", "icon": "Zap" },
+    { "value": "Kubernetes", "label": "Core Tech", "icon": "Cpu" },
+    { "value": "MLOps", "label": "Key Skill", "icon": "Wrench" }
   ],
-  "keyTech": "Apache Spark | Docker | Kubernetes"
+  "details": {
+    "problem": "The existing machine learning workflow for analyzing geospatial imagery was slow and manually intensive. The deployment platform, Docker Swarm, also lacked the automation and resilience needed for a secure, air-gapped environment.",
+    "solution": "I developed a high-accuracy deep learning model for image segmentation and automated the entire data pipeline using Python and Apache Spark. I then led the infrastructure migration from Docker Swarm to a self-sustaining Kubernetes cluster on Amazon EKS, which I deployed and managed using Helm charts and YAML configurations.",
+    "impact": [
+      { "value": "40%", "text": "Improvement in model training efficiency" },
+      { "value": "30%", "text": "Reduction in manual operational overhead" },
+      { "value": "95%", "text": "Test accuracy achieved on segmentation models" }
+    ]
+  }
 }

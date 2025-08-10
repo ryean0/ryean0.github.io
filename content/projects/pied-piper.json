@@ -3,70 +3,37 @@
   "startDate": "2022-11-01",
   "image": "/images/projects/pied-piper.png",
   "displayDate": "Nov 2022 (~168 hrs)",
-  "achievements": [
-    "Led a team of 7 as Backend Lead, integrating the Spotify API and utilizing AWS Personalize recommender engine for user matching.",
-    "Optimized MongoDB Atlas schemas and backend API queries, increasing maximum system throughput by 60% during peak loads.",
-    "Constructed a secure authentication system in Next.js using NextAuth and JWT for secure Spotify account linking.",
-    "Key Achievement: Achieved a 3x decrease in API query latency following database refactoring, validated via AWS CloudWatch metrics."
-  ],
-  "tech": [
-    "Next.js",
-    "Spotify API",
-    "AWS Personalize",
-    "MongoDB Atlas",
-    "NextAuth",
-    "JWT",
-    "AWS CloudWatch",
-    "Backend Lead"
+  "category": "Full Stack Web Development",
+  "tech": ["Next.js", "Spotify API", "AWS Personalize", "MongoDB Atlas", "NextAuth"],
+  "gridSpan": { "col": 3 },
+  "keyTech": "Spotify API",
+  "cardSpotlight": [
+    { "value": "3x", "label": "Faster Queries", "icon": "Zap" },
+    { "value": "MongoDB", "label": "Core Tech", "icon": "Code" },
+    { "value": "Schema Design", "label": "Key Skill", "icon": "Wrench" }
   ],
   "details": {
     "headline": "Optimizing MongoDB for Real-Time Recommendations",
-    "problem": "The initial architecture for the music recommendation feed suffered from severe latency issues. Queries against the MongoDB database were slow due to inefficient schema design and lack of indexing, resulting in a poor user experience and excessive load on the AWS infrastructure.",
-    "solution": "As Backend Lead, I redesigned the MongoDB schema to optimize for read-heavy operations, utilizing denormalization and implementing strategic indexing on key fields. I integrated AWS Personalize for ML-driven recommendations and used AWS CloudWatch to monitor performance improvements.",
+    "problem": "The initial architecture for the music recommendation feed suffered from severe latency issues. Inefficient database schema design and a lack of indexing caused slow queries, resulting in a poor user experience and excessive load on the AWS infrastructure.",
+    "solution": "As Backend Lead, I redesigned the MongoDB schema to optimize for read-heavy operations, utilizing denormalization and implementing strategic indexing on key fields. I also integrated AWS Personalize for ML-driven recommendations and used AWS CloudWatch to monitor and validate performance improvements.",
     "impact": [
-      {
-        "value": "60%",
-        "text": "Increase in maximum system throughput during peak loads"
-      },
       { "value": "3x", "text": "Decrease in overall API query latency" },
-      { "value": "99.9%", "text": "API availability during peak usage" }
+      { "value": "60%", "text": "Increase in maximum system throughput" },
+      { "value": "99.9%", "text": "API availability maintained during peak loads" }
     ],
     "techHighlight": {
-      "title": "Code Spotlight: Optimized MongoDB Aggregation Pipeline (Node.js/Mongoose)",
+      "title": "Code Spotlight: Optimized MongoDB Aggregation Pipeline",
       "language": "javascript",
-      "code": "const getRecommendations = async (userId) => {\n  return User.aggregate([\n    // 1. Match the specific user efficiently using an index\n    { $match: { _id: mongoose.Types.ObjectId(userId) } },\n    // 2. Join with the 'songs' collection\n    {\n      $lookup: {\n        from: \"songs\",\n        localField: \"recommendedTracks\", // Array of song IDs\n        foreignField: \"_id\",\n        as: \"trackDetails\"\n      }\n    },\n    // 3. Deconstruct the array for processing\n    { $unwind: \"$trackDetails\" },\n    // 4. Shape the output document (Projection)\n    {\n      $project: {\n        _id: 0,\n        trackId: \"$trackDetails._id\",\n        title: \"$trackDetails.title\",\n        // ... other fields\n      }\n    },\n    // 5. Sort and limit the results\n    { $sort: { score: -1 } },\n    { $limit: 20 }\n  ]);\n};",
+      "code": "const getRecommendations = async (userId) => {\n  return User.aggregate([\n    { $match: { _id: mongoose.Types.ObjectId(userId) } },\n    {\n      $lookup: {\n        from: \"songs\",\n        localField: \"recommendedTracks\",\n        foreignField: \"_id\",\n        as: \"trackDetails\"\n      }\n    },\n    { $unwind: \"$trackDetails\" },\n    {\n      $project: {\n        _id: 0,\n        trackId: \"$trackDetails._id\",\n        title: \"$trackDetails.title\"\n      }\n    }\n  ]);\n};",
       "points": [
-        {
-          "title": "$lookup",
-          "description": "Efficiently joins user data with song details in a single database operation, avoiding multiple application-level queries."
-        },
-        {
-          "title": "$project",
-          "description": "Reduces network overhead by shaping the output documents to return only the necessary fields to the client."
-        },
-        {
-          "title": "Indexing (Implied)",
-          "description": "The efficiency of $match and $lookup relies heavily on indexes created on '_id' and 'recommendedTracks' fields."
-        },
-        {
-          "title": "$sort and $limit",
-          "description": "Ensures only the most relevant recommendations are returned quickly, improving response time for the end-user."
-        }
+        { "title": "$lookup", "description": "Efficiently joins user data with song details in a single database operation, avoiding multiple application-level queries." },
+        { "title": "$project", "description": "Reduces network overhead by shaping the output documents to return only the necessary fields to the client." },
+        { "title": "Indexing (Implied)", "description": "The efficiency of $match and $lookup relies heavily on indexes created on the '_id' and 'recommendedTracks' fields." },
+        { "title": "Aggregation Pipeline", "description": "Allows for complex data processing to occur efficiently on the database server itself, minimizing data transfer." }
       ]
     },
     "links": [
-      {
-        "label": "Project Repo",
-        "url": "https://github.com/ryean0/CS35L-Spring23-Project",
-        "icon": "GitBranch"
-      }
+      { "label": "Project Repo", "url": "https://github.com/ryean0/CS35L-Spring23-Project", "icon": "GitBranch" }
     ]
-  },
-  "gridSpan": { "col": 3 },
-  "keyMetric": [
-    { "text": "3x decrease", "type": "quantifier" },
-    { "text": "in", "type": "filler" },
-    { "text": "API query latency", "type": "metric" }
-  ],
-  "keyTech": "Spotify API"
+  }
 }

@@ -2,70 +2,36 @@
   "title": "Cloud Based Distributed Consensus (Paxos) System",
   "startDate": "2024-03-01",
   "image": "/images/projects/cloud-paxos.png",
-  "displayDate": "UCLA Academic Project",
-  "achievements": [
-    "Deployed a fault-tolerant distributed key-value store implementing the Paxos consensus algorithm.",
-    "Implemented election rules, sharding, and group membership management using Kubernetes StatefulSets.",
-    "Developed an Infrastructure-as-Code (IaC) pipeline using Terraform and AWS CloudFormation, automating deployment and CI/CD.",
-    "Key Achievement: Achieved a 40% faster failover recovery rate compared to a local Paxos implementation."
-  ],
-  "tech": [
-    "Paxos",
-    "Distributed Systems",
-    "Kubernetes (StatefulSets)",
-    "Terraform",
-    "AWS CloudFormation",
-    "IaC",
-    "CI/CD"
+  "displayDate": "2024 | Fall",
+  "category": "Distributed Systems",
+  "tech": ["Paxos", "Distributed Systems", "Kubernetes", "Terraform", "IaC"],
+  "gridSpan": { "col": 3 },
+  "keyTech": "Paxos Consensus Algorithm | Go | MiniKube",
+  "cardSpotlight": [
+    { "value": "40%", "label": "Faster Failover", "icon": "Zap" },
+    { "value": "Paxos", "label": "Core Algorithm", "icon": "Cpu" },
+    { "value": "Terraform", "label": "Core Tech", "icon": "Code" }
   ],
   "details": {
     "headline": "Implementing Paxos for Fault-Tolerant Distributed Systems",
-    "problem": "Ensuring data consistency (consensus) and high availability in a distributed key-value store across multiple nodes prone to failure is challenging. Traditional mechanisms often suffer from slow recovery times and complex configuration management.",
-    "solution": "Implemented the Paxos algorithm to manage replicated state across the cluster. Leveraged Kubernetes StatefulSets to provide stable network identities and persistent storage, crucial for Paxos participants (Proposers, Acceptors, Learners). Automated the entire infrastructure deployment using Terraform and AWS CloudFormation (IaC).",
+    "problem": "Distributed systems risk data inconsistency and downtime during node failures. The challenge was to build a key-value store that could automatically maintain consensus and recover from failures without data loss.",
+    "solution": "I implemented the Paxos consensus algorithm to manage a replicated state machine across the cluster. To manage the nodes, I leveraged Kubernetes StatefulSets to provide stable network identities and persistent storage, which is crucial for Paxos participants. The entire infrastructure was automated as code using Terraform.",
     "impact": [
-      {
-        "value": "40%",
-        "text": "Faster failover recovery rate compared to baseline"
-      },
-      {
-        "value": "100%",
-        "text": "Data consistency maintained under simulated network partitions"
-      },
-      {
-        "value": "75%",
-        "text": "Reduction in manual deployment time via IaC pipeline"
-      }
+      { "value": "40%", "text": "Faster failover recovery rate vs. baseline" },
+      { "value": "100%", "text": "Data consistency under simulated network partitions" },
+      { "value": "75%", "text": "Reduction in manual deployment time via IaC" }
     ],
     "techHighlight": {
-      "title": "Code Spotlight: Kubernetes StatefulSet Configuration (YAML)",
+      "title": "Code Spotlight: Kubernetes StatefulSet Configuration",
       "language": "yaml",
-      "code": "apiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: paxos-acceptor\nspec:\n  serviceName: \"paxos-acceptor-svc\"\n  replicas: 3 # Ensuring quorum (2*F + 1)\n  selector:\n    matchLabels:\n      app: paxos-acceptor\n  template:\n    # ... (Pod specifications)\n  volumeClaimTemplates:\n    - metadata:\n        name: paxos-storage\n      spec:\n        accessModes: [ \"ReadWriteOnce\" ]\n        storageClassName: \"aws-ebs-gp3\"\n        resources:\n          requests:\n            storage: 10Gi",
+      "code": "apiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: paxos-acceptor\nspec:\n  serviceName: \"paxos-acceptor-svc\"\n  replicas: 3\n  selector:\n    matchLabels:\n      app: paxos-acceptor\n  template:\n    # ... (Pod specifications)\n  volumeClaimTemplates:\n  - metadata:\n      name: paxos-storage\n    spec:\n      accessModes: [ \"ReadWriteOnce\" ]\n      storageClassName: \"aws-ebs-gp3\"\n      resources:\n        requests:\n          storage: 10Gi",
       "points": [
-        {
-          "title": "StatefulSet Kind",
-          "description": "Used instead of Deployment to guarantee the ordering and uniqueness of Pods, essential for maintaining stable identities in consensus protocols."
-        },
-        {
-          "title": "serviceName",
-          "description": "Links the StatefulSet to a Headless Service, providing direct DNS resolution for peer-to-peer communication between nodes."
-        },
-        {
-          "title": "replicas: 3",
-          "description": "Configured to tolerate F=1 failure (Byzantine Fault Tolerance requires 2F+1 nodes), ensuring a quorum can always be reached."
-        },
-        {
-          "title": "volumeClaimTemplates",
-          "description": "Automatically provisions persistent storage (AWS EBS) for each replica, ensuring that state (like accepted proposals) survives pod restarts."
-        }
+        { "title": "StatefulSet Kind", "description": "Guarantees the ordering and uniqueness of Pods, essential for maintaining stable identities in consensus protocols." },
+        { "title": "serviceName", "description": "Links the StatefulSet to a Headless Service, providing direct DNS resolution for peer-to-peer communication between nodes." },
+        { "title": "replicas: 3", "description": "Configured to tolerate F=1 failure (Byzantine Fault Tolerance requires 2F+1 nodes), ensuring a quorum can always be reached." },
+        { "title": "volumeClaimTemplates", "description": "Automatically provisions persistent storage (AWS EBS) for each replica, ensuring state survives pod restarts." }
       ]
     },
     "links": []
-  },
-  "gridSpan": { "col": 3 },
-  "keyMetric": [
-    { "text": "40% faster", "type": "quantifier" },
-    { "text": "failover recovery rate", "type": "metric" }
-  ],
-
-  "keyTech": "Paxos Consensus Algorithm | Go | MiniKube"
+  }
 }

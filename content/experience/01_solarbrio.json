@@ -4,23 +4,27 @@
   "startDate": "2024-06-01",
   "image": "/images/experiences/solarbrio.png",
   "displayDate": "2024 | Summer",
-  "achievements": [
-    "Led system migration from AWS Amplify V1 to V2, resolving critical versioning issues with custom GraphQL endpoints.",
-    "Designed scalable GraphQL APIs in TypeScript using AWS AppSync and DynamoDB.",
-    "Achieved 20% faster deployments and a 45% reduction in AWS resource costs."
-  ],
-  "tech": [
-    "AWS Amplify",
-    "GraphQL",
-    "Typescript"
-  ],
+  "category": "Distributed Systems",
+  "tech": ["AWS Amplify", "GraphQL", "Typescript | Angular"],
   "gridSpan": { "col": 3 },
-  "keyMetric": [
-    { "text": "Designed custom GraphQL APIs to facilitate system migration from", "type": "filler" },
-    { "text": "AWS Amplify V1 to V2.", "type": "metric" },
-    { "text": "API endpoint optimisations led to", "type": "filler" },
-    { "text": "45% reduction", "type": "quantifier" },
-    { "text": "in overall API fees.", "type": "filler" }
+  "keyTech": "AWS Amplify",
+  "icon": "Code",
+  "cardSpotlight": [
+    { "value": "-45%", "label": "Cost Reduction", "icon": "DollarSign" },
+    { "value": "GraphQL", "label": "Core Tech", "icon": "Code" },
+    { "value": "API Design", "label": "Key Skill", "icon": "Wrench" }
   ],
-  "keyTech": "AWS Amplify"
+  "details": {
+    "problem": "The existing backend on AWS Amplify V1 was hindered by versioning conflicts and inefficient resource usage, leading to high operational costs and limitations in functionality.",
+    "solution": "I led a critical system migration to AWS Amplify V2, where I designed and implemented a new set of scalable GraphQL APIs using TypeScript and DynamoDB. This resolved the versioning issues and modernized the backend architecture for better cost-efficiency and performance.",
+    "impact": [
+      { "value": "45%", "text": "Reduction in AWS resource costs" },
+      { "value": "20%", "text": "Faster deployment cycles" },
+      { "value": "100%", "text": "Resolution of critical versioning issues" }
+    ],
+    "links": [
+      { "label": "API Design Document", "url": "#", "icon": "FileText" },
+      { "label": "Migration Report", "url": "#", "icon": "Presentation" }
+    ]
+  }
 }

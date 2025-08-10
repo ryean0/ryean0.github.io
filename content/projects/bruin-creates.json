@@ -2,85 +2,39 @@
   "title": "BruinCreates | Online Art Marketplace",
   "startDate": "2021-09-01",
   "displayDate": "Sep 2021 - Oct 2022",
+  "category": "Distributed Systems",
   "image": "/images/projects/bruin-creates.png",
-  "achievements": [
-    "Directed the frontend engineering team (Frontend Lead), utilizing React.js and Redux for state management, and integrated Java Spring REST APIs.",
-    "Built a high-performance search engine using Java Spring and Elasticsearch (ES); optimized indexing strategies and mappings.",
-    "Integrated Instagram's Basic Display API and Graph API to render dynamic seller feeds on the frontend interface.",
-    "Enforced version control best practices using GitLab Flow and organized weekly code reviews.",
-    "Key Achievement: Achieved a 50% reduction in search latency through ES optimization, validated by ES Rally benchmarks."
-  ],
-  "tech": [
-    "React.js",
-    "Redux",
-    "Java Spring",
-    "REST API",
-    "Elasticsearch",
-    "Instagram API",
-    "GitLab",
-    "Frontend Lead"
+  "tech": ["React.js", "Redux", "Java Spring", "Elasticsearch", "Instagram API"],
+  "gridSpan": { "col": 3 },
+  "keyTech": "Java Spring | Elasticsearch",
+  "cardSpotlight": [
+    { "value": "50%", "label": "Latency Reduced", "icon": "Zap" },
+    { "value": "Elasticsearch", "label": "Core Tech", "icon": "Cpu" },
+    { "value": "Search Ops", "label": "Key Skill", "icon": "Wrench" }
   ],
   "details": {
     "headline": "Building a Scalable Marketplace with Optimized Search",
-    "problem": "Creating an online art marketplace required efficient state management for a complex UI and a high-performance, low-latency search engine capable of handling diverse and dynamic product listings.",
-    "solution": "Led the frontend development using React.js and Redux for robust state management. Architected the search functionality using Java Spring integrated with Elasticsearch. Focused on optimizing ES indexing strategies, custom analyzers, and mappings to significantly improve search performance and relevance.",
+    "problem": "Local student artists lacked a dedicated platform to sell their work, and potential buyers couldn't easily search for local art. The technical challenge was building a scalable platform with fast, relevant search.",
+    "solution": "As Frontend Lead, I directed the UI development using React.js and Redux for robust state management. For the backend, I architected the search functionality using Java Spring integrated with Elasticsearch, focusing on optimizing indexing strategies, custom analyzers, and mappings.",
     "impact": [
-      {
-        "value": "50%",
-        "text": "Reduction in search latency (ES Rally Benchmarks)"
-      },
-      {
-        "value": "30%",
-        "text": "Improvement in frontend render time via Redux optimization"
-      },
-      {
-        "value": "MVP",
-        "text": "Successful launch of the Minimum Viable Product"
-      }
+      { "value": "50%", "text": "Reduction in search latency (ES Rally Benchmarks)" },
+      { "value": "30%", "text": "Improvement in frontend render time via Redux optimization" },
+      { "value": "MVP", "text": "Successful launch of the Minimum Viable Product" }
     ],
     "techHighlight": {
-      "title": "Code Spotlight: Elasticsearch Optimized Query DSL (JSON)",
+      "title": "Code Spotlight: Elasticsearch Optimized Query DSL",
       "language": "json",
       "code": "{\n  \"query\": {\n    \"bool\": {\n      \"must\": [\n        {\n          \"multi_match\": {\n            \"query\": \"searchTerm\",\n            \"fields\": [\"title^3\", \"description\", \"tags\"],\n            \"fuzziness\": \"AUTO\"\n          }\n        }\n      ],\n      \"filter\": [\n        { \"term\": { \"status\": \"active\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"categories\": {\n      \"terms\": { \"field\": \"category.keyword\" }\n    }\n  }\n}",
       "points": [
-        {
-          "title": "Bool Query (must/filter)",
-          "description": "Combines scoring queries ('must') with non-scoring queries ('filter'). Filters are faster and cacheable, improving overall performance."
-        },
-        {
-          "title": "Multi-match & Field Boosting (^3)",
-          "description": "Searches across multiple fields while giving higher relevance scores (boosted by 3x) to matches in the 'title' field."
-        },
-        {
-          "title": "Fuzziness: AUTO",
-          "description": "Improves user experience by allowing minor typos in the search term without sacrificing performance."
-        },
-        {
-          "title": "Aggregations (aggs)",
-          "description": "Efficiently calculates summary data (like category counts for faceted search) alongside the main query results."
-        }
+        { "title": "Bool Query (must/filter)", "description": "Combines scoring queries ('must') with non-scoring queries ('filter'). Filters are faster and cacheable, improving overall performance." },
+        { "title": "Multi-match & Field Boosting (^3)", "description": "Searches across multiple fields while giving higher relevance scores (boosted by 3x) to matches in the 'title' field." },
+        { "title": "Fuzziness: AUTO", "description": "Improves user experience by allowing minor typos in the search term without sacrificing performance." },
+        { "title": "Aggregations (aggs)", "description": "Efficiently calculates summary data (like category counts for faceted search) alongside the main query results." }
       ]
     },
     "links": [
-      {
-        "label": "Frontend Repo",
-        "url": "https://github.com/Bruin-Sell/bruin-creates-frontend",
-        "icon": "GitBranch"
-      },
-      {
-        "label": "Backend Repo",
-        "url": "https://github.com/Bruin-Sell/bruin-creates-backend",
-        "icon": "GitBranch"
-      }
+      { "label": "Frontend Repo", "url": "https://github.com/Bruin-Sell/bruin-creates-frontend", "icon": "GitBranch" },
+      { "label": "Backend Repo", "url": "https://github.com/Bruin-Sell/bruin-creates-backend", "icon": "GitBranch" }
     ]
-  },
-  "gridSpan": { "col": 3 },
-  "keyMetric": [
-    { "text": "Optimised search queries with Elasticsearch, enabling ", "type": "filler" },
-    { "text": "2x", "type": "quantifier" },
-    { "text": "the", "type": "filler" },
-    { "text": "max query load", "type": "metric" },
-    { "text": "during peak traffic", "type": "filler" }
-  ],
-  "keyTech": "Java Spring | Elasticsearch"
+  }
 }

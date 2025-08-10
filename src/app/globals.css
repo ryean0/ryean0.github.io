@@ -47,11 +47,11 @@ body {
   background-image: radial-gradient(
       ellipse at top,
       transparent 0%,
-      theme(colors.slate.950) 100%
+      #0f172a 100%
     ),
     radial-gradient(
       ellipse at bottom,
-      theme(colors.slate.950) 0%,
+      #0f172a 0%,
       transparent 100%
     );
 }
@@ -64,22 +64,22 @@ body {
   height: 2000px;
   background-image: radial-gradient(
       2px 2px at 200px 300px,
-      theme(colors.slate.400),
+      #94a3b8,
       rgba(0, 0, 0, 0)
     ),
     radial-gradient(
       2px 2px at 400px 800px,
-      theme(colors.slate.400),
+      #94a3b8,
       rgba(0, 0, 0, 0)
     ),
     radial-gradient(
       3px 3px at 500px 200px,
-      theme(colors.cyan.400),
+      #22d3ee,
       rgba(0, 0, 0, 0)
     ),
     radial-gradient(
       2px 2px at 900px 600px,
-      theme(colors.cyan.400),
+      #22d3ee,
       rgba(0, 0, 0, 0)
     );
   animation: move-background 150s linear infinite;
