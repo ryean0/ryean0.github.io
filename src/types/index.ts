@@ -1,43 +1,59 @@
 /* Filename: src/types/index.ts */
-export type KeyMetricPart = {
-  text: string;
-  type: 'quantifier' | 'filler' | 'metric';
-};
-
-// Interfaces defining the structure of the JSON files
 export interface ExperienceData {
-  id: string; // Auto-added by loader
+  id: string;
   title: string;
   company: string;
-  startDate: string; // Used for sorting (ISO Date: "2024-06-01")
-  displayDate: string; // Used for display (e.g., "Jun '24 - Sep '24")
+  startDate: string;
+  displayDate: string;
   achievements: string[];
   tech: string[];
+  category: string;
+  details?: {
+    problem: string;
+    solution: string;
+    impact: {
+      value: string;
+      text: string;
+    }[];
+    links?: { 
+      label: string; 
+      url: string; 
+      icon: 'FileText' | 'Presentation' | 'ExternalLink' | 'GitBranch' | 'Globe' 
+    }[];
+    techHighlight?: ProjectDetails['techHighlight'];
+  };
   gridSpan?: { col?: number; row?: number };
-  keyMetric?: KeyMetricPart[];
+  cardSpotlight: {
+    value: string;
+    label: string;
+    icon: 'Zap' | 'Cpu' | 'Wrench' | 'DollarSign' | 'Code' | 'ShieldCheck';
+  }[];
   keyTech?: string;
-  cardImage?: string; // e.g., "/logos/solarbrio.png"
-  cardImageLink?: string; // e.g., "https://www.solarbrio.com"
-  image?: string; // --- NEW: Path to detail image e.g., "/images/experience/dsta.png"
+  cardImage?: string;
+  cardImageLink?: string;
+  image?: string;
+  icon?: 'Code' | 'BrainCircuit' | 'MonitorSmartphone' | 'Server';
 }
+
 
 export interface ProjectData {
-  id: string; // Auto-added by loader
+  id: string;
   title: string;
-  startDate: string; // Used for sorting (ISO Date)
-  displayDate: string; // e.g., "~312 hrs"
-  achievements: string[];
+  startDate: string;
+  displayDate: string;
   tech: string[];
+  category: string;
+  cardSpotlight: {
+    value: string;
+    label: string;
+    icon: 'Zap' | 'Cpu' | 'Wrench' | 'DollarSign' | 'Code' | 'ShieldCheck';
+  }[];
   details?: ProjectDetails;
   gridSpan?: { col?: number; row?: number };
-  keyMetric?: KeyMetricPart[];
   keyTech?: string;
-  cardImage?: string; // e.g., "/logos/ucla.png"
-  cardImageLink?: string; // e.g., "https://www.ucla.edu"
-  image?: string; // --- NEW: Path to detail image e.g., "/images/projects/paxos.png"
+  image?: string;
 }
 
-// ProjectDetails interface remains the same
 export interface ProjectDetails {
   headline: string;
   problem: string;

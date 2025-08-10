@@ -1,42 +1,80 @@
 /* Filename: src/app/components/ProjectModal.tsx */
-'use client';
+"use client";
 
-import { ProjectData } from '@/types';
-import { X, ExternalLink, GitBranch, Globe, LucideIcon } from 'lucide-react';
-import Image from 'next/image';
-import { useEffect } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { ProjectData } from "@/types";
+// --- MODIFIED: Import new icons ---
+import {
+  X,
+  ExternalLink,
+  GitBranch,
+  Globe,
+  LucideIcon,
+  Zap,
+  Lightbulb,
+  Target,
+  Wrench,
+} from "lucide-react";
+import Image from "next/image";
+import { useEffect } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import TechIcon from "./TechIcon"; // Import TechIcon
 
+// --- NEW: Reusable Section component ---
+const Section = ({
+  icon,
+  title,
+  children,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div>
+    <h3 className="flex items-center gap-3 text-xl font-bold text-cyan-300 mb-3">
+      {icon}
+      {title}
+    </h3>
+    <div className="text-slate-300/90 leading-relaxed prose prose-invert prose-p:my-1 prose-p:text-slate-300/90 max-w-none">
+      {children}
+    </div>
+  </div>
+);
+
+// --- MODIFIED: Update props to accept the 'tech' array ---
 interface ProjectModalProps {
-  details: ProjectData['details'] & { image?: string; title?: string };
+  details: ProjectData["details"] & {
+    image?: string;
+    title?: string;
+    tech?: string[];
+  };
   onClose: () => void;
   layoutId: string;
 }
 
 const IconMap: Record<string, LucideIcon> = {
-    ExternalLink: ExternalLink,
-    GitBranch: GitBranch,
-    Globe: Globe,
+  ExternalLink,
+  GitBranch,
+  Globe,
 };
 
 const ProjectModal = ({ details, onClose, layoutId }: ProjectModalProps) => {
-    useEffect(() => {
-        const handleEsc = (event: KeyboardEvent) => event.key === 'Escape' && onClose();
-        window.addEventListener('keydown', handleEsc);
-        document.body.style.overflow = 'hidden';
-        return () => {
-            window.removeEventListener('keydown', handleEsc);
-            document.body.style.overflow = 'unset';
-        };
-    }, [onClose]);
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) =>
+      event.key === "Escape" && onClose();
+    window.addEventListener("keydown", handleEsc);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "unset";
+    };
+  }, [onClose]);
 
   if (!details) return null;
 
   return (
-    // --- MODIFIED: The outer div now handles the backdrop fade animation ---
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -45,39 +83,57 @@ const ProjectModal = ({ details, onClose, layoutId }: ProjectModalProps) => {
       className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      {/* --- MODIFIED: This div now correctly shares the layoutId from the card --- */}
       <motion.div
         layoutId={layoutId}
         className="bg-slate-800 border border-cyan-400/30 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* The content inside the modal */}
         <div className="overflow-y-auto h-full p-6 md:p-8">
-            <motion.div
-                // --- MODIFIED: Animate content in after the card expands ---
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
-            >
-                {/* Headline */}
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-300 mb-6">
-                    {details.headline}
-                </h2>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
+            className="space-y-8"
+          >
+            <header>
+              <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-300">
+                {details.headline}
+              </h2>
+            </header>
 
-                {/* Image */}
-                {details.image && (
-                  <div className="relative w-full h-48 md:h-64 mb-6 rounded-lg overflow-hidden border border-slate-700">
-                      <Image src={details.image} alt={`${details.title || 'Project'} image`} fill className="object-cover" />
-                  </div>
-                )}
-                
-                {/* Rest of your modal content... (Problem, Solution, TechHighlight, etc.) */}
-                {/* This content will now fade in smoothly */}
+            <Section icon={<Target size={22} />} title="The Problem">
+              <p>{details.problem}</p>
+            </Section>
 
-            </motion.div>
+            <Section icon={<Wrench size={22} />} title="The Solution">
+              <p>{details.solution}</p>
+            </Section>
+
+            
+            
+            {/* --- NEW: Core Technologies section --- */}
+            {details.tech && details.tech.length > 0 && (
+              <Section icon={<Zap size={22} />} title="Core Technologies">
+                <div className="flex flex-wrap gap-2">
+                  {details.tech.map((t) => (
+                    <div
+                      key={t}
+                      className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full bg-slate-700 text-slate-200"
+                    >
+                      <TechIcon tech={t} className="h-4 w-4" />
+                      <span>{t}</span>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+            )}
+          </motion.div>
         </div>
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10">
-            <X size={24} />
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+        >
+          <X size={24} />
         </button>
       </motion.div>
     </motion.div>

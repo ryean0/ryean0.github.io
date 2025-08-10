@@ -53,7 +53,13 @@ const ProjectSectionClient = ({ projects }: ProjectSectionProps) => {
         {selectedProject && selectedProject.details && (
           <ProjectModal
             key="modal"
-            details={{...selectedProject.details, image: selectedProject.image, title: selectedProject.title}}
+            // --- MODIFIED: Pass the 'tech' array into the details object ---
+            details={{
+              ...selectedProject.details, 
+              image: selectedProject.image, 
+              title: selectedProject.title,
+              tech: selectedProject.tech, // Add this line
+            }}
             layoutId={`card-container-${selectedProject.id}`}
             onClose={() => setSelectedProject(null)}
           />
