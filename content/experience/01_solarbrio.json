@@ -5,7 +5,7 @@
   "image": "/images/experiences/solarbrio.png",
   "displayDate": "2024 | Summer",
   "category": "Distributed Systems",
-  "tech": ["AWS Amplify", "GraphQL", "Typescript | Angular"],
+  "tech": ["AWS Amplify", "GraphQL", "Typescript", "Angular"],
   "gridSpan": { "col": 3 },
   "keyTech": "AWS Amplify",
   "icon": "Code",

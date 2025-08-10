@@ -8,7 +8,8 @@ import {
     SiJira, SiAmazoneks, SiAmazondynamodb, SiAmazons3, SiApachespark,
     // --- NEW: Added many new icons ---
     SiRedux, SiElasticsearch, SiGitlab, SiGo, SiJsonwebtokens,
-    SiNextra, SiInstagram, SiGithubactions, SiTensorflow
+    SiNextra, SiInstagram, SiGithubactions, SiTensorflow,
+    SiAngular, SiCoder // NEW: Added Angular and a Fallback (SiCode)
 } from 'react-icons/si';
 import { VscJson } from 'react-icons/vsc';
 import { FaJava, FaNetworkWired } from 'react-icons/fa';
@@ -19,12 +20,9 @@ interface TechIconProps {
   className?: string;
 }
 
-const TechIcon = ({ tech, className = "h-3 w-3" }: TechIconProps) => {
-  const normalizedTech = tech.toLowerCase();
-
-  // The icon map is now much more comprehensive
-  const iconMap: { [key: string]: React.ReactNode } = {
-    'React.js': <SiReact className={className} />,
+// Define the icon map outside the component for performance optimization
+const getIconMap = (className: string): { [key: string]: React.ReactNode } => ({
+    'react.js': <SiReact className={className} />,
     'next.js': <SiNextdotjs className={className} />,
     'docker': <SiDocker className={className} />,
     'kubernetes': <SiKubernetes className={className} />,
@@ -40,6 +38,7 @@ const TechIcon = ({ tech, className = "h-3 w-3" }: TechIconProps) => {
     'javascript': <SiJavascript className={className} />,
     'dynamodb': <SiAmazondynamodb className={className} />,
     'typescript': <SiTypescript className={className} />,
+    'angular': <SiAngular className={className} />, // NEW
     'python': <SiPython className={className} />,
     'mongodb atlas': <SiMongodb className={className} />,
     'mongodb': <SiMongodb className={className} />,
@@ -66,10 +65,34 @@ const TechIcon = ({ tech, className = "h-3 w-3" }: TechIconProps) => {
     'distributed systems': <FaNetworkWired className={className} />,
     'paxos': <Cpu className={className} />,
     'iac': <SiTerraform className={className} />
-  };
+});
 
-  const matchedKey = Object.keys(iconMap).find(key => normalizedTech.includes(key));
-  return matchedKey ? iconMap[matchedKey] : null;
+const TechIcon = ({ tech, className = "h-3 w-3" }: TechIconProps) => {
+  const normalizedTech = tech.toLowerCase();
+  const iconMap = getIconMap(className);
+  const mapKeys = Object.keys(iconMap);
+
+  // --- MODIFIED: Robust matching logic ---
+  
+  // 1. Check for an exact match
+  if (iconMap[normalizedTech]) {
+    return iconMap[normalizedTech];
+  }
+
+  // 2. Handle complex strings like "Typescript | Angular"
+  // Split by common delimiters and check each part
+  const parts = normalizedTech.split(/[|/]/).map(part => part.trim());
+  for (const part of parts) {
+    if (iconMap[part]) {
+        return iconMap[part];
+    }
+  }
+
+  // 3. Fallback to the previous partial match logic
+  const matchedKey = mapKeys.find(key => normalizedTech.includes(key));
+  
+  // 4. Final fallback to a generic code icon
+  return matchedKey ? iconMap[matchedKey] : <SiCoder className={className} />;
 };
 
 export default TechIcon;

@@ -13,35 +13,16 @@ import {
   Lightbulb,
   Target,
   Wrench,
+  CheckCircle2,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import TechIcon from "./TechIcon"; // Import TechIcon
-
-// --- NEW: Reusable Section component ---
-const Section = ({
-  icon,
-  title,
-  children,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  children: React.ReactNode;
-}) => (
-  <div>
-    <h3 className="flex items-center gap-3 text-xl font-bold text-cyan-300 mb-3">
-      {icon}
-      {title}
-    </h3>
-    <div className="text-slate-300/90 leading-relaxed prose prose-invert prose-p:my-1 prose-p:text-slate-300/90 max-w-none">
-      {children}
-    </div>
-  </div>
-);
+import { Section, ImpactCard } from "./ExperienceModal";
 
 // --- MODIFIED: Update props to accept the 'tech' array ---
 interface ProjectModalProps {
@@ -83,9 +64,10 @@ const ProjectModal = ({ details, onClose, layoutId }: ProjectModalProps) => {
       className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
+      {/* MODIFIED: Increased max-w-5xl to accommodate code snippets comfortably */}
       <motion.div
         layoutId={layoutId}
-        className="bg-slate-800 border border-cyan-400/30 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] relative"
+        className="bg-slate-800 border border-cyan-400/30 rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] relative"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="overflow-y-auto h-full p-6 md:p-8">
@@ -95,22 +77,110 @@ const ProjectModal = ({ details, onClose, layoutId }: ProjectModalProps) => {
             transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
             className="space-y-8"
           >
-            <header>
+            {/* MODIFIED: Header layout to include links */}
+            <header className="flex justify-between items-start gap-8">
               <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-300">
                 {details.headline}
               </h2>
+
+              {/* --- NEW: Project Links in Header --- */}
+              {details.links && details.links.length > 0 && (
+                <div className="flex items-center gap-4 pt-1 flex-shrink-0">
+                  {details.links.map((link) => {
+                    const Icon = IconMap[link.icon];
+                    return (
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-400 hover:text-cyan-300 transition-colors duration-300"
+                        aria-label={link.label}
+                        title={link.label}
+                      >
+                        {Icon && <Icon className="h-6 w-6" />}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </header>
 
-            <Section icon={<Target size={22} />} title="The Problem">
-              <p>{details.problem}</p>
-            </Section>
+            {/* --- NEW: Impact Metrics Section --- */}
+            {details.impact && details.impact.length > 0 && (
+              // Added items-stretch for ImpactCard height consistency
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+                {details.impact.map((item) => (
+                  <ImpactCard
+                    key={item.text}
+                    value={item.value}
+                    text={item.text}
+                  />
+                ))}
+              </div>
+            )}
 
-            <Section icon={<Wrench size={22} />} title="The Solution">
-              <p>{details.solution}</p>
-            </Section>
+            {/* MODIFIED: Grid layout for Problem/Solution */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <Section icon={<Target size={22} />} title="The Problem">
+                <p>{details.problem}</p>
+              </Section>
 
-            
-            
+              <Section icon={<Wrench size={22} />} title="The Solution">
+                <p>{details.solution}</p>
+              </Section>
+            </div>
+
+            {/* --- NEW: Tech Highlight (Code Spotlight) Section --- */}
+            {details.techHighlight && (
+              <Section
+                icon={<Lightbulb size={22} />}
+                title={details.techHighlight.title || "Technical Highlight"}
+                className="pt-4"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mt-4">
+                  {/* Code Block */}
+                  <div className="lg:col-span-3">
+                    <div className="rounded-lg overflow-hidden border border-slate-700/80 shadow-lg">
+                      <SyntaxHighlighter
+                        language={details.techHighlight.language}
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          padding: "1rem",
+                          fontSize: "0.875rem",
+                          backgroundColor: "#0f172a", // Consistent dark background
+                        }}
+                        wrapLines={true}
+                        showLineNumbers={true}
+                      >
+                        {details.techHighlight.code}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  {/* Analysis Points */}
+                  <div className="lg:col-span-2 space-y-4">
+                    {details.techHighlight.points.map((point, index) => (
+                      <div key={index} className="flex gap-3 items-start">
+                        <CheckCircle2
+                          className="text-cyan-400 mt-0.5 flex-shrink-0"
+                          size={18}
+                        />
+                        <div>
+                          <h4 className="font-semibold text-slate-100">
+                            {point.title}
+                          </h4>
+                          <p className="text-sm text-slate-400 mt-1">
+                            {point.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Section>
+            )}
+
             {/* --- NEW: Core Technologies section --- */}
             {details.tech && details.tech.length > 0 && (
               <Section icon={<Zap size={22} />} title="Core Technologies">

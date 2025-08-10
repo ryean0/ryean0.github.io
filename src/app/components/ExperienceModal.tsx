@@ -19,20 +19,22 @@ import {
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import TechIcon from "./TechIcon";
+import TechIcon from "@/app/components/TechIcon";
 import { cn } from "@/lib/utils";
 
-// --- (Keep the Section and ImpactCard components from the previous step) ---
-const Section = ({
+// --- MODIFIED: Exporting Section for reuse in ProjectModal ---
+export const Section = ({
   icon,
   title,
   children,
+  className, // Added className for flexibility
 }: {
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
+  className?: string;
 }) => (
-  <div>
+  <div className={className}>
     <h3 className="flex items-center gap-3 text-xl font-bold text-cyan-300 mb-3">
       {icon}
       {title}
@@ -43,8 +45,10 @@ const Section = ({
   </div>
 );
 
-const ImpactCard = ({ value, text }: { value: string; text: string }) => (
-  <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/80 text-center">
+// --- MODIFIED: Exporting ImpactCard for reuse in ProjectModal ---
+export const ImpactCard = ({ value, text }: { value: string; text: string }) => (
+  // Added h-full to ensure consistent height in a grid layout
+  <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/80 text-center h-full">
     <p className="text-3xl font-bold text-cyan-400">{value}</p>
     <p className="text-sm text-slate-400 mt-1">{text}</p>
   </div>

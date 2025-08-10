@@ -1,4 +1,17 @@
+========== FILE: src/types/index.ts ==========
 /* Filename: src/types/index.ts */
+
+// NEW: Define the specific string literals expected in the data
+export type SpotlightIconName = 'Zap' | 'Cpu' | 'Wrench' | 'DollarSign' | 'Code' | 'ShieldCheck';
+export type LinkIconName = 'FileText' | 'Presentation' | 'ExternalLink' | 'GitBranch' | 'Globe';
+
+// NEW: Define SpotlightItem interface
+export interface SpotlightItem {
+  value: string;
+  label: string;
+  icon: SpotlightIconName;
+}
+
 export interface ExperienceData {
   id: string;
   title: string;
@@ -18,16 +31,14 @@ export interface ExperienceData {
     links?: { 
       label: string; 
       url: string; 
-      icon: 'FileText' | 'Presentation' | 'ExternalLink' | 'GitBranch' | 'Globe' 
+      // MODIFIED: Use the centralized type
+      icon: LinkIconName;
     }[];
     techHighlight?: ProjectDetails['techHighlight'];
   };
   gridSpan?: { col?: number; row?: number };
-  cardSpotlight: {
-    value: string;
-    label: string;
-    icon: 'Zap' | 'Cpu' | 'Wrench' | 'DollarSign' | 'Code' | 'ShieldCheck';
-  }[];
+  // MODIFIED: Use the structured type
+  cardSpotlight: SpotlightItem[];
   keyTech?: string;
   cardImage?: string;
   cardImageLink?: string;
@@ -43,11 +54,8 @@ export interface ProjectData {
   displayDate: string;
   tech: string[];
   category: string;
-  cardSpotlight: {
-    value: string;
-    label: string;
-    icon: 'Zap' | 'Cpu' | 'Wrench' | 'DollarSign' | 'Code' | 'ShieldCheck';
-  }[];
+  // MODIFIED: Use the structured type
+  cardSpotlight: SpotlightItem[];
   details?: ProjectDetails;
   gridSpan?: { col?: number; row?: number };
   keyTech?: string;
@@ -65,5 +73,6 @@ export interface ProjectDetails {
     language: string;
     points: { title: string; description: string }[];
   };
-  links: { label: string; url: string; icon: 'ExternalLink' | 'GitBranch' | 'Globe' }[];
+  // MODIFIED: Use the centralized type (ensuring it only includes project-relevant icons)
+  links: { label: string; url: string; icon: Extract<LinkIconName, 'ExternalLink' | 'GitBranch' | 'Globe'> }[];
 }

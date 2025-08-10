@@ -2,12 +2,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, Code, Star, Eye, BrainCircuit, Server, MonitorSmartphone } from "lucide-react";
+import {
+  Briefcase,
+  Code,
+  Star,
+  Eye,
+  BrainCircuit,
+  Server,
+  MonitorSmartphone,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import TechIcon from "./TechIcon";
-import { ExperienceData, ProjectData } from "@/types";
-import CardSpotlight from "./CardSpotlight"; 
-import { JSX } from "react";
+import { SpotlightItem } from "@/types";
+import CardSpotlight from "./CardSpotlight";
 
 type InfoCardProps = {
   type: "experience" | "project";
@@ -25,25 +32,37 @@ type InfoCardProps = {
 const CardFront = (props: InfoCardProps) => {
   const colSpan = props.gridSpan?.col || 3;
   let tagsToShow;
-  if (colSpan <= 2) { tagsToShow = 3; } 
-  else if (colSpan === 3) { tagsToShow = 4; } 
-  else { tagsToShow = 6; }
+  if (colSpan <= 2) {
+    tagsToShow = 3;
+  } else if (colSpan === 3) {
+    tagsToShow = 4;
+  } else {
+    tagsToShow = 6;
+  }
 
   const renderIcon = () => {
     if (props.type === "experience") {
       switch (props.category) {
-        case "frontend": return <MonitorSmartphone size={28} />;
-        case "backend": return <Server size={28} />;
-        case "ai": return <BrainCircuit size={28} />;
-        case "general": return <Briefcase size={28} />;
-        default: return <Briefcase size={28} />;
+        case "frontend":
+          return <MonitorSmartphone size={28} />;
+        case "backend":
+          return <Server size={28} />;
+        case "ai":
+          return <BrainCircuit size={28} />;
+        case "general":
+          return <Briefcase size={28} />;
+        default:
+          return <Briefcase size={28} />;
       }
     } else if (props.type === "project") {
       switch (props.category) {
-        case "code": return <Code size={28} />;
-        case "star": return <Star size={28} />;
-        // Added default case to ensure a valid return type 
-        default: return <Code size={28} />;
+        case "code":
+          return <Code size={28} />;
+        case "star":
+          return <Star size={28} />;
+        // Added default case to ensure a valid return type
+        default:
+          return <Code size={28} />;
       }
     }
     return null;
@@ -69,9 +88,8 @@ const CardFront = (props: InfoCardProps) => {
           </div>
         </div>
       </div>
-      
-      {props.cardSpotlight && <CardSpotlight items={props.cardSpotlight} />}
 
+      {props.cardSpotlight && <CardSpotlight items={props.cardSpotlight} />}
       {/* --- Bottom Section --- */}
       <div>
         <div className="flex flex-wrap gap-2">
@@ -101,33 +119,43 @@ const CardFront = (props: InfoCardProps) => {
 };
 
 const InfoCard = (props: InfoCardProps) => {
-    const commonClasses = "w-full h-full min-h-72 @container text-left relative rounded-lg border border-gray-700/80 shadow-lg bg-gradient-to-br from-slate-800 to-slate-900";
-    const hoverClasses = "transition-all duration-300 group-hover:border-cyan-400/40 group-hover:shadow-xl group-hover:shadow-cyan-500/10";
+  const commonClasses =
+    "w-full h-full min-h-72 @container text-left relative rounded-lg border border-gray-700/80 shadow-lg bg-gradient-to-br from-slate-800 to-slate-900";
+  const hoverClasses =
+    "transition-all duration-300 group-hover:border-cyan-400/40 group-hover:shadow-xl group-hover:shadow-cyan-500/10";
 
-    return (
-        <motion.button
-            onClick={props.onViewDetails}
-            className={cn(commonClasses, "group")} 
-            whileHover={{ scale: 1.02, y: -4 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+  // NEW: Construct a descriptive aria-label for accessibility
+  const ariaLabel = `View details for ${props.type}: ${props.title}${
+    props.company ? ` at ${props.company}` : ""
+  }`;
+
+  return (
+    <motion.button
+      onClick={props.onViewDetails}
+      className={cn(commonClasses, "group")}
+      whileHover={{ scale: 1.02, y: -4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      aria-label={ariaLabel} // NEW: Apply the aria-label
+    >
+      <div className={cn("absolute inset-0 rounded-lg", hoverClasses)} />
+      <div className="relative h-full">
+        <CardFront {...props} />
+
+        <div
+          className={cn(
+            "absolute inset-0 flex items-center justify-center rounded-lg",
+            "bg-slate-900/60 backdrop-blur-[2px]",
+            "opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+          )}
         >
-            <div className={cn("absolute inset-0 rounded-lg", hoverClasses)} />
-            <div className="relative h-full">
-                <CardFront {...props} />
-                
-                <div className={cn(
-                    "absolute inset-0 flex items-center justify-center rounded-lg",
-                    "bg-slate-900/60 backdrop-blur-[2px]",
-                    "opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
-                )}>
-                    <p className="flex items-center gap-2 text-lg font-semibold text-slate-100">
-                        <Eye size={20} />
-                        Click for details
-                    </p>
-                </div>
-            </div>
-        </motion.button>
-    );
+          <p className="flex items-center gap-2 text-lg font-semibold text-slate-100">
+            <Eye size={20} />
+            Click for details
+          </p>
+        </div>
+      </div>
+    </motion.button>
+  );
 };
 
 export default InfoCard;

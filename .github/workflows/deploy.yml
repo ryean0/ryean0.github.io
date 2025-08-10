@@ -10,6 +10,7 @@ on:
       - 'src/**'               # Trigger on code changes
       - 'public/**'
       - 'package.json'
+      - 'package-lock.json'
       - 'next.config.ts'
       - 'tailwind.config.ts'   # Include tailwind config changes
       - '.github/workflows/deploy.yml'
@@ -34,12 +35,20 @@ jobs:
           node-version: "20"
           cache: 'npm'
 
+      # Use npm ci for faster, reproducible installs
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       # The build process will now read the filesystem via src/lib/dataLoader.ts
       - name: Build Project
         run: npm run build
+      
+      # --- FIX: deployed build on github pages does not render frontend ---
+      # This step creates the .nojekyll file in the output directory (out).
+      # This tells GitHub Pages to skip Jekyll processing, allowing folders 
+      # starting with underscores (like _next) to be served correctly.
+      - name: Disable Jekyll
+        run: touch ./out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -47,7 +56,6 @@ jobs:
           path: ./out
 
   deploy:
-    # ... (rest of the deploy job remains the same)
     needs: build
     permissions:
       pages: write

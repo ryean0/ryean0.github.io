@@ -10,7 +10,7 @@
   "keyTech": "React.js | Docker | GitHub Actions",
   "icon": "MonitorSmartphone",
   "cardSpotlight": [
-    { "value": "-250%", "label": "Deployment Build Failure Rate", "icon": "Zap" },
+    { "value": "25%", "label": "Deployment Failure Reduction", "icon": "Zap" },
     { "value": "Typescript", "label": "Core Skill", "icon": "ShieldCheck" },
     { "value": "GitHub Actions", "label": "Core Tech", "icon": "Code" }
   ],
