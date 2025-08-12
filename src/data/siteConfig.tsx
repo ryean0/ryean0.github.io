@@ -1,5 +1,5 @@
 // Filename: src/data/siteConfig.tsx
-import { Briefcase, Code, Server, Cloud, BrainCircuit, ShieldCheck } from 'lucide-react';
+import { Code, Server, Cloud, BrainCircuit, ShieldCheck } from 'lucide-react';
 import { JSX } from 'react';
 
 // Skill type is specific to this config file as it includes JSX

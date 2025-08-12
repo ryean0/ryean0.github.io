@@ -23,7 +23,6 @@ const SkillCard = ({ skill }: SkillCardProps) => {
   const ContainerElement = hasCerts ? 'button' : 'div';
 
   return (
-    // @ts-ignore: Dynamically assigning component type requires ignoring the strict type check here
     <ContainerElement 
         // Apply button-specific attributes conditionally
         type={hasCerts ? 'button' : undefined}

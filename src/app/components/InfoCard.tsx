@@ -23,7 +23,7 @@ type InfoCardProps = {
   tech: string[];
   keyTech?: string;
   gridSpan?: { col?: number; row?: number };
-  cardSpotlight?: JSX.Element; // unknown structure
+  cardSpotlight?: SpotlightItem[]; 
   displayDate?: string;
   company?: string;
   onViewDetails?: () => void;

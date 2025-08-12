@@ -15,11 +15,9 @@ import {
   Wrench,
   CheckCircle2,
 } from "lucide-react";
-import Image from "next/image";
 import { useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import TechIcon from "./TechIcon"; // Import TechIcon
 import { Section, ImpactCard } from "./ExperienceModal";
