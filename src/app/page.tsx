@@ -15,7 +15,7 @@ import { siteConfig } from "@/data/siteConfig";
 import SkillCard from "./components/SkillCard";
 
 export default function PortfolioPage() {
-// Fetch data at build time using Server Components capabilities
+// Fetch data at build time using Server Components
   const experienceData = getExperiences();
   const projectsData = getProjects();
 
@@ -23,7 +23,7 @@ export default function PortfolioPage() {
     <>
       <Header />
       <main className="container mx-auto max-w-4xl px-6">
-        {/* --- Hero & About Section (Server Rendered) --- */}
+        {/*  About Section (Server Rendered) */}
         <section id="about" className="min-h-screen flex items-center">
           <FadeIn duration={1} delay={0.1}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">

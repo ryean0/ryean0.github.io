@@ -1,4 +1,4 @@
-========== FILE: src/types/index.ts ==========
+
 /* Filename: src/types/index.ts */
 
 // NEW: Define the specific string literals expected in the data

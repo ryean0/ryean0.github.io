@@ -10,6 +10,7 @@ on:
       - 'src/**'               # Trigger on code changes
       - 'public/**'
       - 'package.json'
+      # NEW: It is best practice to include the lockfile when using npm ci
       - 'package-lock.json'
       - 'next.config.ts'
       - 'tailwind.config.ts'   # Include tailwind config changes
@@ -42,8 +43,8 @@ jobs:
       # The build process will now read the filesystem via src/lib/dataLoader.ts
       - name: Build Project
         run: npm run build
-      
-      # --- FIX: deployed build on github pages does not render frontend ---
+
+      # --- CRITICAL STEP TO FIX STYLING BUG 0801---
       # This step creates the .nojekyll file in the output directory (out).
       # This tells GitHub Pages to skip Jekyll processing, allowing folders 
       # starting with underscores (like _next) to be served correctly.
@@ -53,6 +54,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # The path now includes the .nojekyll file
           path: ./out
 
   deploy:
