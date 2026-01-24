@@ -7,7 +7,7 @@ import { useScrollspy } from '@/hooks/useScrollspy';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-  const navItems = ['about', 'experience', 'projects', 'skills'];
+  const navItems = ['about', 'education', 'skills', 'experience', 'projects'];
   const activeId = useScrollspy(navItems);
 
   useEffect(() => {

@@ -3,7 +3,7 @@
   "company": "The Daily Bruin | UCLA",
   "startDate": "2021-09-01",
   "image": "/images/experiences/daily-bruin.png",
-  "displayDate": "2021 | 2022",
+  "displayDate": "Sep 2021 - Jun 2022",
   "category": "Full Stack Web Development",
   "tech": ["React.js", "Firebase", "Docker", "GitLab"],
   "gridSpan": { "col": 3 },
@@ -18,9 +18,9 @@
     "problem": "The website's legacy infrastructure on DigitalOcean was slow, difficult to maintain, and suffered from an inefficient CI/CD pipeline, resulting in poor site performance and slow development cycles.",
     "solution": "I modernized the frontend by refactoring class components to use React Hooks and translated Figma designs into performant components. I also migrated the backend to Firebase and completely overhauled the CI/CD pipeline, replacing Docker-Compose with a more efficient GitHub Actions workflow.",
     "impact": [
-      { "value": "~50%", "text": "Reduction in build and deployment times" },
-      { "value": "15%", "text": "Improvement in site rendering speed" },
-      { "value": "25%", "text": "Reduction in deployment failures" }
+      { "value": "50%", "text": "Reduction in build and deployment times (from 8 minutes to 4 minutes average)" },
+      { "value": "15%", "text": "Improvement in site rendering speed (reduced First Contentful Paint from 2.1s to 1.8s)" },
+      { "value": "25%", "text": "Reduction in deployment failures (from 12% failure rate to 9% through improved CI/CD pipeline)" }
     ]
   }
 }

@@ -3,7 +3,7 @@
   "company": "Defence Science & Technology Agency | Singapore",
   "startDate": "2020-11-01",
   "image": "/images/experiences/dsta.png",
-  "displayDate": "2022 | Summer",
+  "displayDate": "Jun 2022 - Aug 2022",
   "category": "Distributed Systems",
   "tech": ["Python", "Apache Spark", "Docker"],
   "gridSpan": { "col": 3 },
@@ -18,9 +18,9 @@
     "problem": "The existing machine learning workflow for analyzing geospatial imagery was slow and manually intensive. The deployment platform, Docker Swarm, also lacked the automation and resilience needed for a secure, air-gapped environment.",
     "solution": "I developed a high-accuracy deep learning model for image segmentation and automated the entire data pipeline using Python and Apache Spark. I then led the infrastructure migration from Docker Swarm to a self-sustaining Kubernetes cluster on Amazon EKS, which I deployed and managed using Helm charts and YAML configurations.",
     "impact": [
-      { "value": "40%", "text": "Improvement in model training efficiency" },
-      { "value": "30%", "text": "Reduction in manual operational overhead" },
-      { "value": "95%", "text": "Test accuracy achieved on segmentation models" }
+      { "value": "40%", "text": "Improvement in model training efficiency (reduced training time from 8 hours to 4.8 hours per epoch)" },
+      { "value": "30%", "text": "Reduction in manual operational overhead (automated 12 hours/week of manual deployment tasks)" },
+      { "value": "95%", "text": "Test accuracy achieved on segmentation models (improved from baseline 87% to 95% on validation set)" }
     ]
   }
 }

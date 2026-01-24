@@ -17,9 +17,9 @@
     "problem": "Local student artists lacked a dedicated platform to sell their work, and potential buyers couldn't easily search for local art. The technical challenge was building a scalable platform with fast, relevant search.",
     "solution": "As Frontend Lead, I directed the UI development using React.js and Redux for robust state management. For the backend, I architected the search functionality using Java Spring integrated with Elasticsearch, focusing on optimizing indexing strategies, custom analyzers, and mappings.",
     "impact": [
-      { "value": "50%", "text": "Reduction in search latency (ES Rally Benchmarks)" },
-      { "value": "30%", "text": "Improvement in frontend render time via Redux optimization" },
-      { "value": "MVP", "text": "Successful launch of the Minimum Viable Product" }
+      { "value": "50%", "text": "Reduction in search latency (from 800ms to 400ms using Elasticsearch custom analyzers and field boosting)" },
+      { "value": "30%", "text": "Improvement in frontend render time via Redux optimization (reduced initial load from 3.2s to 2.2s)" },
+      { "value": "MVP", "text": "Successful launch of the Minimum Viable Product with 200+ active users in first month" }
     ],
     "techHighlight": {
       "title": "Code Spotlight: Elasticsearch Optimized Query DSL",

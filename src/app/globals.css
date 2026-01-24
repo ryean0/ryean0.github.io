@@ -1,7 +1,21 @@
 /* Filename: src/app/globals.css */
 
+/**
+ * Global Styles
+ * 
+ * This file contains:
+ * 1. Tailwind CSS imports
+ * 2. CSS custom properties (variables)
+ * 3. Global animations and effects
+ * 4. Utility classes
+ * 5. Accessibility improvements
+ */
+
 @import "tailwindcss";
 
+/* ========================================
+   CSS CUSTOM PROPERTIES
+   ======================================== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -21,14 +35,19 @@
   }
 }
 
+/* ========================================
+   BASE STYLES
+   ======================================== */
 body {
   background: var(--background);
   color: var(--foreground);
-  /* --- MODIFIED: Ensure the custom sans-serif font is used globally --- */
   font-family: var(--font-sans), sans-serif;
 }
 
-/* --- NEW: Animated Starfield Background --- */
+/* ========================================
+   ANIMATED BACKGROUND
+   Subtle starfield effect for visual interest
+   ======================================== */
 @keyframes move-background {
   from {
     transform: translate(0, 0);
@@ -83,4 +102,155 @@ body {
       rgba(0, 0, 0, 0)
     );
   animation: move-background 150s linear infinite;
+}
+
+/* ========================================
+   GRADIENT TEXT ANIMATION
+   For the hero name with animated gradient
+   ======================================== */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* ========================================
+   ENHANCED CARD STYLES
+   Improved hover effects and glassmorphism
+   ======================================== */
+.education-card,
+.skill-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.education-card:hover {
+  transform: translateY(-4px);
+}
+
+.skill-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Course badge hover effect */
+.course-badge {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   FOCUS STYLES FOR ACCESSIBILITY
+   Improved keyboard navigation visibility
+   ======================================== */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Remove default focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ========================================
+   SMOOTH SCROLLING
+   Already handled by Tailwind's scroll-smooth
+   ======================================== */
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   Respect user preferences for reduced motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE SUPPORT
+   Better visibility for users who need it
+   ======================================== */
+@media (prefers-contrast: high) {
+  .education-card,
+  .skill-card {
+    border-width: 2px;
+  }
+  
+  button,
+  a {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ========================================
+   SCREEN READER ONLY UTILITY
+   Hide content visually but keep it accessible
+   ======================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR (WEBKIT BROWSERS)
+   Styled scrollbar for better aesthetics
+   ======================================== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ========================================
+   SELECTION STYLES
+   Custom text selection color
+   ======================================== */
+::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: #f8fafc;
 }

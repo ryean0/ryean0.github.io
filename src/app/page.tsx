@@ -1,21 +1,36 @@
 /* Filename: src/app/page.tsx */
 
-// This is now a Server Component
+/**
+ * Main Portfolio Page Component
+ * 
+ * This is a Server Component that orchestrates the entire portfolio page.
+ * It fetches data at build time and passes it to client components as needed.
+ * 
+ * Structure:
+ * 1. Hero/About Section - Introduction with profile photo
+ * 2. Education Section - Academic credentials (NEW - critical for new grads)
+ * 3. Skills Section - Technical skills organized by category (ENHANCED)
+ * 4. Experience Section - Work experience with detailed modals
+ * 5. Projects Section - Featured projects with live demos
+ * 6. Footer - Credits and back-to-top link
+ */
+
 import Image from "next/image";
-import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { Mail, Linkedin, Github, FileText, MapPin, GraduationCap } from "lucide-react";
 
 import Header from "@/app/components/Header";
 import FadeIn from "@/app/components/FadeIn";
+import Education from "@/app/components/Education";
+import SkillsEnhanced from "@/app/components/SkillsEnhanced";
 // Import the Client boundary components
 import ProjectSectionClient from "@/app/components/ProjectSectionClient";
-import ExperienceSectionClient from "./components/ExperienceSectionClient"; // This component will now be correctly used
+import ExperienceSectionClient from "./components/ExperienceSectionClient";
 // Import the data loaders and static config
 import { getExperiences, getProjects } from "@/lib/dataLoader";
 import { siteConfig } from "@/data/siteConfig";
-import SkillCard from "./components/SkillCard";
 
 export default function PortfolioPage() {
-// Fetch data at build time using Server Components
+  // Fetch data at build time using Server Components
   const experienceData = getExperiences();
   const projectsData = getProjects();
 
@@ -23,70 +38,116 @@ export default function PortfolioPage() {
     <>
       <Header />
       <main className="container mx-auto max-w-4xl px-6">
-        {/*  About Section (Server Rendered) */}
-        <section id="about" className="min-h-screen flex items-center">
+        
+        {/* ========================================
+            HERO / ABOUT SECTION
+            ======================================== */}
+        <section id="about" className="min-h-screen flex items-center py-20">
           <FadeIn duration={1} delay={0.1}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+              
+              {/* Left column - Text content */}
               <div className="md:col-span-2">
-                <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-300 pb-2">
+                {/* Greeting */}
+                <p className="text-lg text-gray-400 mb-2">Hi, I'm</p>
+                
+                {/* Name with animated gradient */}
+                <h1 className="text-5xl md:text-7xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 animate-gradient pb-2">
                   {siteConfig.name}
                 </h1>
-                <p className="mt-4 text-2xl md:text-3xl font-semibold text-gray-300">
+                
+                {/* Title - UPDATED to Software Engineer */}
+                <p className="text-2xl md:text-3xl font-semibold text-gray-100 mb-2">
                   {siteConfig.title}
                 </p>
+                
+                {/* Subtitle - NEW */}
+                {siteConfig.subtitle && (
+                  <p className="text-lg text-gray-400 mb-6">
+                    {siteConfig.subtitle}
+                  </p>
+                )}
+                
+                {/* About description - REWRITTEN for SWE positioning */}
                 <div className="mt-6">
-                  <p className="text-lg text-gray-400 max-w-xl leading-relaxed">
+                  <p className="text-base md:text-lg text-gray-300 max-w-xl leading-relaxed">
                     {siteConfig.about}
                   </p>
                 </div>
+                
+                {/* Location and Education badges - NEW */}
+                <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                  <span className="flex items-center gap-2 px-3 py-1.5 bg-slate-800/50 border border-slate-700 rounded-full">
+                    <MapPin className="h-4 w-4" />
+                    {siteConfig.location}
+                  </span>
+                  <span className="flex items-center gap-2 px-3 py-1.5 bg-slate-800/50 border border-slate-700 rounded-full">
+                    <GraduationCap className="h-4 w-4" />
+                    UCLA CS '25
+                  </span>
+                </div>
+                
+                {/* CTA buttons and social links */}
                 <div className="mt-8 flex flex-wrap items-center gap-6">
+                  {/* Primary CTA - Resume */}
                   {siteConfig.resumeUrl && (
                     <a
                       href={siteConfig.resumeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-xl"
+                      className="flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5"
                     >
                       <FileText className="h-5 w-5" />
                       View Resume
                     </a>
                   )}
-                  <div className="flex items-center gap-6">
+                  
+                  {/* Social links */}
+                  <div className="flex items-center gap-4">
                     <a
                       href={`mailto:${siteConfig.contact.email}`}
-                      className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                      className="p-3 text-gray-400 hover:text-blue-400 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 hover:border-blue-500/50 rounded-xl transition-all duration-300"
                       aria-label="Email"
+                      title={siteConfig.contact.email}
                     >
-                      <Mail className="h-7 w-7" />
+                      <Mail className="h-5 w-5" />
                     </a>
                     <a
                       href={siteConfig.contact.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                      className="p-3 text-gray-400 hover:text-blue-400 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 hover:border-blue-500/50 rounded-xl transition-all duration-300"
                       aria-label="LinkedIn"
+                      title="LinkedIn Profile"
                     >
-                      <Linkedin className="h-7 w-7" />
+                      <Linkedin className="h-5 w-5" />
                     </a>
                     <a
                       href={siteConfig.contact.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                      className="p-3 text-gray-400 hover:text-blue-400 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 hover:border-blue-500/50 rounded-xl transition-all duration-300"
                       aria-label="GitHub"
+                      title="GitHub Profile"
                     >
-                      <Github className="h-7 w-7" />
+                      <Github className="h-5 w-5" />
                     </a>
                   </div>
                 </div>
               </div>
+              
+              {/* Right column - Profile photo */}
               <div className="flex justify-center md:justify-end">
                 <div className="relative w-48 h-48 md:w-64 md:h-64">
+                  {/* Glow effect behind photo */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-2xl opacity-20 animate-pulse" />
+                  
+                  {/* Profile image */}
                   <Image
                     src="/profile.jpg"
-                    alt="Profile Photo"
+                    alt="Ryan Phua - Software Engineer"
                     fill
-                    className="rounded-full object-cover"
+                    className="rounded-full object-cover relative z-10 border-4 border-slate-800"
                     priority
                   />
                 </div>
@@ -95,33 +156,64 @@ export default function PortfolioPage() {
           </FadeIn>
         </section>
 
-        {/* --- MODIFIED: Experience Section now uses the client component --- */}
-        <ExperienceSectionClient experiences={experienceData} />
-
-        {/* --- Projects Section (Client Component Boundary) --- */}
-        <ProjectSectionClient projects={projectsData} />
-
-        {/* --- Skills Section (Server Rendered) --- */}
-        <section id="skills" className="py-28">
+        {/* ========================================
+            EDUCATION SECTION - NEW
+            Critical for new grad applications
+            ======================================== */}
+        <section id="education" className="py-20">
           <FadeIn>
-            <h2 className="text-4xl font-bold text-center mb-12 text-gray-100">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-gray-100">
+              Education
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <Education />
+          </FadeIn>
+        </section>
+
+        {/* ========================================
+            SKILLS SECTION - ENHANCED
+            Now with categories and proficiency levels
+            ======================================== */}
+        <section id="skills" className="py-20">
+          <FadeIn>
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-gray-100">
               Technical Skills
             </h2>
           </FadeIn>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-            {siteConfig.skills.map((skill, index) => (
-              <FadeIn key={skill.name} delay={index * 0.1}>
-                <SkillCard skill={skill} />
-              </FadeIn>
-            ))}
-          </div>
+          <SkillsEnhanced />
         </section>
 
-        <footer className="text-center mt-20 py-6 border-t border-gray-800">
-          <p className="text-gray-500 text-sm">
-            Built with Next.js & Tailwind CSS.
-            Deployed on GitHub Pages.
+        {/* ========================================
+            EXPERIENCE SECTION
+            Work experience with detailed modals
+            ======================================== */}
+        <ExperienceSectionClient experiences={experienceData} />
+
+        {/* ========================================
+            PROJECTS SECTION
+            Featured projects with live demos
+            ======================================== */}
+        <ProjectSectionClient projects={projectsData} />
+
+        {/* ========================================
+            FOOTER
+            ======================================== */}
+        <footer className="text-center mt-20 py-8 border-t border-slate-800">
+          <p className="text-gray-500 text-sm mb-4">
+            Built with Next.js & Tailwind CSS. Deployed on GitHub Pages.
           </p>
+          <p className="text-gray-600 text-xs">
+            © 2025 Ryan Phua. All rights reserved.
+          </p>
+          
+          {/* Back to top button */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="mt-4 text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300"
+          >
+            Back to Top ↑
+          </button>
         </footer>
       </main>
     </>
