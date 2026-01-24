@@ -7,8 +7,10 @@
  * 1. Tailwind CSS imports
  * 2. CSS custom properties (variables)
  * 3. Global animations and effects
- * 4. Utility classes
+ * 4. Component-specific styles
  * 5. Accessibility improvements
+ * 
+ * UPDATED: Added styles for Education component
  */
 
 @import "tailwindcss";
@@ -142,9 +144,30 @@ body {
   transform: translateY(-4px);
 }
 
-/* Course badge hover effect */
+/* Course badge hover effect - specific to Education component */
 .course-badge {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.course-badge:hover {
+  transform: scale(1.05);
+}
+
+/* ========================================
+   PULSE ANIMATION
+   For availability indicator
+   ======================================== */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* ========================================
@@ -195,6 +218,10 @@ body {
   button,
   a {
     border: 2px solid currentColor;
+  }
+  
+  .course-badge {
+    border-width: 2px;
   }
 }
 
@@ -253,4 +280,54 @@ body {
 ::selection {
   background-color: rgba(59, 130, 246, 0.3);
   color: #f8fafc;
+}
+
+/* ========================================
+   EDUCATION COMPONENT SPECIFIC STYLES
+   Additional styles for Education section
+   ======================================== */
+
+/* Graduation cap icon glow effect */
+.education-card .bg-gradient-to-br {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+/* Badge hover effects */
+.education-card span[class*="border-slate"] {
+  transition: all 0.2s ease;
+}
+
+.education-card span[class*="border-slate"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+}
+
+/* Availability indicator pulse */
+.education-card .animate-ping {
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Divider line gradient */
+.education-card .h-px {
+  transition: opacity 0.3s ease;
+}
+
+.education-card:hover .h-px {
+  opacity: 0.8;
+}
+
+/* List item bullets */
+.education-card li .w-1\.5 {
+  transition: transform 0.2s ease;
+}
+
+.education-card li:hover .w-1\.5 {
+  transform: scale(1.2);
 }

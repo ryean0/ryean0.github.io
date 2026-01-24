@@ -16,6 +16,18 @@ export interface SkillCategory {
   skills: Skill[];
 }
 
+// Education interface for structured education data
+export interface Education {
+  degree: string;
+  school: string;
+  location: string;
+  graduationDate: string;
+  gpa?: string; // Optional - only include if 3.5+
+  relevantCourses: string[];
+  honors?: string[]; // Optional - Dean's List, honors, etc.
+  activities?: string[]; // Optional - clubs, organizations
+}
+
 // --- SITE CONFIGURATION (Static Data) ---
 export const siteConfig = {
   name: "Ryan Phua",
@@ -24,24 +36,43 @@ export const siteConfig = {
   title: "Software Engineer",
   subtitle: "Full Stack Development • Cloud Infrastructure",
   location: "Los Angeles / Orange County, CA",
+  availableForWork: true, // Set to false once you accept an offer
   
-  // Education information - critical for new grad applications
+  // CRITICAL: Education information - essential for new grad applications
   education: {
     degree: "Bachelor of Science in Computer Science",
-    school: "University of California, Los Angeles (UCLA)",
-    graduationDate: "June 2025",
-    gpa: "3.8/4.0", // Update with your actual GPA if 3.5+
+    school: "University of California, Los Angeles",
+    location: "Los Angeles, CA",
+    graduationDate: "June 2025", // UPDATE THIS with your actual graduation date
+    gpa: "3.8/4.0", // UPDATE THIS with your actual GPA (only include if 3.5+, otherwise remove)
+    
+    // Relevant coursework - UPDATE THIS with your actual courses
     relevantCourses: [
       "Distributed Systems",
       "Algorithms & Data Structures",
       "Database Systems",
       "Software Engineering",
       "Operating Systems",
-      "Computer Networks"
+      "Computer Networks",
+      "Web Development",
+      "Machine Learning"
+    ],
+    
+    // Optional: Add honors/awards if applicable
+    honors: [
+      // "Dean's List (Fall 2023, Spring 2024)",
+      // "UCLA Engineering Scholarship",
+    ],
+    
+    // Optional: Add relevant activities if applicable
+    activities: [
+      // "ACM at UCLA - Member",
+      // "DevX at UCLA - Software Developer",
     ]
-  },
+  } as Education,
   
-  resumeUrl: "/RyanPhuaResume.pdf",
+  resumeUrl: "/RyanPhuaResume.pdf", // IMPORTANT: Add your actual resume PDF here
+  
   contact: {
     email: "ryanphua@g.ucla.edu",
     linkedin: "https://www.linkedin.com/in/ryanphua/",

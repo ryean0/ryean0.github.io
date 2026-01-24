@@ -1,4 +1,20 @@
 /* Filename: src/app/components/Header.tsx */
+
+/**
+ * Header Component
+ * 
+ * Fixed navigation bar with smooth scrolling to sections.
+ * Features:
+ * - Glassmorphism effect on scroll
+ * - Active section highlighting
+ * - Smooth scroll behavior
+ * - Responsive design
+ * 
+ * UPDATED: Added 'education' to navigation items
+ * New order: About → Education → Skills → Experience → Projects
+ * This ensures Education is easily accessible and prominent.
+ */
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,7 +23,11 @@ import { useScrollspy } from '@/hooks/useScrollspy';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  
+  // UPDATED: Added 'education' to navigation items
+  // Order reflects the page structure for logical flow
   const navItems = ['about', 'education', 'skills', 'experience', 'projects'];
+  
   const activeId = useScrollspy(navItems);
 
   useEffect(() => {
@@ -17,22 +37,32 @@ const Header = () => {
   }, []);
 
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
   };
 
   return (
-    <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      scrolled ? 'bg-slate-900/80 backdrop-blur-sm shadow-md' : 'bg-transparent'
-    )}>
+    <header 
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled ? 'bg-slate-900/80 backdrop-blur-sm shadow-md' : 'bg-transparent'
+      )}
+      role="banner"
+    >
       <div className="container mx-auto max-w-4xl px-6">
-        {/* --- MODIFIED: The flex container now pushes the nav to the right --- */}
+        {/* Flex container pushes nav to the right */}
         <div className="flex justify-end items-center h-20">
-          {/* --- MODIFIED: Bounded navigation container --- */}
-          <nav className="bg-slate-800/60 border border-slate-700/80 rounded-full p-1 backdrop-blur-sm">
+          {/* Bounded navigation container with glassmorphism */}
+          <nav 
+            className="bg-slate-800/60 border border-slate-700/80 rounded-full p-1 backdrop-blur-sm"
+            role="navigation"
+            aria-label="Main navigation"
+          >
             <ul className="flex items-center">
               {navItems.map((item) => (
                 <li key={item}>
@@ -44,6 +74,8 @@ const Header = () => {
                         ? 'bg-slate-700 text-cyan-300' // Active state
                         : 'text-slate-300 hover:bg-slate-700/50 hover:text-slate-100' // Inactive state
                     )}
+                    aria-label={`Navigate to ${item} section`}
+                    aria-current={activeId === item ? 'page' : undefined}
                   >
                     {item}
                   </button>
