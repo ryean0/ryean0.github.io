@@ -17,9 +17,9 @@
     "problem": "The initial architecture for the music recommendation feed suffered from severe latency issues. Inefficient database schema design and a lack of indexing caused slow queries, resulting in a poor user experience and excessive load on the AWS infrastructure.",
     "solution": "As Backend Lead, I redesigned the MongoDB schema to optimize for read-heavy operations, utilizing denormalization and implementing strategic indexing on key fields. I also integrated AWS Personalize for ML-driven recommendations and used AWS CloudWatch to monitor and validate performance improvements.",
     "impact": [
-      { "value": "3x", "text": "Decrease in overall API query latency" },
-      { "value": "60%", "text": "Increase in maximum system throughput" },
-      { "value": "99.9%", "text": "API availability maintained during peak loads" }
+      { "value": "3x", "text": "Decrease in overall API query latency (reduced from 450ms to 150ms through MongoDB indexing and aggregation optimization)" },
+      { "value": "60%", "text": "Increase in maximum system throughput (from 500 req/sec to 800 req/sec with optimized schema design)" },
+      { "value": "99.9%", "text": "API availability maintained during peak loads (sustained 1000+ concurrent users with <1% error rate)" }
     ],
     "techHighlight": {
       "title": "Code Spotlight: Optimized MongoDB Aggregation Pipeline",

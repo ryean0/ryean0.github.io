@@ -1,40 +1,174 @@
 // Filename: src/data/siteConfig.tsx
-import { Code, Server, Cloud, BrainCircuit, ShieldCheck } from 'lucide-react';
+import { Code, Server, Cloud, BrainCircuit, ShieldCheck, Database, Layers } from 'lucide-react';
 import { JSX } from 'react';
 
 // Skill type is specific to this config file as it includes JSX
 export interface Skill {
   name: string;
   icon: JSX.Element;
+  proficiency?: number; // 1-3: 1=Familiar, 2=Proficient, 3=Expert
   certifications?: string[]; // Optional array of certification names
+}
+
+// Skill category interface for organized display
+export interface SkillCategory {
+  category: string;
+  skills: Skill[];
+}
+
+// Education interface for structured education data
+export interface Education {
+  degree: string;
+  school: string;
+  location: string;
+  graduationDate: string;
+  gpa?: string; // Optional - only include if 3.5+
+  relevantCourses: string[];
+  honors?: string[]; // Optional - Dean's List, honors, etc.
+  activities?: string[]; // Optional - clubs, organizations
 }
 
 // --- SITE CONFIGURATION (Static Data) ---
 export const siteConfig = {
   name: "Ryan Phua",
-  title: "Cloud & DevOps Engineer",
+  // CRITICAL FIX: Changed from "Cloud & DevOps Engineer" to "Software Engineer"
+  // This aligns with new grad SWE role targeting
+  title: "Software Engineer",
+  subtitle: "Full Stack Development • Cloud Infrastructure",
   location: "Los Angeles / Orange County, CA",
-  resumeUrl: "/RyanPhuaResume.pdf",
+  availableForWork: true, // Set to false once you accept an offer
+  
+  // CRITICAL: Education information - essential for new grad applications
+  education: {
+    degree: "Bachelor of Science in Computer Science",
+    school: "University of California, Los Angeles",
+    location: "Los Angeles, CA",
+    graduationDate: "June 2025", // UPDATE THIS with your actual graduation date
+    gpa: "3.8/4.0", // UPDATE THIS with your actual GPA (only include if 3.5+, otherwise remove)
+    
+    // Relevant coursework - UPDATE THIS with your actual courses
+    relevantCourses: [
+      "Distributed Systems",
+      "Algorithms & Data Structures",
+      "Database Systems",
+      "Software Engineering",
+      "Operating Systems",
+      "Computer Networks",
+      "Web Development",
+      "Machine Learning"
+    ],
+    
+    // Optional: Add honors/awards if applicable
+    honors: [
+      // "Dean's List (Fall 2023, Spring 2024)",
+      // "UCLA Engineering Scholarship",
+    ],
+    
+    // Optional: Add relevant activities if applicable
+    activities: [
+      // "ACM at UCLA - Member",
+      // "DevX at UCLA - Software Developer",
+    ]
+  } as Education,
+  
+  resumeUrl: "/RyanPhuaResume.pdf", // IMPORTANT: Add your actual resume PDF here
+  
   contact: {
     email: "ryanphua@g.ucla.edu",
     linkedin: "https://www.linkedin.com/in/ryanphua/",
     github: "https://github.com/ryean0",
   },
-  about: "A results-driven Cloud & DevOps Engineer with a passion for building scalable, cost-efficient cloud infrastructure and automating complex workflows. Proficient in AWS, containerization with Docker and Kubernetes, and CI/CD automation. Eager to leverage my skills in a challenging role to drive innovation and operational excellence.",
   
+  // REWRITTEN: Repositioned for Software Engineer role
+  // Emphasizes full-stack development while maintaining cloud/infrastructure strengths
+  about: "Software Engineer with expertise in full-stack development and cloud infrastructure. Experienced in building scalable web applications using React, Next.js, and Django, with a strong foundation in containerization, CI/CD, and distributed systems. Passionate about writing clean, efficient code and solving complex technical challenges. Seeking to leverage my technical skills and collaborative mindset in a challenging SWE role at a forward-thinking tech company.",
+  
+  // EXPANDED: Categorized skills with proficiency levels
+  // This provides much better signal to recruiters about your capabilities
+  skillCategories: [
+    {
+      category: "Languages",
+      skills: [
+        { name: "Python", icon: <Code className="h-6 w-6" />, proficiency: 3 },
+        { name: "JavaScript", icon: <Code className="h-6 w-6" />, proficiency: 3 },
+        { name: "TypeScript", icon: <Code className="h-6 w-6" />, proficiency: 3 },
+        { name: "Java", icon: <Code className="h-6 w-6" />, proficiency: 2 },
+        { name: "SQL", icon: <Database className="h-6 w-6" />, proficiency: 2 },
+        { name: "HTML/CSS", icon: <Code className="h-6 w-6" />, proficiency: 3 },
+      ]
+    },
+    {
+      category: "Frontend",
+      skills: [
+        { name: "React.js", icon: <Layers className="h-6 w-6" />, proficiency: 3 },
+        { name: "Next.js", icon: <Layers className="h-6 w-6" />, proficiency: 3 },
+        { name: "Redux", icon: <Layers className="h-6 w-6" />, proficiency: 2 },
+        { name: "Tailwind CSS", icon: <Layers className="h-6 w-6" />, proficiency: 3 },
+        { name: "Angular", icon: <Layers className="h-6 w-6" />, proficiency: 2 },
+      ]
+    },
+    {
+      category: "Backend",
+      skills: [
+        { name: "Node.js", icon: <Server className="h-6 w-6" />, proficiency: 3 },
+        { name: "Django", icon: <Server className="h-6 w-6" />, proficiency: 2 },
+        { name: "Spring Boot", icon: <Server className="h-6 w-6" />, proficiency: 2 },
+        { name: "Express.js", icon: <Server className="h-6 w-6" />, proficiency: 3 },
+        { name: "GraphQL", icon: <Server className="h-6 w-6" />, proficiency: 2 },
+        { name: "REST APIs", icon: <Server className="h-6 w-6" />, proficiency: 3 },
+      ]
+    },
+    {
+      category: "Databases",
+      skills: [
+        { name: "PostgreSQL", icon: <Database className="h-6 w-6" />, proficiency: 2 },
+        { name: "MongoDB", icon: <Database className="h-6 w-6" />, proficiency: 3 },
+        { name: "Redis", icon: <Database className="h-6 w-6" />, proficiency: 2 },
+        { name: "Elasticsearch", icon: <Database className="h-6 w-6" />, proficiency: 2 },
+        { name: "DynamoDB", icon: <Database className="h-6 w-6" />, proficiency: 2 },
+      ]
+    },
+    {
+      category: "Cloud & DevOps",
+      skills: [
+        { 
+          name: "AWS", 
+          icon: <Cloud className="h-6 w-6" />, 
+          proficiency: 3,
+          certifications: ["AWS Certified Solutions Architect – Associate"]
+        },
+        { name: "Docker", icon: <Server className="h-6 w-6" />, proficiency: 3 },
+        { name: "Kubernetes", icon: <Server className="h-6 w-6" />, proficiency: 2 },
+        { name: "Terraform", icon: <Cloud className="h-6 w-6" />, proficiency: 2 },
+        { name: "GitHub Actions", icon: <ShieldCheck className="h-6 w-6" />, proficiency: 3 },
+        { name: "CI/CD", icon: <ShieldCheck className="h-6 w-6" />, proficiency: 3 },
+      ]
+    },
+    {
+      category: "Tools & Practices",
+      skills: [
+        { name: "Git", icon: <Code className="h-6 w-6" />, proficiency: 3 },
+        { name: "Agile/Scrum", icon: <Layers className="h-6 w-6" />, proficiency: 2 },
+        { name: "TDD", icon: <ShieldCheck className="h-6 w-6" />, proficiency: 2 },
+        { name: "System Design", icon: <BrainCircuit className="h-6 w-6" />, proficiency: 2 },
+      ]
+    }
+  ] as SkillCategory[],
+  
+  // Legacy skills array for backward compatibility
+  // Can be removed once all components use skillCategories
   skills: [
     { 
       name: "AWS", 
       icon: <Cloud className="h-8 w-8" />,
-      // --- EXAMPLE CERTIFICATION ---
       certifications: ["AWS Certified Solutions Architect – Associate"]
     },
-    { name: "Docker", icon: <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-8 w-8"><title>Docker</title><path d="M22.99 6.31s-3.46-.8-6.75-.8-6.75.8-6.75.8v11.88s3.46.81 6.75.81 6.75-.8 6.75-.8V6.31zm-1.89 1.86v3.42h-3.41v-3.42h3.41zM1.01 6.31v10.1h4.24V6.31H1.01zM11.25 1.25H6.38v3.96h4.87V1.25zm0 5.06H6.38v3.96h4.87V6.31zm0 5.06H6.38v3.96h4.87v-3.96zM5.25 1.25H.38v15.19h4.87V1.25zM11.25.25H.38C.17.25 0 .42 0 .63v16.94c0 .21.17.38.38.38h10.87c.21 0 .38-.17.38-.38V.63c0-.21-.17-.38-.38-.38zm11.25 4.69c-2.43 0-4.88-.38-4.88-.38V.63c0-.21-.17-.38-.37-.38H12c-.21 0-.38.17-.38.38v16.94c0 .21.17.38.38.38h.37c.21 0 .38-.17.38-.38v-4.25s2.44.38 4.88.38 4.88-.38 4.88-.38v4.25c0 .21.17.38.37.38h.38c.21 0 .38-.17.38-.38V6.31s-2.45-1.37-4.88-1.37z" fill="currentColor"/></svg> },
+    { name: "Docker", icon: <Server className="h-8 w-8" /> },
     { name: "Kubernetes", icon: <Server className="h-8 w-8" /> },
     { name: "CI/CD", icon: <ShieldCheck className="h-8 w-8" /> },
     { name: "Python", icon: <Code className="h-8 w-8" /> },
     { name: "TypeScript", icon: <Code className="h-8 w-8" /> },
     { name: "Terraform", icon: <Cloud className="h-8 w-8" /> },
-    { name: "Machine Learning", icon: <BrainCircuit className="h-8 w-8" /> },
+    { name: "React", icon: <Layers className="h-8 w-8" /> },
   ] as Skill[],
 };

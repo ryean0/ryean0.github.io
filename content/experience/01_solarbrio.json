@@ -3,7 +3,7 @@
   "company": "Solarbrio Inc | Los Angeles (Hybrid)",
   "startDate": "2024-06-01",
   "image": "/images/experiences/solarbrio.png",
-  "displayDate": "2024 | Summer",
+  "displayDate": "Jun 2024 - Aug 2024",
   "category": "Distributed Systems",
   "tech": ["AWS Amplify", "GraphQL", "Typescript", "Angular"],
   "gridSpan": { "col": 3 },
@@ -16,11 +16,11 @@
   ],
   "details": {
     "problem": "The existing backend on AWS Amplify V1 was hindered by versioning conflicts and inefficient resource usage, leading to high operational costs and limitations in functionality.",
-    "solution": "I led a critical system migration to AWS Amplify V2, where I designed and implemented a new set of scalable GraphQL APIs using TypeScript and DynamoDB. This resolved the versioning issues and modernized the backend architecture for better cost-efficiency and performance.",
+    "solution": "I led a critical system migration to AWS Amplify V2, where I designed and implemented a new set of scalable GraphQL APIs using TypeScript and DynamoDB. This resolved the versioning issues and modernized the backend architecture for better cost-efficiency and performance. The migration involved careful planning to ensure zero downtime and seamless data transfer.",
     "impact": [
-      { "value": "45%", "text": "Reduction in AWS resource costs" },
-      { "value": "20%", "text": "Faster deployment cycles" },
-      { "value": "100%", "text": "Resolution of critical versioning issues" }
+      { "value": "45%", "text": "Reduction in AWS resource costs (from $800/month to $440/month through optimized Lambda and DynamoDB usage)" },
+      { "value": "20%", "text": "Faster deployment cycles (reduced from 15 minutes to 12 minutes per deployment)" },
+      { "value": "100%", "text": "Resolution of critical versioning issues (eliminated all 8 blocking dependency conflicts)" }
     ],
     "links": [
       { "label": "API Design Document", "url": "#", "icon": "FileText" },
