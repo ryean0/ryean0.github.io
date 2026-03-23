@@ -1,6 +1,14 @@
-/* Filename: src/app/components/FadeIn.tsx 
-    @implementing scroll-reveal animations 
-*/
+/* Filename: src/app/components/FadeIn.tsx */
+
+/**
+ * FadeIn — Refined
+ *
+ * Changes:
+ * 1. Reduced default y offset from 20 to 12 for subtler entrance
+ * 2. Adjusted spring physics for smoother deceleration
+ * 3. Viewport amount reduced to 0.2 for earlier trigger
+ */
+
 'use client';
 
 import { motion, Variants } from 'framer-motion';
@@ -12,10 +20,8 @@ interface FadeInProps {
   className?: string;
 }
 
-// Define the animation variants
 const fadeInVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  // Use the 'custom' prop to dynamically set delay and duration for staggering
+  hidden: { opacity: 0, y: 12 },
   visible: (custom: { delay: number; duration: number }) => ({
     opacity: 1,
     y: 0,
@@ -23,8 +29,8 @@ const fadeInVariants: Variants = {
       delay: custom.delay,
       duration: custom.duration,
       type: "spring",
-      stiffness: 100,
-      damping: 15,
+      stiffness: 80,
+      damping: 18,
     },
   }),
 };
@@ -35,7 +41,7 @@ const FadeIn = ({ children, delay = 0, duration = 0.5, className = "" }: FadeInP
       variants={fadeInVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }} // Trigger animation only once when 30% visible
+      viewport={{ once: true, amount: 0.2 }}
       custom={{ delay, duration }}
       className={className}
     >
