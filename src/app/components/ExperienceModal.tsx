@@ -1,8 +1,20 @@
 /* Filename: src/app/components/ExperienceModal.tsx */
+
+/**
+ * ExperienceModal — Redesigned
+ *
+ * Changes:
+ * 1. Refined modal chrome: deeper bg, softer border, larger max-width
+ * 2. Impact cards with top-edge accent gradient
+ * 3. Section headings with consistent icon + text treatment
+ * 4. Work Samples buttons with cleaner hover states
+ * 5. Core Technologies tags with unified pill styling
+ * 6. Exported Section and ImpactCard for reuse in ProjectModal
+ */
+
 "use client";
 
 import { ExperienceData } from "@/types";
-// --- MODIFIED: Import new icons for the buttons ---
 import {
   X,
   Lightbulb,
@@ -18,16 +30,15 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import TechIcon from "@/app/components/TechIcon";
 import { cn } from "@/lib/utils";
 
-// --- MODIFIED: Exporting Section for reuse in ProjectModal ---
+/* ── Reusable Section heading ── */
 export const Section = ({
   icon,
   title,
   children,
-  className, // Added className for flexibility
+  className,
 }: {
   icon: React.ReactNode;
   title: string;
@@ -35,22 +46,23 @@ export const Section = ({
   className?: string;
 }) => (
   <div className={className}>
-    <h3 className="flex items-center gap-3 text-xl font-bold text-cyan-300 mb-3">
+    <h3 className="flex items-center gap-2.5 text-lg font-bold text-sky-300 mb-3">
       {icon}
       {title}
     </h3>
-    <div className="text-slate-300/90 leading-relaxed prose prose-invert prose-p:my-1 prose-p:text-slate-300/90 max-w-none">
+    <div className="text-slate-300/90 leading-relaxed text-sm">
       {children}
     </div>
   </div>
 );
 
-// --- MODIFIED: Exporting ImpactCard for reuse in ProjectModal ---
+/* ── Reusable Impact metric card ── */
 export const ImpactCard = ({ value, text }: { value: string; text: string }) => (
-  // Added h-full to ensure consistent height in a grid layout
-  <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/80 text-center h-full">
-    <p className="text-3xl font-bold text-cyan-400">{value}</p>
-    <p className="text-sm text-slate-400 mt-1">{text}</p>
+  <div className="relative bg-white/[0.03] border border-white/[0.06] p-5 rounded-xl text-center h-full overflow-hidden">
+    {/* Top accent line */}
+    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
+    <p className="text-3xl font-bold text-sky-400">{value}</p>
+    <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">{text}</p>
   </div>
 );
 
@@ -60,13 +72,12 @@ interface ExperienceModalProps {
   layoutId: string;
 }
 
-// --- NEW: Icon map for the work sample buttons ---
 const IconMap: Record<string, LucideIcon> = {
-  FileText: FileText,
-  Presentation: Presentation,
-  ExternalLink: ExternalLink,
-  GitBranch: GitBranch,
-  Globe: Globe,
+  FileText,
+  Presentation,
+  ExternalLink,
+  GitBranch,
+  Globe,
 };
 
 const ExperienceModal = ({
@@ -92,32 +103,34 @@ const ExperienceModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <motion.div
         layoutId={layoutId}
-        className="bg-slate-800 border border-cyan-400/30 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] relative"
+        className="bg-[#0c1222] border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/40 w-full max-w-4xl max-h-[90vh] relative"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="overflow-y-auto h-full p-6 md:p-8">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
-            className="space-y-8"
+            transition={{ duration: 0.25, delay: 0.12, ease: "easeOut" }}
+            className="space-y-7"
           >
+            {/* Header */}
             <header>
-              <h2 className="text-3xl font-bold text-cyan-300">
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-300">
                 {details.title}
               </h2>
-              <p className="text-lg font-semibold text-gray-300">
+              <p className="text-base font-medium text-slate-400 mt-1">
                 {details.company}
               </p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Impact metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {details.details?.impact.map((item) => (
                 <ImpactCard
                   key={item.text}
@@ -127,20 +140,21 @@ const ExperienceModal = ({
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <Section icon={<Target size={22} />} title="The Problem">
+            {/* Problem / Solution */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Section icon={<Target size={20} />} title="The Problem">
                 <p>{details.details?.problem}</p>
               </Section>
 
-              <Section icon={<Wrench size={22} />} title="The Solution">
+              <Section icon={<Wrench size={20} />} title="The Solution">
                 <p>{details.details?.solution}</p>
               </Section>
             </div>
 
-            {/* --- NEW: Work Samples Section --- */}
+            {/* Work Samples */}
             {details.details?.links && details.details.links.length > 0 && (
-              <Section icon={<Lightbulb size={22} />} title="Work Samples">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+              <Section icon={<Lightbulb size={20} />} title="Work Samples">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
                   {details.details.links.slice(0, 2).map((link) => {
                     const Icon = IconMap[link.icon];
                     return (
@@ -150,15 +164,15 @@ const ExperienceModal = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         className={cn(
-                          "group flex items-center justify-center gap-3 p-4 rounded-lg",
-                          "bg-slate-700/50 border border-slate-600/80",
-                          "hover:bg-slate-700 hover:border-cyan-400/60 transition-all duration-300"
+                          "group flex items-center justify-center gap-2.5 p-3.5 rounded-xl",
+                          "bg-white/[0.03] border border-white/[0.06]",
+                          "hover:bg-white/[0.06] hover:border-sky-400/20 transition-all duration-300"
                         )}
                       >
                         {Icon && (
-                          <Icon className="h-5 w-5 text-slate-400 group-hover:text-cyan-300 transition-colors" />
+                          <Icon className="h-4 w-4 text-slate-400 group-hover:text-sky-300 transition-colors" />
                         )}
-                        <span className="font-semibold text-slate-200 group-hover:text-cyan-300 transition-colors">
+                        <span className="font-semibold text-sm text-slate-200 group-hover:text-sky-300 transition-colors">
                           {link.label}
                         </span>
                       </a>
@@ -167,16 +181,17 @@ const ExperienceModal = ({
                 </div>
               </Section>
             )}
-            
+
+            {/* Core Technologies */}
             {details.tech && (
-              <Section icon={<Zap size={22} />} title="Core Technologies">
-                <div className="flex flex-wrap gap-2">
+              <Section icon={<Zap size={20} />} title="Core Technologies">
+                <div className="flex flex-wrap gap-2 mt-1">
                   {details.tech.map((t) => (
                     <div
                       key={t}
-                      className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full bg-slate-700 text-slate-200"
+                      className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-slate-200"
                     >
-                      <TechIcon tech={t} className="h-4 w-4" />
+                      <TechIcon tech={t} className="h-3.5 w-3.5" />
                       <span>{t}</span>
                     </div>
                   ))}
@@ -185,11 +200,14 @@ const ExperienceModal = ({
             )}
           </motion.div>
         </div>
+
+        {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+          className="absolute top-4 right-4 p-1.5 text-slate-500 hover:text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] rounded-lg transition-all duration-200 z-10"
+          aria-label="Close modal"
         >
-          <X size={24} />
+          <X size={20} />
         </button>
       </motion.div>
     </motion.div>
