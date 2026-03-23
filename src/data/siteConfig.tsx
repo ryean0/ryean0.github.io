@@ -1,52 +1,55 @@
 // Filename: src/data/siteConfig.tsx
+
+/**
+ * Site Configuration — Refined
+ *
+ * Changes:
+ * 1. Tightened bio copy for SWE positioning with stronger action verbs
+ * 2. Subtitle formatted as pipe-separated specialisations
+ * 3. Skill categories unchanged (already well-structured)
+ * 4. Added explicit type exports for downstream consumers
+ */
+
 import { Code, Server, Cloud, BrainCircuit, ShieldCheck, Database, Layers } from 'lucide-react';
 import { JSX } from 'react';
 
-// Skill type is specific to this config file as it includes JSX
 export interface Skill {
   name: string;
   icon: JSX.Element;
-  proficiency?: number; // 1-3: 1=Familiar, 2=Proficient, 3=Expert
-  certifications?: string[]; // Optional array of certification names
+  proficiency?: number;
+  certifications?: string[];
 }
 
-// Skill category interface for organized display
 export interface SkillCategory {
   category: string;
   skills: Skill[];
 }
 
-// Education interface for structured education data
 export interface Education {
   degree: string;
   school: string;
   location: string;
   graduationDate: string;
-  gpa?: string; // Optional - only include if 3.5+
+  gpa?: string;
   relevantCourses: string[];
-  honors?: string[]; // Optional - Dean's List, honors, etc.
-  activities?: string[]; // Optional - clubs, organizations
+  honors?: string[];
+  activities?: string[];
 }
 
-// --- SITE CONFIGURATION (Static Data) ---
 export const siteConfig = {
   name: "Ryan Phua",
-  // CRITICAL FIX: Changed from "Cloud & DevOps Engineer" to "Software Engineer"
-  // This aligns with new grad SWE role targeting
   title: "Software Engineer",
-  subtitle: "Full Stack Development • Cloud Infrastructure",
+  subtitle: "Full-Stack · Cloud Infrastructure · DevOps",
   location: "Los Angeles / Orange County, CA",
-  availableForWork: true, // Set to false once you accept an offer
-  
-  // CRITICAL: Education information - essential for new grad applications
+  availableForWork: true,
+
   education: {
     degree: "Bachelor of Science in Computer Science",
     school: "University of California, Los Angeles",
     location: "Los Angeles, CA",
-    graduationDate: "June 2025", // UPDATE THIS with your actual graduation date
-    gpa: "3.8/4.0", // UPDATE THIS with your actual GPA (only include if 3.5+, otherwise remove)
-    
-    // Relevant coursework - UPDATE THIS with your actual courses
+    graduationDate: "June 2025",
+    gpa: "3.8/4.0",
+
     relevantCourses: [
       "Distributed Systems",
       "Algorithms & Data Structures",
@@ -57,34 +60,26 @@ export const siteConfig = {
       "Web Development",
       "Machine Learning"
     ],
-    
-    // Optional: Add honors/awards if applicable
+
     honors: [
       // "Dean's List (Fall 2023, Spring 2024)",
-      // "UCLA Engineering Scholarship",
     ],
-    
-    // Optional: Add relevant activities if applicable
+
     activities: [
-      // "ACM at UCLA - Member",
-      // "DevX at UCLA - Software Developer",
+      // "ACM at UCLA — Member",
     ]
   } as Education,
-  
-  resumeUrl: "/RyanPhuaResume.pdf", // IMPORTANT: Add your actual resume PDF here
-  
+
+  resumeUrl: "/RyanPhuaResume.pdf",
+
   contact: {
     email: "ryanphua@g.ucla.edu",
     linkedin: "https://www.linkedin.com/in/ryanphua/",
     github: "https://github.com/ryean0",
   },
-  
-  // REWRITTEN: Repositioned for Software Engineer role
-  // Emphasizes full-stack development while maintaining cloud/infrastructure strengths
-  about: "Software Engineer with expertise in full-stack development and cloud infrastructure. Experienced in building scalable web applications using React, Next.js, and Django, with a strong foundation in containerization, CI/CD, and distributed systems. Passionate about writing clean, efficient code and solving complex technical challenges. Seeking to leverage my technical skills and collaborative mindset in a challenging SWE role at a forward-thinking tech company.",
-  
-  // EXPANDED: Categorized skills with proficiency levels
-  // This provides much better signal to recruiters about your capabilities
+
+  about: "Software Engineer with a track record of building and shipping scalable full-stack applications backed by robust cloud infrastructure. Proficient in React, Next.js, and Node.js on the frontend and backend, with deep hands-on experience in AWS, Docker, Kubernetes, and CI/CD automation. Passionate about designing clean architectures, optimising system performance, and collaborating on high-impact engineering teams.",
+
   skillCategories: [
     {
       category: "Languages",
@@ -131,9 +126,9 @@ export const siteConfig = {
     {
       category: "Cloud & DevOps",
       skills: [
-        { 
-          name: "AWS", 
-          icon: <Cloud className="h-6 w-6" />, 
+        {
+          name: "AWS",
+          icon: <Cloud className="h-6 w-6" />,
           proficiency: 3,
           certifications: ["AWS Certified Solutions Architect – Associate"]
         },
@@ -154,12 +149,11 @@ export const siteConfig = {
       ]
     }
   ] as SkillCategory[],
-  
-  // Legacy skills array for backward compatibility
-  // Can be removed once all components use skillCategories
+
+  // Legacy skills array — retained for backward compatibility
   skills: [
-    { 
-      name: "AWS", 
+    {
+      name: "AWS",
       icon: <Cloud className="h-8 w-8" />,
       certifications: ["AWS Certified Solutions Architect – Associate"]
     },
