@@ -1,4 +1,14 @@
 /* Filename: src/app/components/ProjectSectionClient.tsx */
+
+/**
+ * ProjectSectionClient — Refined
+ *
+ * Changes:
+ * 1. Added section subtitle for context
+ * 2. Consistent py-24 padding with other sections
+ * 3. Cleaner grid gap and sizing
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -18,9 +28,14 @@ const ProjectSectionClient = ({ projects }: ProjectSectionProps) => {
 
   return (
     <>
-      <section id="projects" className="py-20">
+      <section id="projects" className="py-24">
         <FadeIn>
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-100">Projects</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-slate-100">
+            Projects
+          </h2>
+          <p className="text-center text-slate-400 mb-12 max-w-lg mx-auto">
+            Selected engineering projects showcasing distributed systems, containerisation, and full-stack development.
+          </p>
         </FadeIn>
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-stretch">
           {projects.map((project, index) => {
@@ -35,7 +50,6 @@ const ProjectSectionClient = ({ projects }: ProjectSectionProps) => {
                 delay={index * 0.1}
                 className={cn("h-full", colSpanClass, rowSpanClass)}
               >
-                {/* --- MODIFIED: Added motion.div wrapper for layout animation --- */}
                 <motion.div layoutId={`card-container-${project.id}`} className="h-full">
                   <InfoCard
                     type="project"
@@ -53,12 +67,11 @@ const ProjectSectionClient = ({ projects }: ProjectSectionProps) => {
         {selectedProject && selectedProject.details && (
           <ProjectModal
             key="modal"
-            // --- MODIFIED: Pass the 'tech' array into the details object ---
             details={{
-              ...selectedProject.details, 
-              image: selectedProject.image, 
+              ...selectedProject.details,
+              image: selectedProject.image,
               title: selectedProject.title,
-              tech: selectedProject.tech, // Add this line
+              tech: selectedProject.tech,
             }}
             layoutId={`card-container-${selectedProject.id}`}
             onClose={() => setSelectedProject(null)}
