@@ -1,8 +1,16 @@
 /* Filename: src/app/components/CardSpotlight.tsx */
 
+/**
+ * CardSpotlight — Refined
+ *
+ * Changes:
+ * 1. Tighter spacing and cleaner typography
+ * 2. Subtle divider between metric columns
+ * 3. Core Tech icon rendering preserved
+ */
+
 "use client";
 
-// Removed cn import as it's unused
 import {
   Zap,
   Cpu,
@@ -16,11 +24,9 @@ import TechIcon from "./TechIcon";
 import { SpotlightItem } from "@/types/index";
 
 interface CardSpotlightProps {
-  // MODIFIED: Use the structured type
   items: SpotlightItem[];
 }
 
-// Centralized Icon Map (Local centralization as we cannot create src/lib/icons.ts)
 const IconMap: Record<string, LucideIcon> = {
   Zap,
   Cpu,
@@ -32,27 +38,30 @@ const IconMap: Record<string, LucideIcon> = {
 
 const CardSpotlight = ({ items }: CardSpotlightProps) => {
   return (
-    // Adjusted gap for better spacing, changeditems-center to items-start
-    <div className="mt-4 flex flex-row justify-center items-start gap-8 w-full">
-      {/* MODIFIED: Removed items.slice(0, 2) to display all provided items */}
-      {items.map((item) => {
+    <div className="mt-4 mb-4 flex flex-row items-start w-full">
+      {items.map((item, index) => {
         const Icon = IconMap[item.icon];
         return (
-          <div key={item.label} className="text-center flex-1 min-w-0">
-            <div className="flex justify-center items-center gap-2">
-              {Icon && <Icon className="h-4 w-4 text-cyan-400/80" />}
-              <p className="font-semibold text-slate-300 text-xs uppercase tracking-wider">
+          <div
+            key={item.label}
+            className={`text-center flex-1 min-w-0 ${
+              index !== items.length - 1
+                ? "border-r border-white/[0.04]"
+                : ""
+            }`}
+          >
+            <div className="flex justify-center items-center gap-1.5">
+              {Icon && <Icon className="h-3.5 w-3.5 text-sky-400/60" />}
+              <p className="font-semibold text-slate-400 text-[10px] uppercase tracking-widest">
                 {item.label}
               </p>
             </div>
-            {/* --- MODIFIED: This block now renders the icon next to the tech name --- */}
             <div
-              // MODIFIED: Adjusted font size responsiveness slightly
-              className="text-lg @[24rem]:text-2xl font-bold text-slate-100 mt-1 truncate flex items-center justify-center gap-2"
+              className="text-lg @[24rem]:text-xl font-bold text-slate-100 mt-1 truncate flex items-center justify-center gap-1.5"
               title={item.value}
             >
               {item.label === "Core Tech" && (
-                <TechIcon tech={item.value} className="h-5 w-5" />
+                <TechIcon tech={item.value} className="h-4 w-4" />
               )}
               <span>{item.value}</span>
             </div>
