@@ -1,17 +1,120 @@
 // Filename: src/data/siteConfig.tsx
 
 /**
- * Site Configuration — Refined
+ * Site Configuration — Modular Architecture
  *
- * Changes:
- * 1. Tightened bio copy for SWE positioning with stronger action verbs
- * 2. Subtitle formatted as pipe-separated specialisations
- * 3. Skill categories unchanged (already well-structured)
- * 4. Added explicit type exports for downstream consumers
+ * Imports:
+ * 1. profile/userData       — Personal info, title, location, bio
+ * 2. profile/educationData  — Degree, school, courses, honors, activities
+ * 3. profile/contactData    — Email, social links
+ * 4. profile/skillsData     — Skill categories, proficiency levels
+ * 5. profile/experienceData — Professional experience entries (rich model)
+ * 6. profile/experienceCardData — Experience card data (UI-ready shape)
+ * 7. profile/projectData    — Project showcase entries (UI-ready shape)
+ *
+ * This file aggregates all data modules into a single config object
+ * and re-exports shared types for downstream consumers.
  */
 
-import { Code, Server, Cloud, BrainCircuit, ShieldCheck, Database, Layers } from 'lucide-react';
 import { JSX } from 'react';
+
+import { profileData } from './profile/userData';
+import { educationData } from './profile/educationData';
+import { contactData } from './profile/contactData';
+import { skillsData, legacySkillsData } from './profile/skillsData';
+import { experienceData } from './profile/experienceData';
+import { experienceCardData } from './profile/experienceCardData';
+import { projectData } from './profile/projectData';
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SECTION A — Shared Icon String-Literal Types
+//  (Migrated from src/types/index.ts)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export type SpotlightIconName = 'Zap' | 'Cpu' | 'Wrench' | 'DollarSign' | 'Code' | 'ShieldCheck';
+export type LinkIconName = 'FileText' | 'Presentation' | 'ExternalLink' | 'GitBranch' | 'Globe';
+
+export interface SpotlightItem {
+  value: string;
+  label: string;
+  icon: SpotlightIconName;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SECTION B — ExperienceData (Card / UI Shape)
+//  (Migrated from src/types/index.ts — consumed by
+//   ExperienceSectionClient, ExperienceModal, InfoCard)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface ExperienceData {
+  id: string;
+  title: string;
+  company: string;
+  startDate: string;
+  displayDate: string;
+  achievements: string[];
+  tech: string[];
+  category: string;
+  details?: {
+    problem: string;
+    solution: string;
+    impact: {
+      value: string;
+      text: string;
+    }[];
+    links?: {
+      label: string;
+      url: string;
+      icon: LinkIconName;
+    }[];
+    techHighlight?: ProjectDetails['techHighlight'];
+  };
+  gridSpan?: { col?: number; row?: number };
+  cardSpotlight: SpotlightItem[];
+  keyTech?: string;
+  cardImage?: string;
+  cardImageLink?: string;
+  image?: string;
+  icon?: 'Code' | 'BrainCircuit' | 'MonitorSmartphone' | 'Server';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SECTION C — ProjectData & ProjectDetails (Card / UI Shape)
+//  (Migrated from src/types/index.ts — consumed by
+//   ProjectSectionClient, ProjectModal, InfoCard)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface ProjectDetails {
+  headline: string;
+  problem: string;
+  solution: string;
+  impact: { text: string; value: string }[];
+  techHighlight: {
+    title: string;
+    code: string;
+    language: string;
+    points: { title: string; description: string }[];
+  };
+  links: { label: string; url: string; icon: Extract<LinkIconName, 'ExternalLink' | 'GitBranch' | 'Globe'> }[];
+}
+
+export interface ProjectData {
+  id: string;
+  title: string;
+  startDate: string;
+  displayDate: string;
+  tech: string[];
+  category: string;
+  cardSpotlight: SpotlightItem[];
+  details?: ProjectDetails;
+  gridSpan?: { col?: number; row?: number };
+  keyTech?: string;
+  image?: string;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SECTION D — Skill Types
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export interface Skill {
   name: string;
@@ -25,144 +128,159 @@ export interface SkillCategory {
   skills: Skill[];
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SECTION E — Education Types
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface CampusActivity {
+  name: string;
+  orgDesc: string;
+  roleDesc: string;
+  timeCommit: number;
+  dateStart: string;
+  dateEnd: string;
+}
+
 export interface Education {
   degree: string;
   school: string;
+  schoolSub?: string;
   location: string;
   graduationDate: string;
   gpa?: string;
   relevantCourses: string[];
   honors?: string[];
-  activities?: string[];
+  activities?: CampusActivity[];
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SECTION F — Experience Types (Rich Model)
+//  (Used by experienceData.tsx — future-proofed for
+//   dedicated /experience route with full detail views)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/**
+ * A single work sample or artifact linked from an experience entry.
+ * Rendered as clickable items in the ExperienceModal detail view.
+ *
+ * `type` controls the icon treatment in the modal:
+ *   - "document"   → FileText icon
+ *   - "repository" → GitBranch icon
+ *   - "demo"       → Presentation icon
+ *   - "live"       → Globe icon
+ */
+export interface WorkSample {
+  label: string;
+  url: string;
+  type: "document" | "repository" | "demo" | "live";
+  description: string;
+}
+
+/**
+ * A media item (image, screenshot, diagram) associated with an
+ * experience entry. Rendered in a scrollable gallery within the
+ * ExperienceModal pop-up.
+ */
+export interface MediaItem {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+/**
+ * A quantified impact metric displayed as a stat card in the
+ * ExperienceModal. Each entry has a bold headline value and
+ * supporting explanatory text.
+ */
+export interface ImpactMetric {
+  value: string;
+  text: string;
+}
+
+/**
+ * A single professional experience entry.
+ *
+ * Modelled on `CampusActivity` with increased specificity for
+ * professional roles:
+ *   - Structured achievements (resume bullets)
+ *   - Quantified impact metrics
+ *   - Technology stack
+ *   - Work samples (modal-ready linked artifacts)
+ *   - Media gallery (images for modal browsing)
+ *   - Location + work arrangement type
+ *   - Team/department context
+ *
+ * `category` classifies the role type for icon rendering:
+ *   - "fullstack"          → Briefcase icon
+ *   - "backend"            → Server icon
+ *   - "frontend"           → MonitorSmartphone icon
+ *   - "ml-infrastructure"  → BrainCircuit icon
+ *   - "devops"             → ShieldCheck icon
+ */
+export interface Experience {
+  id: string;
+  company: string;
+  companyDesc: string;
+  role: string;
+  team?: string;
+  summary: string;
+  location: string;
+  locationType: "remote" | "hybrid" | "onsite";
+  dateStart: string;
+  dateEnd: string;
+  category: "fullstack" | "backend" | "frontend" | "ml-infrastructure" | "devops";
+  isCurrent: boolean;
+
+  /** Resume-grade bullet points (3–5 per entry recommended) */
+  achievements: string[];
+
+  /** Technology stack used in the role */
+  tech: string[];
+
+  /** Quantified impact metrics for the modal stat cards */
+  impact: ImpactMetric[];
+
+  /** Linked artifacts: docs, repos, demos, live sites */
+  workSamples?: WorkSample[];
+
+  /** Image gallery items for modal browsing */
+  media?: MediaItem[];
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  Aggregated Site Config
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 export const siteConfig = {
-  name: "Ryan Phua",
-  title: "Software Engineer",
-  subtitle: "Full-Stack · Cloud Infrastructure · DevOps",
-  location: "Los Angeles / Orange County, CA",
-  availableForWork: true,
+  // Profile info
+  name: profileData.name,
+  title: profileData.title,
+  company: profileData.company,
+  subtitle: profileData.subtitle,
+  location: profileData.location,
+  availableForWork: profileData.availableForWork,
 
-  education: {
-    degree: "Bachelor of Science in Computer Science",
-    school: "University of California, Los Angeles",
-    location: "Los Angeles, CA",
-    graduationDate: "June 2025",
-    gpa: "3.8/4.0",
+  // Education
+  education: educationData,
 
-    relevantCourses: [
-      "Distributed Systems",
-      "Algorithms & Data Structures",
-      "Database Systems",
-      "Software Engineering",
-      "Operating Systems",
-      "Computer Networks",
-      "Web Development",
-      "Machine Learning"
-    ],
+  // Contact info
+  contact: contactData,
+  resumeUrl: profileData.resumeUrl,
 
-    honors: [
-      // "Dean's List (Fall 2023, Spring 2024)",
-    ],
+  // About bio
+  aboutTop: profileData.aboutTop,
+  aboutBottom: profileData.aboutBottom,
 
-    activities: [
-      // "ACM at UCLA — Member",
-    ]
-  } as Education,
+  // Skills
+  skillCategories: skillsData,
+  skills: legacySkillsData,
 
-  resumeUrl: "/RyanPhuaResume.pdf",
+  // Professional experience (rich model — future /experience route)
+  experiences: experienceData,
 
-  contact: {
-    email: "ryanphua@g.ucla.edu",
-    linkedin: "https://www.linkedin.com/in/ryanphua/",
-    github: "https://github.com/ryean0",
-  },
+  // Experience cards (UI-ready shape — current ExperienceSectionClient)
+  experienceCards: experienceCardData,
 
-  about: "Software Engineer with a track record of building and shipping scalable full-stack applications backed by robust cloud infrastructure. Proficient in React, Next.js, and Node.js on the frontend and backend, with deep hands-on experience in AWS, Docker, Kubernetes, and CI/CD automation. Passionate about designing clean architectures, optimising system performance, and collaborating on high-impact engineering teams.",
-
-  skillCategories: [
-    {
-      category: "Languages",
-      skills: [
-        { name: "Python", icon: <Code className="h-6 w-6" />, proficiency: 3 },
-        { name: "JavaScript", icon: <Code className="h-6 w-6" />, proficiency: 3 },
-        { name: "TypeScript", icon: <Code className="h-6 w-6" />, proficiency: 3 },
-        { name: "Java", icon: <Code className="h-6 w-6" />, proficiency: 2 },
-        { name: "SQL", icon: <Database className="h-6 w-6" />, proficiency: 2 },
-        { name: "HTML/CSS", icon: <Code className="h-6 w-6" />, proficiency: 3 },
-      ]
-    },
-    {
-      category: "Frontend",
-      skills: [
-        { name: "React.js", icon: <Layers className="h-6 w-6" />, proficiency: 3 },
-        { name: "Next.js", icon: <Layers className="h-6 w-6" />, proficiency: 3 },
-        { name: "Redux", icon: <Layers className="h-6 w-6" />, proficiency: 2 },
-        { name: "Tailwind CSS", icon: <Layers className="h-6 w-6" />, proficiency: 3 },
-        { name: "Angular", icon: <Layers className="h-6 w-6" />, proficiency: 2 },
-      ]
-    },
-    {
-      category: "Backend",
-      skills: [
-        { name: "Node.js", icon: <Server className="h-6 w-6" />, proficiency: 3 },
-        { name: "Django", icon: <Server className="h-6 w-6" />, proficiency: 2 },
-        { name: "Spring Boot", icon: <Server className="h-6 w-6" />, proficiency: 2 },
-        { name: "Express.js", icon: <Server className="h-6 w-6" />, proficiency: 3 },
-        { name: "GraphQL", icon: <Server className="h-6 w-6" />, proficiency: 2 },
-        { name: "REST APIs", icon: <Server className="h-6 w-6" />, proficiency: 3 },
-      ]
-    },
-    {
-      category: "Databases",
-      skills: [
-        { name: "PostgreSQL", icon: <Database className="h-6 w-6" />, proficiency: 2 },
-        { name: "MongoDB", icon: <Database className="h-6 w-6" />, proficiency: 3 },
-        { name: "Redis", icon: <Database className="h-6 w-6" />, proficiency: 2 },
-        { name: "Elasticsearch", icon: <Database className="h-6 w-6" />, proficiency: 2 },
-        { name: "DynamoDB", icon: <Database className="h-6 w-6" />, proficiency: 2 },
-      ]
-    },
-    {
-      category: "Cloud & DevOps",
-      skills: [
-        {
-          name: "AWS",
-          icon: <Cloud className="h-6 w-6" />,
-          proficiency: 3,
-          certifications: ["AWS Certified Solutions Architect – Associate"]
-        },
-        { name: "Docker", icon: <Server className="h-6 w-6" />, proficiency: 3 },
-        { name: "Kubernetes", icon: <Server className="h-6 w-6" />, proficiency: 2 },
-        { name: "Terraform", icon: <Cloud className="h-6 w-6" />, proficiency: 2 },
-        { name: "GitHub Actions", icon: <ShieldCheck className="h-6 w-6" />, proficiency: 3 },
-        { name: "CI/CD", icon: <ShieldCheck className="h-6 w-6" />, proficiency: 3 },
-      ]
-    },
-    {
-      category: "Tools & Practices",
-      skills: [
-        { name: "Git", icon: <Code className="h-6 w-6" />, proficiency: 3 },
-        { name: "Agile/Scrum", icon: <Layers className="h-6 w-6" />, proficiency: 2 },
-        { name: "TDD", icon: <ShieldCheck className="h-6 w-6" />, proficiency: 2 },
-        { name: "System Design", icon: <BrainCircuit className="h-6 w-6" />, proficiency: 2 },
-      ]
-    }
-  ] as SkillCategory[],
-
-  // Legacy skills array — retained for backward compatibility
-  skills: [
-    {
-      name: "AWS",
-      icon: <Cloud className="h-8 w-8" />,
-      certifications: ["AWS Certified Solutions Architect – Associate"]
-    },
-    { name: "Docker", icon: <Server className="h-8 w-8" /> },
-    { name: "Kubernetes", icon: <Server className="h-8 w-8" /> },
-    { name: "CI/CD", icon: <ShieldCheck className="h-8 w-8" /> },
-    { name: "Python", icon: <Code className="h-8 w-8" /> },
-    { name: "TypeScript", icon: <Code className="h-8 w-8" /> },
-    { name: "Terraform", icon: <Cloud className="h-8 w-8" /> },
-    { name: "React", icon: <Layers className="h-8 w-8" /> },
-  ] as Skill[],
+  // Projects (UI-ready shape — current ProjectSectionClient)
+  projects: projectData,
 };

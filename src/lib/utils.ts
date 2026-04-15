@@ -1,8 +1,9 @@
 // Filename: src/lib/utils.ts
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
 
-// Utility function for conditionally merging Tailwind classes (Best Practice)
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+/**
+ * General utilities. The cn() Tailwind merge helper has been removed.
+ * MUI components use the sx prop for styling instead.
+ */
+
+// Placeholder — add project-wide utilities here as needed.
+export {};
