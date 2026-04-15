@@ -1,131 +1,157 @@
 /* Filename: src/app/components/SkillsEnhanced.tsx */
 
-/**
- * SkillsEnhanced — Redesigned
- *
- * Changes:
- * 1. Translucent glass-card treatment on individual skill tiles
- * 2. Category headers with left accent bar (consistent with design system)
- * 3. Proficiency rendered as a thin bar instead of stars for cleaner aesthetics
- * 4. Certification badge with refined green accent
- * 5. Proficiency legend with bar indicators
- * 6. Tighter grid with responsive columns
- */
+"use client";
 
-'use client';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import LinearProgress from "@mui/material/LinearProgress";
+import { alpha } from "@mui/material/styles";
+import { siteConfig } from "@/data/siteConfig";
+import FadeIn from "./FadeIn";
 
-import { siteConfig } from '@/data/siteConfig';
-import FadeIn from './FadeIn';
+const proficiencyValue: Record<number, number> = { 1: 33, 2: 66, 3: 100 };
+const proficiencyColor: Record<number, string> = {
+  1: alpha("#38bdf8", 0.3),
+  2: alpha("#38bdf8", 0.6),
+  3: "#38bdf8",
+};
 
 const SkillsEnhanced = () => {
   const { skillCategories } = siteConfig;
 
-  /**
-   * Renders proficiency as a horizontal bar
-   * 3 = full, 2 = two-thirds, 1 = one-third
-   */
-  const renderProficiency = (level: number = 2) => {
-    const widthMap: Record<number, string> = {
-      1: 'w-1/3',
-      2: 'w-2/3',
-      3: 'w-full',
-    };
-    return (
-      <div className="mt-3 w-full">
-        <div className="h-[3px] w-full bg-white/[0.04] rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ${widthMap[level] || 'w-2/3'} ${
-              level === 3
-                ? 'bg-sky-400'
-                : level === 2
-                  ? 'bg-sky-400/60'
-                  : 'bg-sky-400/30'
-            }`}
-          />
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div className="space-y-14">
+    <Stack spacing={7}>
       {skillCategories.map((category, categoryIndex) => (
         <FadeIn key={category.category} delay={categoryIndex * 0.1}>
-          <div>
+          <Box>
             {/* Category header */}
-            <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-3">
-              <span className="w-1 h-6 bg-gradient-to-b from-sky-400 to-indigo-400 rounded-full" />
-              {category.category}
-            </h3>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: "center", mb: 3 }}>
+              <Box
+                sx={{
+                  width: 3, height: 24,
+                  background: "linear-gradient(180deg, #38bdf8, #6366f1)",
+                  borderRadius: 999,
+                }}
+              />
+              <Typography variant="h6" sx={{ fontWeight: 700, color: "text.primary" }}>
+                {category.category}
+              </Typography>
+            </Stack>
 
             {/* Skills grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <Grid container spacing={1.5}>
               {category.skills.map((skill, skillIndex) => (
-                <FadeIn
-                  key={skill.name}
-                  delay={categoryIndex * 0.1 + skillIndex * 0.04}
-                >
-                  {/* Individual skill card */}
-                  <div className="group bg-white/[0.02] border border-white/[0.06] rounded-xl p-4 transition-all duration-300 hover:border-sky-400/20 hover:bg-white/[0.04] hover:-translate-y-1">
-
-                    {/* Icon */}
-                    <div className="flex items-center justify-center w-10 h-10 mb-3 bg-sky-400/[0.06] rounded-lg group-hover:bg-sky-400/[0.10] transition-all duration-300">
-                      <div className="text-sky-400/70 group-hover:text-sky-300 transition-colors duration-300">
+                <Grid key={skill.name} size={{ xs: 6, sm: 4, md: 3, lg: 2.4 }}>
+                  <FadeIn delay={categoryIndex * 0.1 + skillIndex * 0.04}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        borderRadius: 3,
+                        bgcolor: "rgba(255,255,255,0.02)",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          borderColor: alpha("#38bdf8", 0.2),
+                          bgcolor: "rgba(255,255,255,0.04)",
+                          transform: "translateY(-4px)",
+                        },
+                      }}
+                    >
+                      {/* Icon */}
+                      <Box
+                        sx={{
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          width: 40, height: 40, mb: 1.5, borderRadius: 2,
+                          bgcolor: alpha("#38bdf8", 0.06),
+                          color: alpha("#38bdf8", 0.7),
+                          transition: "all 0.3s ease",
+                          "& svg": { width: 20, height: 20 },
+                        }}
+                      >
                         {skill.icon}
-                      </div>
-                    </div>
+                      </Box>
 
-                    {/* Skill name */}
-                    <h4 className="text-sm font-semibold text-slate-200 group-hover:text-slate-100 transition-colors duration-300">
-                      {skill.name}
-                    </h4>
+                      {/* Skill name */}
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: "text.primary" }}>
+                        {skill.name}
+                      </Typography>
 
-                    {/* Proficiency bar */}
-                    {renderProficiency(skill.proficiency)}
+                      {/* Proficiency bar */}
+                      <LinearProgress
+                        variant="determinate"
+                        value={proficiencyValue[skill.proficiency || 2]}
+                        sx={{
+                          mt: 1.5,
+                          "& .MuiLinearProgress-bar": {
+                            bgcolor: proficiencyColor[skill.proficiency || 2],
+                          },
+                        }}
+                      />
 
-                    {/* Certification badge */}
-                    {skill.certifications && skill.certifications.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-white/[0.04]">
-                        <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-emerald-500/[0.06] border border-emerald-500/[0.12] rounded-full text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">
-                          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-                          Certified
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </FadeIn>
+                      {/* Certification badge */}
+                      {skill.certifications && skill.certifications.length > 0 && (
+                        <Box sx={{ mt: 1.5, pt: 1.5, borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                          <Chip
+                            icon={<Box sx={{ width: 6, height: 6, bgcolor: "#34d399", borderRadius: "50%" }} />}
+                            label="Certified"
+                            size="small"
+                            variant="outlined"
+                            sx={{
+                              fontSize: "0.625rem",
+                              fontWeight: 600,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.08em",
+                              color: "#34d399",
+                              borderColor: alpha("#34d399", 0.12),
+                              bgcolor: alpha("#34d399", 0.06),
+                            }}
+                          />
+                        </Box>
+                      )}
+                    </Paper>
+                  </FadeIn>
+                </Grid>
               ))}
-            </div>
-          </div>
+            </Grid>
+          </Box>
         </FadeIn>
       ))}
 
       {/* Proficiency legend */}
       <FadeIn delay={0.5}>
-        <div className="flex items-center justify-center gap-8 pt-8 border-t border-white/[0.04]">
+        <Stack
+          direction="row"
+          spacing={4}
+          sx={{ justifyContent: "center", alignItems: "center", pt: 4, borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        >
           {[
-            { label: 'Expert', level: 3 },
-            { label: 'Proficient', level: 2 },
-            { label: 'Familiar', level: 1 },
+            { label: "Expert", level: 3 },
+            { label: "Proficient", level: 2 },
+            { label: "Familiar", level: 1 },
           ].map(({ label, level }) => (
-            <div key={label} className="flex items-center gap-2.5 text-sm text-slate-500">
-              <div className="w-8 h-[3px] bg-white/[0.04] rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full ${
-                    level === 3
-                      ? 'w-full bg-sky-400'
-                      : level === 2
-                        ? 'w-2/3 bg-sky-400/60'
-                        : 'w-1/3 bg-sky-400/30'
-                  }`}
+            <Stack key={label} direction="row" spacing={1.25} sx={{ alignItems: "center" }}>
+              <Box sx={{ width: 32, height: 3, bgcolor: "rgba(255,255,255,0.04)", borderRadius: 999, overflow: "hidden" }}>
+                <Box
+                  sx={{
+                    height: "100%",
+                    width: `${proficiencyValue[level]}%`,
+                    bgcolor: proficiencyColor[level],
+                    borderRadius: 999,
+                  }}
                 />
-              </div>
-              <span>{label}</span>
-            </div>
+              </Box>
+              <Typography variant="caption" sx={{ color: "text.disabled" }}>
+                {label}
+              </Typography>
+            </Stack>
           ))}
-        </div>
+        </Stack>
       </FadeIn>
-    </div>
+    </Stack>
   );
 };
 
