@@ -1,17 +1,9 @@
 /* Filename: src/app/components/FadeIn.tsx */
 
-/**
- * FadeIn — Refined
- *
- * Changes:
- * 1. Reduced default y offset from 20 to 12 for subtler entrance
- * 2. Adjusted spring physics for smoother deceleration
- * 3. Viewport amount reduced to 0.2 for earlier trigger
- */
+"use client";
 
-'use client';
-
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants } from "framer-motion";
+import Box from "@mui/material/Box";
 
 interface FadeInProps {
   children: React.ReactNode;
@@ -35,9 +27,11 @@ const fadeInVariants: Variants = {
   }),
 };
 
+const MotionBox = motion.create(Box);
+
 const FadeIn = ({ children, delay = 0, duration = 0.5, className = "" }: FadeInProps) => {
   return (
-    <motion.div
+    <MotionBox
       variants={fadeInVariants}
       initial="hidden"
       whileInView="visible"
@@ -46,7 +40,7 @@ const FadeIn = ({ children, delay = 0, duration = 0.5, className = "" }: FadeInP
       className={className}
     >
       {children}
-    </motion.div>
+    </MotionBox>
   );
 };
 

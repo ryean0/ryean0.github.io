@@ -1,32 +1,18 @@
 /* Filename: src/app/components/InfoCard.tsx */
 
-/**
- * InfoCard — Redesigned
- *
- * Changes:
- * 1. Switched to glass-card aesthetic with refined border/shadow system
- * 2. Cleaner top-aligned layout with icon + title block
- * 3. Subtle top-edge gradient accent line per card
- * 4. Improved hover state: border glow + softer scale
- * 5. Better responsive tag handling
- * 6. Cleaner "Click for details" overlay with frosted glass
- */
-
 "use client";
 
 import { motion } from "framer-motion";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import { alpha } from "@mui/material/styles";
 import {
-  Briefcase,
-  Code,
-  Star,
-  Eye,
-  BrainCircuit,
-  Server,
-  MonitorSmartphone,
+  Briefcase, Code, Star, Eye, BrainCircuit, Server, MonitorSmartphone,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import TechIcon from "./TechIcon";
-import { SpotlightItem } from "@/types";
+import { SpotlightItem } from "@/data/siteConfig";
 import CardSpotlight from "./CardSpotlight";
 
 type InfoCardProps = {
@@ -42,137 +28,146 @@ type InfoCardProps = {
   onViewDetails?: () => void;
 };
 
-const CardFront = (props: InfoCardProps) => {
-  const colSpan = props.gridSpan?.col || 3;
-  let tagsToShow: number;
-  if (colSpan <= 2) {
-    tagsToShow = 3;
-  } else if (colSpan === 3) {
-    tagsToShow = 4;
-  } else {
-    tagsToShow = 6;
-  }
-
-  const renderIcon = () => {
-    if (props.type === "experience") {
-      switch (props.category) {
-        case "frontend":
-          return <MonitorSmartphone size={24} />;
-        case "backend":
-          return <Server size={24} />;
-        case "ai":
-          return <BrainCircuit size={24} />;
-        case "general":
-          return <Briefcase size={24} />;
-        default:
-          return <Briefcase size={24} />;
-      }
-    } else if (props.type === "project") {
-      switch (props.category) {
-        case "code":
-          return <Code size={24} />;
-        case "star":
-          return <Star size={24} />;
-        default:
-          return <Code size={24} />;
-      }
+const renderIcon = (type: string, category: string) => {
+  if (type === "experience") {
+    switch (category) {
+      case "frontend": return <MonitorSmartphone size={24} />;
+      case "backend": return <Server size={24} />;
+      case "ai": return <BrainCircuit size={24} />;
+      default: return <Briefcase size={24} />;
     }
-    return null;
-  };
-
-  return (
-    <div className="h-full p-5 flex flex-col justify-between">
-      {/* Top Section */}
-      <div>
-        <div className="flex items-start gap-3.5">
-          <div className="text-sky-400/70 flex-shrink-0 mt-0.5">
-            {renderIcon()}
-          </div>
-          <div className="min-w-0">
-            <h3 className="font-bold text-sky-300 leading-tight text-base @[20rem]:text-lg @[28rem]:text-xl">
-              {props.title}
-            </h3>
-            {"company" in props && props.company && (
-              <p className="font-medium text-slate-400/80 text-sm mt-0.5">
-                {props.company}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Spotlight metrics */}
-      {props.cardSpotlight && <CardSpotlight items={props.cardSpotlight} />}
-
-      {/* Bottom Section */}
-      <div>
-        <div className="flex flex-wrap gap-1.5">
-          {props.tech.slice(0, tagsToShow).map((t) => (
-            <div
-              key={t}
-              className={cn(
-                "flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full",
-                t === props.keyTech
-                  ? "bg-sky-400/10 text-sky-300 border border-sky-400/20"
-                  : "bg-white/[0.04] text-slate-300 border border-white/[0.06]"
-              )}
-            >
-              <TechIcon tech={t} />
-              <span>{t}</span>
-            </div>
-          ))}
-        </div>
-        {props.displayDate && (
-          <p className="text-right text-xs text-slate-500 mt-3 font-mono">
-            {props.displayDate}
-          </p>
-        )}
-      </div>
-    </div>
-  );
+  }
+  if (type === "project") {
+    switch (category) {
+      case "star": return <Star size={24} />;
+      default: return <Code size={24} />;
+    }
+  }
+  return null;
 };
 
 const InfoCard = (props: InfoCardProps) => {
-  const ariaLabel = `View details for ${props.type}: ${props.title}${
-    props.company ? ` at ${props.company}` : ""
-  }`;
+  const colSpan = props.gridSpan?.col || 3;
+  const tagsToShow = colSpan <= 2 ? 3 : colSpan === 3 ? 4 : 6;
 
   return (
     <motion.button
       onClick={props.onViewDetails}
-      className={cn(
-        "w-full h-full min-h-72 @container text-left relative rounded-xl overflow-hidden group",
-        "bg-white/[0.02] border border-white/[0.06]",
-        "transition-all duration-300"
-      )}
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: 288,
+        textAlign: "left",
+        position: "relative",
+        overflow: "hidden",
+        background: "rgba(255,255,255,0.02)",
+        border: "1px solid rgba(255,255,255,0.06)",
+        borderRadius: 12,
+        cursor: "pointer",
+        padding: 0,
+        color: "inherit",
+        fontFamily: "inherit",
+      }}
       whileHover={{ scale: 1.015, y: -3 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      aria-label={ariaLabel}
+      aria-label={`View details for ${props.type}: ${props.title}${props.company ? ` at ${props.company}` : ""}`}
     >
       {/* Top accent gradient line */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-400/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Hover border glow */}
-      <div className="absolute inset-0 rounded-xl border border-sky-400/0 group-hover:border-sky-400/15 transition-all duration-500 pointer-events-none" />
+      <Box
+        sx={{
+          position: "absolute", top: 0, left: 0, right: 0, height: 1,
+          background: "linear-gradient(90deg, transparent, rgba(56,189,248,0.3), transparent)",
+          opacity: 0,
+          transition: "opacity 0.5s ease",
+          "button:hover &": { opacity: 1 },
+        }}
+      />
 
       {/* Card content */}
-      <div className="relative h-full">
-        <CardFront {...props} />
+      <Box sx={{ height: "100%", position: "relative" }}>
+        <Box sx={{ height: "100%", p: 2.5, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          {/* Top Section */}
+          <Box>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: "flex-start" }}>
+              <Box sx={{ color: alpha("#38bdf8", 0.7), flexShrink: 0, mt: 0.25 }}>
+                {renderIcon(props.type, props.category)}
+              </Box>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography variant="body1" sx={{ fontWeight: 700, color: "primary.light", lineHeight: 1.2, fontSize: { xs: "1rem", sm: "1.125rem" } }}>
+                  {props.title}
+                </Typography>
+                {props.company && (
+                  <Typography variant="body2" sx={{ color: alpha("#94a3b8", 0.8), fontWeight: 500, mt: 0.25 }}>
+                    {props.company}
+                  </Typography>
+                )}
+              </Box>
+            </Stack>
+          </Box>
+
+          {/* Spotlight metrics */}
+          {props.cardSpotlight && <CardSpotlight items={props.cardSpotlight} />}
+
+          {/* Bottom Section */}
+          <Box>
+            <Stack direction="row" sx={{ flexWrap: "wrap" }} spacing={0.75} useFlexGap>
+              {props.tech.slice(0, tagsToShow).map((t) => (
+                <Chip
+                  key={t}
+                  icon={<TechIcon tech={t} />}
+                  label={t}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    fontSize: "0.75rem",
+                    fontWeight: 500,
+                    ...(t === props.keyTech
+                      ? {
+                          bgcolor: alpha("#38bdf8", 0.1),
+                          color: "primary.light",
+                          borderColor: alpha("#38bdf8", 0.2),
+                        }
+                      : {
+                          bgcolor: "rgba(255,255,255,0.04)",
+                          color: "text.secondary",
+                          borderColor: "rgba(255,255,255,0.06)",
+                        }),
+                  }}
+                />
+              ))}
+            </Stack>
+            {props.displayDate && (
+              <Typography
+                variant="caption"
+                sx={{ display: "block", textAlign: "right", mt: 1.5, fontFamily: "monospace", color: "text.disabled" }}
+              >
+                {props.displayDate}
+              </Typography>
+            )}
+          </Box>
+        </Box>
 
         {/* Hover overlay */}
-        <div
-          className={cn(
-            "absolute inset-0 flex items-center justify-center rounded-xl",
-            "bg-[#030712]/60 backdrop-blur-[3px]",
-            "opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"
-          )}
+        <Box
+          sx={{
+            position: "absolute", inset: 0, display: "flex",
+            alignItems: "center", justifyContent: "center",
+            borderRadius: 3,
+            bgcolor: alpha("#030712", 0.6),
+            backdropFilter: "blur(3px)",
+            opacity: 0,
+            transition: "opacity 0.3s ease-out",
+            "button:hover &": { opacity: 1 },
+          }}
         >
-          <p className="flex items-center gap-2 text-base font-semibold text-slate-100">
+          <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
             <Eye size={18} />
-            Click for details
-          </p>
-        </div>
-      </div>
+            <Typography variant="body2" sx={{ fontWeight: 600, color: "text.primary" }}>
+              Click for details
+            </Typography>
+          </Stack>
+        </Box>
+      </Box>
     </motion.button>
   );
 };

@@ -1,19 +1,18 @@
 /* Filename: src/app/page.tsx */
 
-/**
- * Main Portfolio Page — Redesigned
- *
- * Changes:
- * 1. Hero section with terminal-inspired greeting + refined typography hierarchy
- * 2. Status badges (location, education, availability) as a cohesive badge row
- * 3. Social links with consistent icon button treatment
- * 4. Section dividers between major sections for visual rhythm
- * 5. Wider max-width container (max-w-5xl) for better use of screen real estate
- * 6. Refined footer with subtle branding
- */
-
 import Image from "next/image";
-import { Mail, Linkedin, Github, FileText, MapPin, GraduationCap, ChevronDown } from "lucide-react";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import { alpha } from "@mui/material/styles";
+import {
+  Mail, Linkedin, Github, FileText, MapPin,
+  GraduationCap, ChevronDown,
+} from "lucide-react";
 
 import Header from "@/app/components/Header";
 import FadeIn from "@/app/components/FadeIn";
@@ -21,224 +20,279 @@ import Education from "@/app/components/Education";
 import SkillsEnhanced from "@/app/components/SkillsEnhanced";
 import ProjectSectionClient from "@/app/components/ProjectSectionClient";
 import ExperienceSectionClient from "./components/ExperienceSectionClient";
-import { getExperiences, getProjects } from "@/lib/dataLoader";
 import { siteConfig } from "@/data/siteConfig";
 
 export default function PortfolioPage() {
-  const experienceData = getExperiences();
-  const projectsData = getProjects();
+  const experienceData = siteConfig.experienceCards;
+  const projectsData = siteConfig.projects;
 
   return (
     <>
       <Header />
-      <main className="container mx-auto max-w-5xl px-6">
+      <Container component="main" maxWidth="lg" sx={{ px: 3 }}>
 
-        {/* ========================================
-            HERO / ABOUT SECTION
-            ======================================== */}
-        <section id="about" className="min-h-screen flex items-center py-24">
+        {/* ═══════════ HERO / ABOUT ═══════════ */}
+        <Box
+          component="section"
+          id="about"
+          sx={{ minHeight: "100vh", display: "flex", alignItems: "center", py: 12 }}
+        >
           <FadeIn duration={1} delay={0.1}>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
-
-              {/* Left column — Text content (3/5 width) */}
-              <div className="md:col-span-3">
-                {/* Terminal-style greeting */}
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="inline-block w-2 h-2 rounded-full bg-sky-400 animate-pulse" />
-                  <span className="font-mono text-sm text-slate-400 tracking-wide">
-                    Hi, I'm
-                  </span>
-                </div>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "3fr 2fr" },
+                gap: 6,
+                alignItems: "center",
+              }}
+            >
+              {/* Left column — Text */}
+              <Box>
+                {/* Terminal greeting */}
+                <Stack direction="row" spacing={1} sx={{ alignItems: "center", mb: 3 }}>
+                  <Box
+                    sx={{
+                      width: 8, height: 8, borderRadius: "50%",
+                      bgcolor: "primary.main",
+                      animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite",
+                      "@keyframes pulse": { "0%, 100%": { opacity: 1 }, "50%": { opacity: 0.5 } },
+                    }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ fontFamily: "var(--font-geist-mono)", color: "text.secondary", letterSpacing: "0.05em" }}
+                  >
+                    Intro
+                  </Typography>
+                </Stack>
 
                 {/* Name — animated gradient */}
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-400 animate-gradient pb-1 leading-tight">
+                <Typography
+                  variant="h1"
+                  className="animate-gradient"
+                  sx={{
+                    fontSize: { xs: "3rem", md: "4.5rem" },
+                    mb: 1.5,
+                    backgroundImage: "linear-gradient(90deg, #38bdf8, #60a5fa, #818cf8)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                    lineHeight: 1.1,
+                    pb: 0.5,
+                  }}
+                >
                   {siteConfig.name}
-                </h1>
+                </Typography>
 
                 {/* Title */}
-                <p className="text-2xl md:text-3xl font-semibold text-slate-100 mb-1">
+                <Typography variant="h4" sx={{ color: "text.primary", fontWeight: 600, mb: 0.5, fontSize: { xs: "1.5rem", md: "1.875rem" } }}>
                   {siteConfig.title}
-                </p>
+                </Typography>
 
                 {/* Subtitle */}
                 {siteConfig.subtitle && (
-                  <p className="text-base text-slate-400 font-mono tracking-wide mb-6">
+                  <Typography
+                    variant="body2"
+                    sx={{ fontFamily: "var(--font-geist-mono)", color: "text.secondary", letterSpacing: "0.05em", mb: 3 }}
+                  >
                     {siteConfig.subtitle}
-                  </p>
+                  </Typography>
                 )}
 
                 {/* Bio */}
-                <p className="text-base md:text-lg text-slate-300/90 max-w-xl leading-relaxed mb-8">
-                  {siteConfig.about}
-                </p>
+                <Typography variant="body1" sx={{ color: alpha("#cbd5e1", 0.9), maxWidth: "36rem", lineHeight: 1.7, mb: 4 }}>
+                  {siteConfig.aboutTop}
+                </Typography>
 
-                {/* Status badges row */}
-                <div className="flex flex-wrap items-center gap-3 mb-8">
-                  {/* Location */}
-                  <span className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/[0.06] rounded-full text-sm text-slate-400 hover:border-white/[0.12] transition-colors duration-300">
-                    <MapPin className="h-3.5 w-3.5 text-sky-400" />
-                    <span>{siteConfig.location}</span>
-                  </span>
-
-                  {/* Education quick ref */}
-                  <span className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/[0.06] rounded-full text-sm text-slate-400 hover:border-white/[0.12] transition-colors duration-300">
-                    <GraduationCap className="h-3.5 w-3.5 text-sky-400" />
-                    <span>
-                      UCLA CS '{siteConfig.education.graduationDate.split(' ')[1].slice(-2)}
-                    </span>
-                  </span>
-
-                  {/* Availability */}
+                {/* Status badges */}
+                <Stack direction="row" spacing={1.5} useFlexGap sx={{ flexWrap: "wrap", mb: 4 }}>
+                  <Chip
+                    icon={<MapPin size={14} />}
+                    label={siteConfig.location}
+                    variant="outlined"
+                    size="small"
+                    sx={{ color: "text.secondary" }}
+                  />
+                  <Chip
+                    icon={<GraduationCap size={14} />}
+                    label={`UCLA CS '${siteConfig.education.graduationDate.split(" ")[1].slice(-2)}`}
+                    variant="outlined"
+                    size="small"
+                    sx={{ color: "text.secondary" }}
+                  />
                   {siteConfig.availableForWork && (
-                    <span className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/[0.06] border border-emerald-500/[0.12] rounded-full text-sm">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                      </span>
-                      <span className="text-emerald-400">Open to Opportunities</span>
-                    </span>
+                    <Chip
+                      icon={
+                        <Box component="span" sx={{ position: "relative", display: "flex", width: 8, height: 8 }}>
+                          <Box
+                            component="span"
+                            sx={{
+                              "@keyframes ping": { "75%, 100%": { transform: "scale(2)", opacity: 0 } },
+                              animation: "ping 1.5s cubic-bezier(0,0,0.2,1) infinite",
+                              position: "absolute", inset: 0, borderRadius: "50%",
+                              bgcolor: "#34d399", opacity: 0.75,
+                            }}
+                          />
+                          <Box component="span" sx={{ position: "relative", width: 8, height: 8, borderRadius: "50%", bgcolor: "#10b981" }} />
+                        </Box>
+                      }
+                      label="Open to Opportunities"
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        color: "#34d399",
+                        borderColor: alpha("#10b981", 0.12),
+                        bgcolor: alpha("#10b981", 0.06),
+                      }}
+                    />
                   )}
-                </div>
+                </Stack>
 
-                {/* CTA + social row */}
-                <div className="flex flex-wrap items-center gap-4">
-                  {/* Resume button */}
+                {/* CTA + social */}
+                <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: "wrap", alignItems: "center" }}>
                   {siteConfig.resumeUrl && (
-                    <a
+                    <Button
+                      component="a"
                       href={siteConfig.resumeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2.5 bg-sky-500 hover:bg-sky-400 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-300 shadow-lg shadow-sky-500/20 hover:shadow-xl hover:shadow-sky-500/30 hover:-translate-y-0.5 active:translate-y-0"
-                      aria-label="Download Resume"
+                      variant="contained"
+                      startIcon={<FileText size={16} />}
+                      sx={{
+                        bgcolor: "primary.main",
+                        color: "#fff",
+                        fontWeight: 600,
+                        px: 2.5,
+                        py: 1.25,
+                        borderRadius: 3,
+                        boxShadow: `0 8px 24px -4px ${alpha("#38bdf8", 0.2)}`,
+                        "&:hover": {
+                          bgcolor: "#7dd3fc",
+                          boxShadow: `0 12px 32px -4px ${alpha("#38bdf8", 0.3)}`,
+                          transform: "translateY(-2px)",
+                        },
+                        transition: "all 0.3s ease",
+                      }}
                     >
-                      <FileText className="h-4 w-4" />
                       View Resume
-                    </a>
+                    </Button>
                   )}
-
-                  {/* Social icons */}
-                  <div className="flex items-center gap-2">
+                  <Stack direction="row" spacing={1}>
                     {[
                       { href: `mailto:${siteConfig.contact.email}`, icon: Mail, label: "Email" },
                       { href: siteConfig.contact.linkedin, icon: Linkedin, label: "LinkedIn" },
                       { href: siteConfig.contact.github, icon: Github, label: "GitHub" },
                     ].map(({ href, icon: Icon, label }) => (
-                      <a
+                      <IconButton
                         key={label}
+                        component="a"
                         href={href}
                         target={label === "Email" ? undefined : "_blank"}
                         rel={label === "Email" ? undefined : "noopener noreferrer"}
-                        className="p-2.5 text-slate-400 hover:text-sky-400 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-sky-400/20 rounded-xl transition-all duration-300"
                         aria-label={label}
                         title={label}
+                        size="small"
+                        sx={{ color: "text.secondary" }}
                       >
-                        <Icon className="h-4 w-4" />
-                      </a>
+                        <Icon size={16} />
+                      </IconButton>
                     ))}
-                  </div>
-                </div>
-              </div>
+                  </Stack>
+                </Stack>
+              </Box>
 
-              {/* Right column — Profile photo (2/5 width) */}
-              <div className="md:col-span-2 flex justify-center md:justify-end">
-                <div className="relative w-56 h-56 md:w-72 md:h-72">
+              {/* Right column — Profile photo */}
+              <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "flex-end" } }}>
+                <Box sx={{ position: "relative", width: { xs: 224, md: 288 }, height: { xs: 224, md: 288 } }}>
                   {/* Outer glow ring */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 rounded-full blur-3xl scale-110" />
-
+                  <Box
+                    sx={{
+                      position: "absolute", inset: 0,
+                      background: `linear-gradient(90deg, ${alpha("#38bdf8", 0.2)}, ${alpha("#818cf8", 0.2)})`,
+                      borderRadius: "50%", filter: "blur(48px)", transform: "scale(1.1)",
+                    }}
+                  />
                   {/* Border ring */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-sky-400/20 via-transparent to-indigo-400/20 p-[2px]">
-                    <div className="w-full h-full rounded-full bg-[#030712]" />
-                  </div>
-
-                  {/* Profile image */}
+                  <Box
+                    sx={{
+                      position: "absolute", inset: 0, borderRadius: "50%",
+                      background: `linear-gradient(135deg, ${alpha("#38bdf8", 0.2)}, transparent, ${alpha("#818cf8", 0.2)})`,
+                      p: "2px",
+                    }}
+                  >
+                    <Box sx={{ width: "100%", height: "100%", borderRadius: "50%", bgcolor: "#030712" }} />
+                  </Box>
+                  {/* Profile image (src property searches /public directory as root)*/}
                   <Image
-                    src="/profile.jpg"
-                    alt="Ryan Phua — Software Engineer"
+                    src="./assets/media/profile/dark-blue-bg.png"
+                    alt="hero"
                     fill
-                    className="rounded-full object-cover relative z-10 border-2 border-white/[0.06]"
+                    style={{
+                      borderRadius: "60%",
+                      objectFit: "contain",
+                      zIndex: 10,
+                      border: "2px solid rgba(255,255,255,0.06)",
+                    }}
                     priority
                   />
-                </div>
-              </div>
-            </div>
+                </Box>
+              </Box>
+            </Box>
 
             {/* Scroll hint */}
-            <div className="flex justify-center mt-16 md:mt-20">
-              <ChevronDown className="h-5 w-5 text-slate-600 animate-bounce" />
-            </div>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: { xs: 8, md: 10 } }}>
+              <ChevronDown
+                size={20}
+                style={{ color: "#475569", animation: "bounce 1s infinite" }}
+              />
+              <style>{`@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25%); } }`}</style>
+            </Box>
           </FadeIn>
-        </section>
+        </Box>
 
-        {/* ── Section Divider ── */}
+        {/* —— Section Divider —— */}
         <div className="section-divider" />
 
-        {/* ========================================
-            EDUCATION SECTION
-            ======================================== */}
-        <section id="education" className="py-24">
+        {/* ═══════════ EDUCATION ═══════════ */}
+        <Box component="section" id="education" sx={{ py: 12 }}>
           <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-slate-100">
+            <Typography variant="h2" sx={{ textAlign: "center", mb: 2, color: "text.primary" }}>
               Education
-            </h2>
-            <p className="text-center text-slate-400 mb-12 max-w-lg mx-auto">
+            </Typography>
+            <Typography variant="body1" sx={{ textAlign: "center", color: "text.secondary", mb: 6, maxWidth: "32rem", mx: "auto" }}>
               Academic foundation in computer science with hands-on engineering focus.
-            </p>
+            </Typography>
           </FadeIn>
           <FadeIn delay={0.2}>
             <Education />
           </FadeIn>
-        </section>
+        </Box>
 
-        {/* ── Section Divider ── */}
         <div className="section-divider" />
 
-        {/* ========================================
-            SKILLS SECTION
-            ======================================== */}
-        <section id="skills" className="py-24">
+        {/* ═══════════ SKILLS ═══════════ */}
+        <Box component="section" id="skills" sx={{ py: 12 }}>
           <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-slate-100">
+            <Typography variant="h2" sx={{ textAlign: "center", mb: 2, color: "text.primary" }}>
               Technical Skills
-            </h2>
-            <p className="text-center text-slate-400 mb-12 max-w-lg mx-auto">
+            </Typography>
+            <Typography variant="body1" sx={{ textAlign: "center", color: "text.secondary", mb: 6, maxWidth: "32rem", mx: "auto" }}>
               Core competencies across the full stack, from frontend to cloud infrastructure.
-            </p>
+            </Typography>
           </FadeIn>
           <SkillsEnhanced />
-        </section>
+        </Box>
 
-        {/* ── Section Divider ── */}
         <div className="section-divider" />
 
-        {/* ========================================
-            EXPERIENCE SECTION
-            ======================================== */}
+        {/* ═══════════ EXPERIENCE ═══════════ */}
         <ExperienceSectionClient experiences={experienceData} />
 
-        {/* ── Section Divider ── */}
         <div className="section-divider" />
 
-        {/* ========================================
-            PROJECTS SECTION
-            ======================================== */}
+        {/* ═══════════ PROJECTS ═══════════ */}
         <ProjectSectionClient projects={projectsData} />
-
-        {/* ========================================
-            FOOTER
-            ======================================== */}
-        <footer className="mt-24 py-10 border-t border-white/[0.04]">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-slate-500">
-              <span className="font-mono">
-                &copy; {new Date().getFullYear()} {siteConfig.name}
-              </span>
-            </div>
-            <p className="text-sm text-slate-600">
-              Built with Next.js & Tailwind CSS. Deployed on GitHub Pages.
-            </p>
-          </div>
-        </footer>
-      </main>
+      </Container>
     </>
   );
 }

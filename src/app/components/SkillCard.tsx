@@ -1,11 +1,15 @@
 /* Filename: src/app/components/SkillCard.tsx */
-'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Skill } from '@/data/siteConfig';
-import { cn } from '@/lib/utils';
-import { Award, RotateCw } from 'lucide-react';
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import { alpha } from "@mui/material/styles";
+import { Skill } from "@/data/siteConfig";
+import { Award, RotateCw } from "lucide-react";
 
 interface SkillCardProps {
   skill: Skill;
@@ -15,71 +19,91 @@ const SkillCard = ({ skill }: SkillCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const hasCerts = skill.certifications && skill.certifications.length > 0;
 
-  const handleCardClick = () => {
-    if (hasCerts) {
-      setIsFlipped(!isFlipped);
-    }
-  };
-  const ContainerElement = hasCerts ? 'button' : 'div';
+  const Container = hasCerts ? "button" : "div";
 
   return (
-    <ContainerElement 
-        // Apply button-specific attributes conditionally
-        type={hasCerts ? 'button' : undefined}
-        aria-label={hasCerts ? `View certifications for ${skill.name}` : skill.name}
-        aria-pressed={hasCerts ? isFlipped : undefined}
-        onClick={handleCardClick}
-        // Base styles for the container
-        className={cn(
-            "w-full h-36 [perspective:1000px] group block text-left",
-            // Ensure button default styles are reset if it's a button
-            hasCerts && "cursor-pointer bg-transparent border-none p-0 m-0",
-            !hasCerts && "cursor-default"
-        )}
+    <Container
+      type={hasCerts ? "button" : undefined}
+      aria-label={hasCerts ? `View certifications for ${skill.name}` : skill.name}
+      aria-pressed={hasCerts ? isFlipped : undefined}
+      onClick={() => hasCerts && setIsFlipped(!isFlipped)}
+      style={{
+        width: "100%",
+        height: 144,
+        perspective: 1000,
+        display: "block",
+        textAlign: "left",
+        cursor: hasCerts ? "pointer" : "default",
+        background: "transparent",
+        border: "none",
+        padding: 0,
+        margin: 0,
+        color: "inherit",
+        fontFamily: "inherit",
+      }}
     >
       <motion.div
-        className="relative w-full h-full [transform-style:preserve-3d]"
+        style={{
+          position: "relative", width: "100%", height: "100%",
+          transformStyle: "preserve-3d",
+        }}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
-        {/* --- Card Front --- */}
-        <div className={cn(
-          "absolute w-full h-full [backface-visibility:hidden] rounded-lg border border-gray-700 p-6 flex flex-col items-center justify-center transition-all duration-300",
-          "bg-gradient-to-br from-slate-800/80 to-slate-900/80",
-          // MODIFIED: Added focus-visible styles for accessibility
-          hasCerts && "group-hover:border-blue-400/80 group-focus-visible:border-blue-400/80 group-focus-visible:ring-2 group-focus-visible:ring-blue-500 group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-slate-950"
-        )}>
-          {/* NEW: Visual cue for flippable cards */}
+        {/* Card Front */}
+        <Box
+          sx={{
+            position: "absolute", width: "100%", height: "100%",
+            backfaceVisibility: "hidden", borderRadius: 2,
+            border: "1px solid", borderColor: "divider",
+            background: `linear-gradient(135deg, ${alpha("#1e293b", 0.8)}, ${alpha("#0f172a", 0.8)})`,
+            p: 3, display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            transition: "all 0.3s ease",
+            "&:hover": hasCerts ? { borderColor: alpha("#60a5fa", 0.8) } : {},
+          }}
+        >
           {hasCerts && (
-            // MODIFIED: Ensure opacity shows on focus as well
-            <div className="absolute top-2 right-2 text-gray-500 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+            <Box sx={{ position: "absolute", top: 8, right: 8, color: "text.disabled", opacity: 0, transition: "opacity 0.3s", "button:hover &": { opacity: 1 } }}>
               <RotateCw size={14} />
-            </div>
+            </Box>
           )}
-          <div className="text-blue-400 mb-3">{skill.icon}</div>
-          <p className="font-semibold text-gray-200">{skill.name}</p>
-        </div>
+          <Box sx={{ color: "primary.main", mb: 1.5 }}>{skill.icon}</Box>
+          <Typography variant="body2" sx={{ fontWeight: 600, color: "text.primary" }}>
+            {skill.name}
+          </Typography>
+        </Box>
 
-        {/* --- Card Back --- */}
-        {/* MODIFIED: Only render the back if there are certifications */}
+        {/* Card Back */}
         {hasCerts && (
-            <div className={cn(
-            "absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border border-blue-400 p-4 flex flex-col items-center justify-center",
-            "bg-gradient-to-br from-slate-800 to-blue-900/50"
-            )}>
-            <h4 className="font-bold text-sm mb-2 text-blue-300">Certifications</h4>
-            <ul className="text-center space-y-1">
-                {skill.certifications?.map(cert => (
-                <li key={cert} className="flex items-center gap-2 text-xs text-slate-300">
-                    <Award size={14} className="text-blue-400 flex-shrink-0" />
-                    <span>{cert}</span>
-                </li>
-                ))}
-            </ul>
-            </div>
+          <Box
+            sx={{
+              position: "absolute", width: "100%", height: "100%",
+              backfaceVisibility: "hidden", transform: "rotateY(180deg)",
+              borderRadius: 2, border: "1px solid",
+              borderColor: "primary.main",
+              background: `linear-gradient(135deg, ${alpha("#1e293b", 1)}, ${alpha("#1e3a5f", 0.5)})`,
+              p: 2, display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+            }}
+          >
+            <Typography variant="body2" sx={{ fontWeight: 700, color: "primary.light", mb: 1 }}>
+              Certifications
+            </Typography>
+            <Stack spacing={0.5} sx={{ textAlign: "center" }}>
+              {skill.certifications?.map((cert) => (
+                <Stack key={cert} direction="row" spacing={1} sx={{ alignItems: "center" }}>
+                  <Award size={14} style={{ color: "#60a5fa", flexShrink: 0 }} />
+                  <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                    {cert}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+          </Box>
         )}
       </motion.div>
-    </ContainerElement>
+    </Container>
   );
 };
 

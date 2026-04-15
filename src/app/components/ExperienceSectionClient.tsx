@@ -1,66 +1,57 @@
 /* Filename: src/app/components/ExperienceSectionClient.tsx */
 
-/**
- * ExperienceSectionClient — Refined
- *
- * Changes:
- * 1. Added section subtitle for context
- * 2. Consistent py-24 padding with other sections
- * 3. Cleaner grid gap and sizing
- */
+"use client";
 
-'use client';
-import { useState } from 'react';
-import { ExperienceData } from '@/types';
-import { AnimatePresence, motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import FadeIn from './FadeIn';
-import InfoCard from './InfoCard';
-import ExperienceModal from './ExperienceModal';
+import { useState } from "react";
+import { ExperienceData } from "@/data/siteConfig";
+import { AnimatePresence, motion } from "framer-motion";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import FadeIn from "./FadeIn";
+import InfoCard from "./InfoCard";
+import ExperienceModal from "./ExperienceModal";
 
 interface ExperienceSectionProps {
-    experiences: ExperienceData[];
+  experiences: ExperienceData[];
 }
+
+const colSpanMap: Record<number, number> = { 1: 2, 2: 4, 3: 6, 4: 8, 5: 10, 6: 12 };
 
 const ExperienceSectionClient = ({ experiences }: ExperienceSectionProps) => {
   const [selectedExperience, setSelectedExperience] = useState<ExperienceData | null>(null);
 
   return (
     <>
-      <section id="experience" className="py-24">
+      <Box component="section" id="experience" sx={{ py: 12 }}>
         <FadeIn>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-slate-100">
+          <Typography variant="h2" sx={{ textAlign: "center", mb: 2, color: "text.primary" }}>
             Work Experience
-          </h2>
-          <p className="text-center text-slate-400 mb-12 max-w-lg mx-auto">
+          </Typography>
+          <Typography variant="body1" sx={{ textAlign: "center", color: "text.secondary", mb: 6, maxWidth: "32rem", mx: "auto" }}>
             Professional roles spanning cloud infrastructure, backend systems, and frontend development.
-          </p>
+          </Typography>
         </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-stretch">
+        <Grid container spacing={2}>
           {experiences.map((job, index) => {
             const colSpan = job.gridSpan?.col || 3;
-            const rowSpan = job.gridSpan?.row || 1;
-            const colSpanClass = { 1: 'md:col-span-1', 2: 'md:col-span-2', 3: 'md:col-span-3', 4: 'md:col-span-4', 5: 'md:col-span-5', 6: 'md:col-span-6' }[colSpan] || 'md:col-span-3';
-            const rowSpanClass = { 1: 'md:row-span-1', 2: 'md:row-span-2' }[rowSpan] || 'md:row-span-1';
-
+            const mdSize = colSpanMap[colSpan] || 6;
             return (
-              <FadeIn
-                key={job.id}
-                delay={index * 0.1}
-                className={cn("h-full", colSpanClass, rowSpanClass)}
-              >
-                <motion.div layoutId={`experience-card-${job.id}`} className="h-full">
-                  <InfoCard
-                    type="experience"
-                    {...job}
-                    onViewDetails={() => setSelectedExperience(job)}
-                  />
-                </motion.div>
-              </FadeIn>
+              <Grid key={job.id} size={{ xs: 12, md: mdSize }}>
+                <FadeIn delay={index * 0.1} className="h-full">
+                  <motion.div layoutId={`experience-card-${job.id}`} style={{ height: "100%" }}>
+                    <InfoCard
+                      type="experience"
+                      {...job}
+                      onViewDetails={() => setSelectedExperience(job)}
+                    />
+                  </motion.div>
+                </FadeIn>
+              </Grid>
             );
           })}
-        </div>
-      </section>
+        </Grid>
+      </Box>
 
       <AnimatePresence>
         {selectedExperience && (

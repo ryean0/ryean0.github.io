@@ -2,17 +2,17 @@
 'use client';
 
 import { 
-    SiReact, SiNextdotjs, SiDocker, SiKubernetes, SiAmazon, 
+  SiReact, SiNextdotjs, SiDocker, SiKubernetes,
     SiTypescript, SiJavascript, SiPython, SiMongodb, SiRedis, 
     SiGraphql, SiTerraform, SiFirebase, SiDigitalocean, SiGit,
-    SiJira, SiAmazoneks, SiAmazondynamodb, SiAmazons3, SiApachespark,
+  SiJira, SiApachespark,
     // --- NEW: Added many new icons ---
     SiRedux, SiElasticsearch, SiGitlab, SiGo, SiJsonwebtokens,
     SiNextra, SiInstagram, SiGithubactions, SiTensorflow,
     SiAngular, SiCoder // NEW: Added Angular and a Fallback (SiCode)
 } from 'react-icons/si';
 import { VscJson } from 'react-icons/vsc';
-import { FaJava, FaNetworkWired } from 'react-icons/fa';
+import { FaJava, FaNetworkWired, FaAws } from 'react-icons/fa';
 import { Cpu } from 'lucide-react';
 
 interface TechIconProps {
@@ -20,23 +20,23 @@ interface TechIconProps {
   className?: string;
 }
 
-// Define the icon map outside the component for performance optimization
+// initialise icon mapping outside of component to avoid re-building on every render
 const getIconMap = (className: string): { [key: string]: React.ReactNode } => ({
     'react.js': <SiReact className={className} />,
     'next.js': <SiNextdotjs className={className} />,
     'docker': <SiDocker className={className} />,
     'kubernetes': <SiKubernetes className={className} />,
-    'aws': <SiAmazon className={className} />,
-    'aws amplify': <SiAmazon className={className} />,
-    'aws s3': <SiAmazons3 className={className} />,
-    'aws (eks, vpc, ec2)': <SiAmazoneks className={className} />,
-    'aws cloudwatch': <SiAmazon className={className} />,
-    'aws personalize': <SiAmazon className={className} />,
-    'aws cloudformation': <SiAmazon className={className} />,
+    'aws': <FaAws className={className} />,
+    'aws amplify': <FaAws className={className} />,
+    'aws s3': <FaAws className={className} />,
+    'aws (eks, vpc, ec2)': <FaAws className={className} />,
+    'aws cloudwatch': <FaAws className={className} />,
+    'aws personalize': <FaAws className={className} />,
+    'aws cloudformation': <FaAws className={className} />,
     'appsync': <SiGraphql className={className} />,
     'apache spark': <SiApachespark className={className} />,
     'javascript': <SiJavascript className={className} />,
-    'dynamodb': <SiAmazondynamodb className={className} />,
+    'dynamodb': <FaAws className={className} />,
     'typescript': <SiTypescript className={className} />,
     'angular': <SiAngular className={className} />, // NEW
     'python': <SiPython className={className} />,
@@ -71,26 +71,21 @@ const TechIcon = ({ tech, className = "h-3 w-3" }: TechIconProps) => {
   const normalizedTech = tech.toLowerCase();
   const iconMap = getIconMap(className);
   const mapKeys = Object.keys(iconMap);
-
-  // --- MODIFIED: Robust matching logic ---
   
   // 1. Check for an exact match
   if (iconMap[normalizedTech]) {
     return iconMap[normalizedTech];
   }
-
   // 2. Handle complex strings like "Typescript | Angular"
-  // Split by common delimiters and check each part
+  //    split by common delimiters and check each part
   const parts = normalizedTech.split(/[|/]/).map(part => part.trim());
   for (const part of parts) {
     if (iconMap[part]) {
         return iconMap[part];
     }
   }
-
   // 3. Fallback to the previous partial match logic
   const matchedKey = mapKeys.find(key => normalizedTech.includes(key));
-  
   // 4. Final fallback to a generic code icon
   return matchedKey ? iconMap[matchedKey] : <SiCoder className={className} />;
 };

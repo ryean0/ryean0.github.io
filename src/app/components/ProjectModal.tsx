@@ -1,30 +1,18 @@
 /* Filename: src/app/components/ProjectModal.tsx */
 
-/**
- * ProjectModal — Redesigned
- *
- * Changes:
- * 1. Consistent modal chrome with ExperienceModal (same bg, border, shadow)
- * 2. Gradient headline text for stronger visual identity
- * 3. Code Spotlight with refined dark bg and cleaner annotation points
- * 4. Reuses Section and ImpactCard from ExperienceModal
- * 5. Unified tech tag styling
- */
-
 "use client";
 
-import { ProjectData } from "@/types";
+import { ProjectData } from "@/data/siteConfig";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import { alpha } from "@mui/material/styles";
 import {
-  X,
-  ExternalLink,
-  GitBranch,
-  Globe,
-  LucideIcon,
-  Zap,
-  Lightbulb,
-  Target,
-  Wrench,
-  CheckCircle2,
+  X, ExternalLink, GitBranch, Globe, LucideIcon,
+  Zap, Lightbulb, Target, Wrench, CheckCircle2,
 } from "lucide-react";
 import { useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -43,16 +31,11 @@ interface ProjectModalProps {
   layoutId: string;
 }
 
-const IconMap: Record<string, LucideIcon> = {
-  ExternalLink,
-  GitBranch,
-  Globe,
-};
+const IconMap: Record<string, LucideIcon> = { ExternalLink, GitBranch, Globe };
 
 const ProjectModal = ({ details, onClose, layoutId }: ProjectModalProps) => {
   useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) =>
-      event.key === "Escape" && onClose();
+    const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", handleEsc);
     document.body.style.overflow = "hidden";
     return () => {
@@ -65,156 +48,176 @@ const ProjectModal = ({ details, onClose, layoutId }: ProjectModalProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      style={{
+        position: "fixed", inset: 0,
+        backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
+        zIndex: 1300, display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 16,
+      }}
       onClick={onClose}
     >
       <motion.div
         layoutId={layoutId}
-        className="bg-[#0c1222] border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/40 w-full max-w-5xl max-h-[90vh] relative"
+        style={{
+          background: "#0c1222",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 16,
+          boxShadow: "0 25px 50px -12px rgba(0,0,0,0.4)",
+          width: "100%", maxWidth: 1024,
+          maxHeight: "90vh", position: "relative",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="overflow-y-auto h-full p-6 md:p-8">
+        <Box sx={{ overflowY: "auto", height: "100%", p: { xs: 3, md: 4 } }}>
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             transition={{ duration: 0.25, delay: 0.12, ease: "easeOut" }}
-            className="space-y-7"
           >
-            {/* Header with project links */}
-            <header className="flex justify-between items-start gap-6">
-              <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-300">
-                {details.headline}
-              </h2>
+            <Stack spacing={3.5}>
+              {/* Header with project links */}
+              <Stack direction="row" spacing={3} sx={{ justifyContent: "space-between", alignItems: "flex-start" }}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: "1.5rem", md: "1.875rem" },
+                    backgroundImage: "linear-gradient(90deg, #38bdf8, #a5b4fc)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  {details.headline}
+                </Typography>
+                {details.links && details.links.length > 0 && (
+                  <Stack direction="row" spacing={1.5} sx={{ pt: 0.5, flexShrink: 0 }}>
+                    {details.links.map((link) => {
+                      const Icon = IconMap[link.icon];
+                      return (
+                        <IconButton
+                          key={link.label}
+                          component="a"
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={link.label}
+                          title={link.label}
+                          size="small"
+                          sx={{ color: "text.disabled", "&:hover": { color: "primary.light" } }}
+                        >
+                          {Icon && <Icon size={20} />}
+                        </IconButton>
+                      );
+                    })}
+                  </Stack>
+                )}
+              </Stack>
 
-              {details.links && details.links.length > 0 && (
-                <div className="flex items-center gap-3 pt-1 flex-shrink-0">
-                  {details.links.map((link) => {
-                    const Icon = IconMap[link.icon];
-                    return (
-                      <a
-                        key={link.label}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-500 hover:text-sky-300 transition-colors duration-300"
-                        aria-label={link.label}
-                        title={link.label}
-                      >
-                        {Icon && <Icon className="h-5 w-5" />}
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-            </header>
-
-            {/* Impact metrics */}
-            {details.impact && details.impact.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-stretch">
-                {details.impact.map((item) => (
-                  <ImpactCard
-                    key={item.text}
-                    value={item.value}
-                    text={item.text}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Problem / Solution */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Section icon={<Target size={20} />} title="The Problem">
-                <p>{details.problem}</p>
-              </Section>
-
-              <Section icon={<Wrench size={20} />} title="The Solution">
-                <p>{details.solution}</p>
-              </Section>
-            </div>
-
-            {/* Code Spotlight */}
-            {details.techHighlight && (
-              <Section
-                icon={<Lightbulb size={20} />}
-                title={details.techHighlight.title || "Technical Highlight"}
-                className="pt-2"
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mt-4">
-                  {/* Code block */}
-                  <div className="lg:col-span-3">
-                    <div className="rounded-xl overflow-hidden border border-white/[0.06]">
-                      <SyntaxHighlighter
-                        language={details.techHighlight.language}
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          padding: "1.25rem",
-                          fontSize: "0.8rem",
-                          lineHeight: "1.6",
-                          backgroundColor: "#080d1a",
-                        }}
-                        wrapLines={true}
-                        showLineNumbers={true}
-                      >
-                        {details.techHighlight.code}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
-
-                  {/* Annotation points */}
-                  <div className="lg:col-span-2 space-y-4">
-                    {details.techHighlight.points.map((point, index) => (
-                      <div key={index} className="flex gap-3 items-start">
-                        <CheckCircle2
-                          className="text-sky-400/70 mt-0.5 flex-shrink-0"
-                          size={16}
-                        />
-                        <div>
-                          <h4 className="font-semibold text-sm text-slate-100">
-                            {point.title}
-                          </h4>
-                          <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">
-                            {point.description}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Section>
-            )}
-
-            {/* Core Technologies */}
-            {details.tech && details.tech.length > 0 && (
-              <Section icon={<Zap size={20} />} title="Core Technologies">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {details.tech.map((t) => (
-                    <div
-                      key={t}
-                      className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-slate-200"
-                    >
-                      <TechIcon tech={t} className="h-3.5 w-3.5" />
-                      <span>{t}</span>
-                    </div>
+              {/* Impact metrics */}
+              {details.impact && details.impact.length > 0 && (
+                <Grid container spacing={1.5}>
+                  {details.impact.map((item) => (
+                    <Grid key={item.text} size={{ xs: 12, md: 4 }}>
+                      <ImpactCard value={item.value} text={item.text} />
+                    </Grid>
                   ))}
-                </div>
-              </Section>
-            )}
+                </Grid>
+              )}
+
+              {/* Problem / Solution */}
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <Section icon={<Target size={20} />} title="The Problem">
+                    <Typography variant="body2">{details.problem}</Typography>
+                  </Section>
+                </Grid>
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <Section icon={<Wrench size={20} />} title="The Solution">
+                    <Typography variant="body2">{details.solution}</Typography>
+                  </Section>
+                </Grid>
+              </Grid>
+
+              {/* Code Spotlight */}
+              {details.techHighlight && (
+                <Section
+                  icon={<Lightbulb size={20} />}
+                  title={details.techHighlight.title || "Technical Highlight"}
+                >
+                  <Grid container spacing={2.5} sx={{ mt: 2 }}>
+                    <Grid size={{ xs: 12, lg: 7 }}>
+                      <Box sx={{ borderRadius: 3, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
+                        <SyntaxHighlighter
+                          language={details.techHighlight.language}
+                          style={vscDarkPlus}
+                          customStyle={{
+                            margin: 0, padding: "1.25rem", fontSize: "0.8rem",
+                            lineHeight: "1.6", backgroundColor: "#080d1a",
+                          }}
+                          wrapLines showLineNumbers
+                        >
+                          {details.techHighlight.code}
+                        </SyntaxHighlighter>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, lg: 5 }}>
+                      <Stack spacing={2}>
+                        {details.techHighlight.points.map((point, i) => (
+                          <Stack key={i} direction="row" spacing={1.5} sx={{ alignItems: "flex-start" }}>
+                            <CheckCircle2 size={16} style={{ color: alpha("#38bdf8", 0.7), marginTop: 2, flexShrink: 0 }} />
+                            <Box>
+                              <Typography variant="body2" sx={{ fontWeight: 600, color: "text.primary" }}>
+                                {point.title}
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: "text.secondary", mt: 0.25, lineHeight: 1.5 }}>
+                                {point.description}
+                              </Typography>
+                            </Box>
+                          </Stack>
+                        ))}
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Section>
+              )}
+
+              {/* Core Technologies */}
+              {details.tech && details.tech.length > 0 && (
+                <Section icon={<Zap size={20} />} title="Core Technologies">
+                  <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap", mt: 0.5 }}>
+                    {details.tech.map((t) => (
+                      <Chip
+                        key={t}
+                        icon={<TechIcon tech={t} className="h-3.5 w-3.5" />}
+                        label={t}
+                        variant="outlined"
+                        size="small"
+                        sx={{ fontWeight: 500, fontSize: "0.875rem" }}
+                      />
+                    ))}
+                  </Stack>
+                </Section>
+              )}
+            </Stack>
           </motion.div>
-        </div>
+        </Box>
 
         {/* Close button */}
-        <button
+        <IconButton
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 text-slate-500 hover:text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] rounded-lg transition-all duration-200 z-10"
           aria-label="Close modal"
+          sx={{
+            position: "absolute", top: 16, right: 16, zIndex: 10,
+            color: "text.disabled",
+            bgcolor: "rgba(255,255,255,0.04)",
+            "&:hover": { color: "text.primary", bgcolor: "rgba(255,255,255,0.08)" },
+          }}
+          size="small"
         >
           <X size={20} />
-        </button>
+        </IconButton>
       </motion.div>
     </motion.div>
   );

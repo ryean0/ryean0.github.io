@@ -1,83 +1,26 @@
 /* Filename: src/app/globals.css */
 
 /**
- * Global Styles — Visual Foundation Overhaul
+ * Global Styles — Post-MUI Migration
  *
- * Restructured for:
- * 1. Refined animated background (layered mesh gradient + starfield)
- * 2. Polished typography scale and prose defaults
- * 3. Smoother, more intentional animation system
- * 4. Enhanced glassmorphism design tokens
- * 5. Comprehensive accessibility (reduced-motion, high-contrast, focus)
- * 6. Custom scrollbar and selection theming
+ * MUI's CssBaseline + ThemeProvider handles:
+ *   - Reset / normalisation
+ *   - Scrollbar styling
+ *   - Focus-visible outlines
+ *   - Reduced-motion preferences
+ *   - High-contrast mode
+ *   - Selection colors
+ *
+ * This file retains ONLY:
+ *   1. Animated background (layered mesh gradient + starfield)
+ *   2. Gradient text animation for the hero name
+ *   3. Section dividers
+ *   4. Screen reader utility (.sr-only)
  */
-
-@import "tailwindcss";
-
-/* ========================================
-   CSS CUSTOM PROPERTIES
-   Centralised design tokens for consistency
-   ======================================== */
-:root {
-  /* Surface palette — dark mode only site */
-  --surface-base: #030712;       /* gray-950  — deepest background */
-  --surface-raised: #0f172a;     /* slate-900 — card/panel bg */
-  --surface-overlay: #1e293b;    /* slate-800 — hover / elevated */
-
-  /* Border palette */
-  --border-subtle: rgba(148, 163, 184, 0.08);  /* nearly invisible */
-  --border-default: rgba(148, 163, 184, 0.12);
-  --border-hover: rgba(56, 189, 248, 0.25);    /* cyan tint on hover */
-  --border-active: rgba(56, 189, 248, 0.50);
-
-  /* Accent palette */
-  --accent-primary: #38bdf8;     /* sky-400 */
-  --accent-secondary: #818cf8;   /* indigo-400 */
-  --accent-tertiary: #34d399;    /* emerald-400 */
-  --accent-glow: rgba(56, 189, 248, 0.15);
-
-  /* Typography */
-  --foreground: #f1f5f9;         /* slate-100 */
-  --foreground-muted: #94a3b8;   /* slate-400 */
-  --foreground-faint: #64748b;   /* slate-500 */
-
-  /* Fonts */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  /* Transitions */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-}
-
-/* Tailwind v4 @theme inline block */
-@theme inline {
-  --color-background: var(--surface-base);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-/* ========================================
-   BASE STYLES
-   ======================================== */
-body {
-  background: var(--surface-base);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
 
 /* ========================================
    ANIMATED BACKGROUND
-   Three-layer depth effect:
-   1. Mesh gradient base (fixed, subtle color)
-   2. Radial vignette overlay (depth framing)
-   3. Drifting starfield particles
+   Three-layer depth effect
    ======================================== */
 .animated-background {
   position: absolute;
@@ -86,7 +29,7 @@ body {
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.06), transparent),
     radial-gradient(ellipse 60% 40% at 80% 50%, rgba(129, 140, 248, 0.04), transparent),
     radial-gradient(ellipse 70% 50% at 20% 80%, rgba(52, 211, 153, 0.03), transparent),
-    linear-gradient(to bottom, var(--surface-base), #0f172a 50%, var(--surface-base));
+    linear-gradient(to bottom, #030712, #0f172a 50%, #030712);
 }
 
 .animated-stars {
@@ -115,7 +58,7 @@ body {
 
 /* ========================================
    GRADIENT TEXT ANIMATION
-   Slower, subtler gradient shift for the hero name
+   For hero name
    ======================================== */
 @keyframes gradient-shift {
   0%   { background-position: 0% 50%; }
@@ -129,160 +72,20 @@ body {
 }
 
 /* ========================================
-   GLOW EFFECTS
-   Reusable glow utilities for cards and accents
-   ======================================== */
-.glow-border {
-  position: relative;
-}
-
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(56, 189, 248, 0.15),
-    rgba(129, 140, 248, 0.1),
-    transparent 60%
-  );
-  opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-out-expo);
-  pointer-events: none;
-  z-index: -1;
-}
-
-.glow-border:hover::before {
-  opacity: 1;
-}
-
-/* ========================================
-   CARD SYSTEM
-   Unified glassmorphism card treatment
-   ======================================== */
-.glass-card {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-default);
-  transition:
-    border-color var(--duration-normal) var(--ease-out-expo),
-    box-shadow var(--duration-normal) var(--ease-out-expo),
-    transform var(--duration-normal) var(--ease-out-expo);
-}
-
-.glass-card:hover {
-  border-color: var(--border-hover);
-  box-shadow:
-    0 4px 24px -4px rgba(56, 189, 248, 0.08),
-    0 0 0 1px rgba(56, 189, 248, 0.05);
-}
-
-/* Education & skill card lift on hover */
-.education-card,
-.skill-card {
-  transition: all var(--duration-normal) var(--ease-out-expo);
-}
-
-.education-card:hover,
-.skill-card:hover {
-  transform: translateY(-4px);
-}
-
-/* Course badge micro-interaction */
-.course-badge {
-  transition: all 200ms var(--ease-out-expo);
-}
-
-.course-badge:hover {
-  transform: scale(1.05);
-}
-
-/* ========================================
    SECTION DIVIDERS
-   Subtle gradient line between sections
    ======================================== */
 .section-divider {
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    var(--border-default) 20%,
+    rgba(148, 163, 184, 0.12) 20%,
     rgba(56, 189, 248, 0.12) 50%,
-    var(--border-default) 80%,
+    rgba(148, 163, 184, 0.12) 80%,
     transparent
   );
   margin: 0 auto;
   max-width: 48rem;
-}
-
-/* ========================================
-   PULSE / PING ANIMATION
-   For availability & status indicators
-   ======================================== */
-@keyframes pulse-glow {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.5; }
-}
-
-.animate-pulse {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-/* ========================================
-   FOCUS & ACCESSIBILITY
-   ======================================== */
-*:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-*:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* ========================================
-   REDUCED MOTION
-   Respect user OS preferences
-   ======================================== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ========================================
-   HIGH CONTRAST MODE
-   ======================================== */
-@media (prefers-contrast: high) {
-  .education-card,
-  .skill-card,
-  .glass-card {
-    border-width: 2px;
-  }
-
-  button,
-  a {
-    border: 2px solid currentColor;
-  }
-
-  .course-badge {
-    border-width: 2px;
-  }
 }
 
 /* ========================================
@@ -309,74 +112,4 @@ body {
   overflow: visible;
   clip: auto;
   white-space: normal;
-}
-
-/* ========================================
-   CUSTOM SCROLLBAR (WebKit)
-   ======================================== */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--surface-base);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.15);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.25);
-}
-
-/* Firefox scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.15) var(--surface-base);
-}
-
-/* ========================================
-   SELECTION
-   ======================================== */
-::selection {
-  background-color: rgba(56, 189, 248, 0.25);
-  color: #f8fafc;
-}
-
-/* ========================================
-   EDUCATION COMPONENT STYLES
-   ======================================== */
-.education-card .bg-gradient-to-br {
-  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);
-}
-
-.education-card span[class*="border-slate"] {
-  transition: all 200ms ease;
-}
-
-.education-card span[class*="border-slate"]:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.1);
-}
-
-.education-card .animate-ping {
-  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.education-card .h-px {
-  transition: opacity var(--duration-normal) ease;
-}
-
-.education-card:hover .h-px {
-  opacity: 0.8;
-}
-
-.education-card li .w-1\.5 {
-  transition: transform 200ms ease;
-}
-
-.education-card li:hover .w-1\.5 {
-  transform: scale(1.2);
 }
