@@ -4,7 +4,6 @@
  * Skill categories with individual proficiency levels and certifications.
  * Consumed by: siteConfig.tsx → SkillsEnhanced.tsx (category grid),
  *              siteConfig.tsx → SkillCard.tsx (legacy flip cards)
- *
  * Proficiency scale:
  *   3 = Expert   (full bar)
  *   2 = Proficient (two-thirds bar)
@@ -29,7 +28,7 @@ import type { SkillCategory, Skill } from "../siteConfig";
 
 export const skillsData: SkillCategory[] = [
     {
-        category: "Prog. Languages",
+        category: "Programming Languages",
         skills: [
             { name: "Python", icon: <Code className="h-6 w-6" />, proficiency: 3 },
             { name: "JavaScript/TypeScript", icon: <Code className="h-6 w-6" />, proficiency: 3 },
@@ -60,7 +59,7 @@ export const skillsData: SkillCategory[] = [
         ],
     },
     {
-        category: "Data Mgmt & Retrieval",
+        category: "Data Flow & Retrieval",
         skills: [
             { name: "PostgreSQL | (AWS) RDS", icon: <Database className="h-6 w-6" />, proficiency: 2 },
             { name: "MongoDB | (AWS) DocumentDB", icon: <Database className="h-6 w-6" />, proficiency: 3 },
@@ -86,7 +85,7 @@ export const skillsData: SkillCategory[] = [
         ],
     },
     {
-        category: "Version Control & Mgmt Tools",
+        category: "Version Control & Tools",
         skills: [
             { name: "Git (Version Ctrl)", icon: <Code className="h-6 w-6" />, proficiency: 3 },
             { name: "Agile Scrum (Project Mgmt)", icon: <Layers className="h-6 w-6" />, proficiency: 2 },

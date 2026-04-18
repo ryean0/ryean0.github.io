@@ -10,7 +10,7 @@ const NAME = "Ryan Phua"
 const JOB_TITLE = "Software Engineer I"
 const COMPANY = "Cognizant Technology Solutions, Teaneck, New Jersey (NJ)" // Company name, City, State/Province, Country (if outside US)
 const JOB_SUBTITLE = "Full-Stack Applications· Cloud Platforms & Services • CI/CD & DevOps"
-const BASED_IN = "San Francisco Bay Area & San Jose, California (CA)" // City, State/Province, Country (if outside US)
+const LOCATIONS = ["San Francisco Bay Area", "Silicon Valley, San Jose, CA"];
 const AVAILABLE = true
 const RESUME_URL = "/assets/resumes/SWE_2026.pdf"
 const ABOUT_TOP = "Early-career software engineer with a proven track record of shipping & maintaining complex internal developer platforms for code delivery at scale. Passionate about leveraging modern cloud infrastructures alongside AI-native devops tools to build efficient, scalable, and secure software solutions."
@@ -21,7 +21,7 @@ export const profileData = {
   title: JOB_TITLE,
   company: COMPANY,
   subtitle: JOB_SUBTITLE,
-  location: BASED_IN,
+  locations: LOCATIONS,
   availableForWork: AVAILABLE,
   resumeUrl: RESUME_URL,
   aboutTop: ABOUT_TOP,

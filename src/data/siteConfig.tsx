@@ -19,7 +19,7 @@
 import { JSX } from 'react';
 
 import { profileData } from './profile/userData';
-import { educationData } from './profile/educationData';
+import { educationData, educationMilestones } from './profile/educationData';
 import { contactData } from './profile/contactData';
 import { skillsData, legacySkillsData } from './profile/skillsData';
 import { experienceData } from './profile/experienceData';
@@ -153,6 +153,32 @@ export interface Education {
   activities?: CampusActivity[];
 }
 
+export interface EducationMilestone {
+  id: string;
+  /** Human-readable period e.g. "2014 – 2018" */
+  period: string;
+  yearStart: number;
+  yearEnd: number;
+  type: "high-school" | "military" | "university" | "study-abroad" | "graduation";
+  typeLabel: string;
+  institution: string;
+  location: string;
+  description: string;
+  degree?: string;
+  gpa?: string;
+  honors?: string[];
+  /** Relevant coursework chips (shown for university / graduation milestones) */
+  courses?: string[];
+  /** Achievement bullet-points */
+  achievements?: string[];
+  /** Absolute path under /public — e.g. "/images/education/ucla.jpg" */
+  backgroundImage?: string;
+  /** Emoji character rendered inside the timeline node button */
+  icon: string;
+  /** Campus activities (re-uses the existing CampusActivity type) */
+  activities?: CampusActivity[];
+}
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  SECTION F — Experience Types (Rich Model)
 //  (Used by experienceData.tsx — future-proofed for
@@ -257,11 +283,12 @@ export const siteConfig = {
   title: profileData.title,
   company: profileData.company,
   subtitle: profileData.subtitle,
-  location: profileData.location,
+  locations: profileData.locations,
   availableForWork: profileData.availableForWork,
 
   // Education
   education: educationData,
+  educationMilestones: educationMilestones,
 
   // Contact info
   contact: contactData,

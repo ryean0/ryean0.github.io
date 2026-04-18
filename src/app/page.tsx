@@ -106,13 +106,16 @@ export default function PortfolioPage() {
 
                 {/* Status badges */}
                 <Stack direction="row" spacing={1.5} useFlexGap sx={{ flexWrap: "wrap", mb: 4 }}>
-                  <Chip
-                    icon={<MapPin size={14} />}
-                    label={siteConfig.location}
-                    variant="outlined"
-                    size="small"
-                    sx={{ color: "text.secondary" }}
-                  />
+                  {siteConfig.locations.map((loc, idx) => (
+                    <Chip
+                      key={idx}
+                      icon={<MapPin size={14} />}
+                      label={loc}
+                      variant="outlined"
+                      size = "small"
+                      sx = {{ color: "text.secondary" }}
+                      />
+                      ))}
                   <Chip
                     icon={<GraduationCap size={14} />}
                     label={`UCLA CS '${siteConfig.education.graduationDate.split(" ")[1].slice(-2)}`}
@@ -136,7 +139,7 @@ export default function PortfolioPage() {
                           <Box component="span" sx={{ position: "relative", width: 8, height: 8, borderRadius: "50%", bgcolor: "#10b981" }} />
                         </Box>
                       }
-                      label="Open to Opportunities"
+                      label="Open to Professional Connections"
                       variant="outlined"
                       size="small"
                       sx={{
@@ -172,7 +175,9 @@ export default function PortfolioPage() {
                           transform: "translateY(-2px)",
                         },
                         transition: "all 0.3s ease",
+
                       }}
+                      download="SWE_2026.pdf"
                     >
                       View Resume
                     </Button>
@@ -207,9 +212,12 @@ export default function PortfolioPage() {
                   {/* Outer glow ring */}
                   <Box
                     sx={{
-                      position: "absolute", inset: 0,
-                      background: `linear-gradient(90deg, ${alpha("#38bdf8", 0.2)}, ${alpha("#818cf8", 0.2)})`,
-                      borderRadius: "50%", filter: "blur(48px)", transform: "scale(1.1)",
+                      borderRadius: "60%",
+                      objectFit: "contain",
+                      zIndex: 10,
+                      border: "2px solid rgba(255,255,255,0.06)",
+                      filter: "saturate(0.9) brightness(0.95)",
+                      transition: "filter 0.4s ease",
                     }}
                   />
                   {/* Border ring */}
