@@ -84,12 +84,10 @@ export default function PortfolioPage() {
                   {siteConfig.name}
                 </Typography>
 
-                {/* Title */}
                 <Typography variant="h4" sx={{ color: "text.primary", fontWeight: 600, mb: 0.5, fontSize: { xs: "1.5rem", md: "1.875rem" } }}>
                   {siteConfig.title}
                 </Typography>
 
-                {/* Subtitle */}
                 {siteConfig.subtitle && (
                   <Typography
                     variant="body2"
@@ -99,7 +97,6 @@ export default function PortfolioPage() {
                   </Typography>
                 )}
 
-                {/* Bio */}
                 <Typography variant="body1" sx={{ color: alpha("#cbd5e1", 0.9), maxWidth: "36rem", lineHeight: 1.7, mb: 4 }}>
                   {siteConfig.aboutTop}
                 </Typography>
@@ -112,10 +109,10 @@ export default function PortfolioPage() {
                       icon={<MapPin size={14} />}
                       label={loc}
                       variant="outlined"
-                      size = "small"
-                      sx = {{ color: "text.secondary" }}
-                      />
-                      ))}
+                      size="small"
+                      sx={{ color: "text.secondary" }}
+                    />
+                  ))}
                   <Chip
                     icon={<GraduationCap size={14} />}
                     label={`UCLA CS '${siteConfig.education.graduationDate.split(" ")[1].slice(-2)}`}
@@ -161,6 +158,7 @@ export default function PortfolioPage() {
                       rel="noopener noreferrer"
                       variant="contained"
                       startIcon={<FileText size={16} />}
+                      download="Ryan_Phua_Resume.pdf"
                       sx={{
                         bgcolor: "primary.main",
                         color: "#fff",
@@ -175,9 +173,7 @@ export default function PortfolioPage() {
                           transform: "translateY(-2px)",
                         },
                         transition: "all 0.3s ease",
-
                       }}
-                      download="SWE_2026.pdf"
                     >
                       View Resume
                     </Button>
@@ -209,17 +205,6 @@ export default function PortfolioPage() {
               {/* Right column — Profile photo */}
               <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "flex-end" } }}>
                 <Box sx={{ position: "relative", width: { xs: 224, md: 288 }, height: { xs: 224, md: 288 } }}>
-                  {/* Outer glow ring */}
-                  <Box
-                    sx={{
-                      borderRadius: "60%",
-                      objectFit: "contain",
-                      zIndex: 10,
-                      border: "2px solid rgba(255,255,255,0.06)",
-                      filter: "saturate(0.9) brightness(0.95)",
-                      transition: "filter 0.4s ease",
-                    }}
-                  />
                   {/* Border ring */}
                   <Box
                     sx={{
@@ -230,13 +215,13 @@ export default function PortfolioPage() {
                   >
                     <Box sx={{ width: "100%", height: "100%", borderRadius: "50%", bgcolor: "#030712" }} />
                   </Box>
-                  {/* Profile image (src property searches /public directory as root)*/}
+                  {/* Profile image — absolute path from /public root */}
                   <Image
-                    src="./assets/media/profile/dark-blue-bg.png"
-                    alt="hero"
+                    src="/assets/media/profile/dark-blue-bg.png"
+                    alt="Ryan Phua — hero portrait"
                     fill
                     style={{
-                      borderRadius: "60%",
+                      borderRadius: "50%",
                       objectFit: "contain",
                       zIndex: 10,
                       border: "2px solid rgba(255,255,255,0.06)",
@@ -249,16 +234,12 @@ export default function PortfolioPage() {
 
             {/* Scroll hint */}
             <Box sx={{ display: "flex", justifyContent: "center", mt: { xs: 8, md: 10 } }}>
-              <ChevronDown
-                size={20}
-                style={{ color: "#475569", animation: "bounce 1s infinite" }}
-              />
+              <ChevronDown size={20} style={{ color: "#475569", animation: "bounce 1s infinite" }} />
               <style>{`@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25%); } }`}</style>
             </Box>
           </FadeIn>
         </Box>
 
-        {/* —— Section Divider —— */}
         <div className="section-divider" />
 
         {/* ═══════════ EDUCATION ═══════════ */}
@@ -278,7 +259,17 @@ export default function PortfolioPage() {
 
         <div className="section-divider" />
 
-        {/* ═══════════ SKILLS ═══════════ */}
+        {/* ═══════════ EXPERIENCE ═══════════ */}
+        <ExperienceSectionClient experiences={experienceData} />
+
+        <div className="section-divider" />
+
+        {/* ═══════════ PROJECTS ═══════════ */}
+        <ProjectSectionClient projects={projectsData} />
+
+        <div className="section-divider" />
+
+        {/* ═══════════ TECHNICAL SKILLS (moved to LAST) ═══════════ */}
         <Box component="section" id="skills" sx={{ py: 12 }}>
           <FadeIn>
             <Typography variant="h2" sx={{ textAlign: "center", mb: 2, color: "text.primary" }}>
@@ -290,16 +281,6 @@ export default function PortfolioPage() {
           </FadeIn>
           <SkillsEnhanced />
         </Box>
-
-        <div className="section-divider" />
-
-        {/* ═══════════ EXPERIENCE ═══════════ */}
-        <ExperienceSectionClient experiences={experienceData} />
-
-        <div className="section-divider" />
-
-        {/* ═══════════ PROJECTS ═══════════ */}
-        <ProjectSectionClient projects={projectsData} />
       </Container>
     </>
   );
