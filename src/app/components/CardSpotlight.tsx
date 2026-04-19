@@ -9,7 +9,7 @@ import Divider from "@mui/material/Divider";
 import {
   Zap, Cpu, Wrench, DollarSign, Code, ShieldCheck, LucideIcon,
 } from "lucide-react";
-import TechIcon from "./TechIcon";
+import TechIcon from "./AboutPage/TechIcon";
 import { SpotlightItem } from "@/data/siteConfig";
 
 const iconMap: Record<string, LucideIcon> = {

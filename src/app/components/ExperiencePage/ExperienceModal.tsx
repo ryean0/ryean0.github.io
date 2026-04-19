@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import TechIcon from "@/app/components/TechIcon";
+import TechIcon from "@/app/components/AboutPage/TechIcon";
 
 /* ── Reusable Section heading ── */
 export const Section = ({

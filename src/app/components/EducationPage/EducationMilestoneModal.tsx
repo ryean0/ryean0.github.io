@@ -1,5 +1,4 @@
-// FILE: src/app/components/EducationMilestoneModal.tsx  — NEW FILE
-// (Renamed from EducationModal to avoid confusion with MUI Modal semantics —
+// FILE: src/app/components/EducationMilestoneModal.tsx
 //  this is an inline reveal panel, not a dialog overlay)
 "use client";
 

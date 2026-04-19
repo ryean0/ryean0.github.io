@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import TechIcon from "./TechIcon";
 import { SpotlightItem } from "@/data/siteConfig";
-import CardSpotlight from "./CardSpotlight";
+import CardSpotlight from "../CardSpotlight";
 
 type InfoCardProps = {
   type: "experience" | "project";

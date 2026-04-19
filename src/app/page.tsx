@@ -16,10 +16,10 @@ import {
 
 import Header from "@/app/components/Header";
 import FadeIn from "@/app/components/FadeIn";
-import Education from "@/app/components/Education";
-import SkillsEnhanced from "@/app/components/SkillsEnhanced";
-import ProjectSectionClient from "@/app/components/ProjectSectionClient";
-import ExperienceSectionClient from "./components/ExperienceSectionClient";
+import Education from "@/app/components/EducationPage/Education";
+import SkillsEnhanced from "@/app/components/SkillsPage/SkillsEnhanced";
+import ProjectSectionClient from "@/app/components/ProjectsPage/ProjectSectionClient";
+import ExperienceSectionClient from "@/app/components/ExperiencePage/ExperienceSectionClient";
 import { siteConfig } from "@/data/siteConfig";
 
 export default function PortfolioPage() {

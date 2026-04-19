@@ -11,7 +11,7 @@ import Chip from "@mui/material/Chip";
 import LinearProgress from "@mui/material/LinearProgress";
 import { alpha } from "@mui/material/styles";
 import { siteConfig } from "@/data/siteConfig";
-import FadeIn from "./FadeIn";
+import FadeIn from "../FadeIn";
 
 const proficiencyValue: Record<number, number> = { 1: 33, 2: 66, 3: 100 };
 const proficiencyColor: Record<number, string> = {

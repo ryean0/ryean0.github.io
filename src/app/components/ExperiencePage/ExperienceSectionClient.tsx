@@ -8,8 +8,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import FadeIn from "./FadeIn";
-import InfoCard from "./InfoCard";
+import FadeIn from "../FadeIn";
+import InfoCard from "../AboutPage/InfoCard";
 import ExperienceModal from "./ExperienceModal";
 
 interface ExperienceSectionProps {

@@ -18,8 +18,8 @@ import { useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { motion } from "framer-motion";
-import TechIcon from "./TechIcon";
-import { Section, ImpactCard } from "./ExperienceModal";
+import TechIcon from "../AboutPage/TechIcon";
+import { Section, ImpactCard } from "../ExperiencePage/ExperienceModal";
 
 interface ProjectModalProps {
   details: ProjectData["details"] & {
