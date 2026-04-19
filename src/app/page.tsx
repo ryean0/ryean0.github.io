@@ -23,7 +23,7 @@ import ExperienceSectionClient from "@/app/components/ExperiencePage/ExperienceS
 import { siteConfig } from "@/data/siteConfig";
 
 export default function PortfolioPage() {
-  const experienceData = siteConfig.experienceCards;
+  const experienceData = siteConfig.experiences;
   const projectsData = siteConfig.projects;
 
   return (
