@@ -3,21 +3,19 @@
 /**
  * Project Showcase Data
  *
- * All personal/academic project entries for the e-portfolio.
- * Replaces the former JSON-driven content/projects/*.json files.
+ * Personal/academic project entries for the e-portfolio.
+ * Non-intersection contract: NO entry here may duplicate an
+ * engagement already present in experienceData.tsx. The former
+ * `cec-docker` entry has been removed — UCLA CEC lives in
+ * experienceData.tsx as `ucla-cec-dev`.
  *
  * Consumed by: siteConfig.tsx → ProjectSectionClient → ProjectModal
- *
- * Note: All types (ProjectData, ProjectDetails, SpotlightItem, etc.)
- * are defined in siteConfig.tsx and re-exported for downstream consumers.
  */
 
 import type { ProjectData } from "../siteConfig";
 
 export const projectData: ProjectData[] = [
-  /* ────────────────────────────────────────────
-     Project 1 — BruinCreates | Online Art Marketplace
-     ──────────────────────────────────────────── */
+  /* ─── Project 1 — BruinCreates | Online Art Marketplace ─── */
   {
     id: "bruin-creates",
     title: "BruinCreates | Online Art Marketplace",
@@ -84,77 +82,7 @@ export const projectData: ProjectData[] = [
     },
   },
 
-  /* ────────────────────────────────────────────
-     Project 2 — CEC Docker Migration
-     ──────────────────────────────────────────── */
-  {
-    id: "cec-docker",
-    title: "Backend Developer @ UCLA Campus Events Commission",
-    startDate: "2023-09-01",
-    displayDate: "~312 hrs",
-    category: "CI/CD & Containerisation",
-    image: "/images/projects/cec-docker.png",
-    tech: ["Docker", "Kubernetes", "Redis", "Jira", "Scrum", "Backend"],
-    gridSpan: { col: 3 },
-    keyTech: "Docker | Typescript | Redis",
-    cardSpotlight: [
-      { value: "75%", label: "Onboarding Cut", icon: "Zap" },
-      { value: "Docker", label: "Core Tech", icon: "Code" },
-      { value: "Automation", label: "Key Skill", icon: "Wrench" },
-    ],
-    details: {
-      headline: "From Fragile Monolith to Modern Microservices",
-      problem:
-        "The developer onboarding process was crippled by a fragile legacy architecture. The tangled monolith was incompatible with modern Node.js versions, bringing local development to a halt and taking up to four weeks to onboard a single developer.",
-      solution:
-        "I architected and led a complete overhaul by decoupling the monolith into a Keystone 6 Headless CMS and a modern Next.js frontend. I then containerized the entire stack using Docker and Docker Compose, creating a fully isolated, reproducible environment condensed into a single `docker-compose up` command.",
-      impact: [
-        { value: "75%", text: "Reduction in new developer onboarding time" },
-        { value: "30%", text: "Reduction in database query load via Redis caching" },
-        { value: "27%", text: "Improvement in API response latency" },
-      ],
-      techHighlight: {
-        title: "Code Spotlight: docker-compose.yml",
-        language: "yaml",
-        code: `version: '3'
-services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
-    command: yarn dev
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    ports:
-      - "3001:3001"
-    depends_on:
-      - backend
-    command: yarn dev
-
-volumes:
-  backend_data: # Persists the database`,
-        points: [
-          { title: "depends_on", description: "Ensures the backend is healthy before the frontend starts, preventing race conditions." },
-          { title: "Named Volumes", description: "Persists critical data (SQLite DB) and cached dependencies, separating the container's lifecycle from its data." },
-          { title: "Docker Networking", description: "Services communicate using service names (e.g., 'backend') as hostnames, demonstrating an understanding of Docker's internal DNS." },
-          { title: "Environment Variables", description: "Decouples configuration from code, following the 12-Factor App methodology for portability and security." },
-        ],
-      },
-      links: [
-        { label: "Migrated Repo", url: "https://github.com/uclacec/gallery-frontend/tree/monorepo", icon: "GitBranch" },
-        { label: "Original Repo", url: "https://github.com/uclacec/website", icon: "ExternalLink" },
-      ],
-    },
-  },
-
-  /* ────────────────────────────────────────────
-     Project 3 — Cloud-Based Paxos System
-     ──────────────────────────────────────────── */
+  /* ─── Project 2 — Cloud-Based Paxos System ─── */
   {
     id: "cloud-paxos",
     title: "Cloud Based Distributed Consensus (Paxos) System",
@@ -216,9 +144,7 @@ spec:
     },
   },
 
-  /* ────────────────────────────────────────────
-     Project 4 — Pied Piper | Social Media Music App
-     ──────────────────────────────────────────── */
+  /* ─── Project 3 — Pied Piper | Social Media Music App ─── */
   {
     id: "pied-piper",
     title: "Pied Piper | Social Media Music App",

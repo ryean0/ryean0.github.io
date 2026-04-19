@@ -7,16 +7,58 @@
  *   - Reset / normalisation
  *   - Scrollbar styling
  *   - Focus-visible outlines
- *   - Reduced-motion preferences
- *   - High-contrast mode
+ *   - Reduced-motion preferences (for most elements)
  *   - Selection colors
  *
- * This file retains ONLY:
+ * This file retains:
  *   1. Animated background (layered mesh gradient + starfield)
  *   2. Gradient text animation for the hero name
  *   3. Section dividers
- *   4. Screen reader utility (.sr-only)
+ *   4. Screen-reader utility (.sr-only + .sr-only-focusable)
+ *   5. Reduced-motion overrides for CSS-only animations
  */
+
+/* ========================================
+   ACCESSIBILITY UTILITIES
+   ======================================== */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip-link style: reveal on keyboard focus */
+.sr-only:focus,
+.sr-only:focus-visible,
+.sr-only-focusable:focus,
+.sr-only-focusable:focus-visible {
+  position: fixed !important;
+  top: 16px !important;
+  left: 16px !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 10px 16px !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: #38bdf8 !important;
+  color: #030712 !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
+  z-index: 9999 !important;
+  outline: 2px solid #7dd3fc !important;
+  outline-offset: 2px !important;
+  text-decoration: none !important;
+}
 
 /* ========================================
    ANIMATED BACKGROUND
@@ -49,6 +91,7 @@
     radial-gradient(1px 1px at 2100px 350px, rgba(52, 211, 153, 0.2), transparent),
     radial-gradient(1.5px 1.5px at 2400px 500px, rgba(148, 163, 184, 0.35), transparent);
   animation: drift-stars 200s linear infinite;
+  will-change: transform;
 }
 
 @keyframes drift-stars {
@@ -79,37 +122,35 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(148, 163, 184, 0.12) 20%,
-    rgba(56, 189, 248, 0.12) 50%,
-    rgba(148, 163, 184, 0.12) 80%,
+    rgba(148, 163, 184, 0.12),
     transparent
   );
   margin: 0 auto;
-  max-width: 48rem;
+  max-width: 64rem;
 }
 
 /* ========================================
-   SCREEN READER UTILITY
+   REDUCED-MOTION OVERRIDES
+   (Applies to CSS-only animations — MUI handles the rest)
    ======================================== */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+@media (prefers-reduced-motion: reduce) {
+  .animated-stars,
+  .animate-gradient {
+    animation: none !important;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
 }
 
-.sr-only:focus {
-  position: static;
-  width: auto;
-  height: auto;
-  padding: inherit;
-  margin: inherit;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
+/* ========================================
+   HTML / BODY baseline (pre-MUI paint)
+   Prevents FOUC flash on slow networks
+   ======================================== */
+html,
+body {
+  background-color: #030712;
+  color: #f1f5f9;
+  margin: 0;
+  padding: 0;
 }

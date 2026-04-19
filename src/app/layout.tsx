@@ -1,29 +1,46 @@
 /* Filename: src/app/layout.tsx */
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Box from "@mui/material/Box";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import "./globals.css";
 
 const GeistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 const GeistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#030712",
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ryean0.github.io"),
   title: "Ryan Phua | Software Engineer",
   description:
-    "Software Engineer with expertise in full-stack development and cloud infrastructure. Experienced in React, Next.js, Django, AWS, Docker, and Kubernetes. UCLA Computer Science graduate seeking new grad SWE opportunities.",
+    "Software Engineer with expertise in full-stack development and cloud infrastructure. Experienced in React, Next.js, Django, AWS, Docker, and Kubernetes. UCLA Computer Science graduate seeking new-grad SWE opportunities.",
   keywords: [
-    "Ryan Phua", "Software Engineer", "Full Stack Developer",
-    "Cloud Engineer", "DevOps Engineer", "UCLA Computer Science",
-    "React Developer", "Next.js Developer", "AWS", "Docker",
-    "Kubernetes", "New Grad SWE", "Los Angeles",
+    "Ryan Phua",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Cloud Engineer",
+    "DevOps Engineer",
+    "UCLA Computer Science",
+    "React Developer",
+    "Next.js Developer",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "New Grad SWE",
+    "Los Angeles",
   ],
   authors: [{ name: "Ryan Phua" }],
   openGraph: {
@@ -34,22 +51,35 @@ export const metadata: Metadata = {
     description:
       "Software Engineer specializing in full-stack development and cloud infrastructure.",
     siteName: "Ryan Phua Portfolio",
-    images: [{ url: "/profile.jpg", width: 1200, height: 630, alt: "Ryan Phua — Software Engineer" }],
+    images: [
+      {
+        url: "/assets/media/profile/dark-blue-bg.png",
+        width: 1200,
+        height: 630,
+        alt: "Ryan Phua — Software Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ryan Phua | Software Engineer",
     description:
       "Software Engineer specializing in full-stack development and cloud infrastructure.",
-    images: ["/profile.jpg"],
+    images: ["/assets/media/profile/dark-blue-bg.png"],
   },
   robots: {
     index: true,
     follow: true,
     googleBot: {
-      index: true, follow: true,
-      "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1,
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
@@ -60,12 +90,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable}`}
-      style={{ scrollBehavior: "smooth" }}
       suppressHydrationWarning
     >
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#030712" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -80,8 +107,12 @@ export default function RootLayout({
                 name: "University of California, Los Angeles",
               },
               knowsAbout: [
-                "Full-Stack Development", "Cloud Infrastructure",
-                "DevOps", "AWS", "Docker", "Kubernetes",
+                "Full-Stack Development",
+                "Cloud Infrastructure",
+                "DevOps",
+                "AWS",
+                "Docker",
+                "Kubernetes",
               ],
             }),
           }}
@@ -89,25 +120,27 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeRegistry>
-          {/* Skip to main content — a11y */}
-          <a href="#about" className="sr-only">
+          {/* Skip-to-content link (visible only on keyboard focus) */}
+          <a href="#about" className="sr-only sr-only-focusable">
             Skip to main content
           </a>
 
-          {/* Layered animated background */}
-          <Box
-            sx={{
+          {/* Layered animated background (fixed, behind all content) */}
+          <div
+            aria-hidden="true"
+            style={{
               position: "fixed",
               inset: 0,
               zIndex: -1,
               height: "100%",
               width: "100%",
               overflow: "hidden",
+              pointerEvents: "none",
             }}
           >
             <div className="animated-background" />
             <div className="animated-stars" />
-          </Box>
+          </div>
 
           {children}
         </ThemeRegistry>
