@@ -78,11 +78,35 @@ function initChrome() {
   }, { rootMargin: "-45% 0px -45% 0px", threshold: [0.2, 0.5] });
   sections.forEach((section) => observer.observe(section));
 
-  for (const button of document.querySelectorAll(".term button")) {
+  const placeTip = (button) => {
+    const tip = button.parentElement.querySelector(".term-tip");
+    const rect = button.getBoundingClientRect();
+    const margin = 16;
+    const width = Math.min(288, window.innerWidth - margin * 2);
+    let left = rect.left;
+    if (left + width > window.innerWidth - margin) left = window.innerWidth - margin - width;
+    if (left < margin) left = margin;
+    let top = rect.bottom + 8;
+    if (top + 96 > window.innerHeight) top = Math.max(margin, rect.top - 8 - 96);
+    tip.style.width = `${width}px`;
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
+  };
+  for (const term of document.querySelectorAll(".term")) {
+    const button = term.querySelector("button");
+    const place = () => placeTip(button);
+    term.addEventListener("mouseenter", place);
+    term.addEventListener("focusin", place);
     button.addEventListener("click", () => {
       const open = button.getAttribute("aria-expanded") === "true";
+      for (const other of document.querySelectorAll(".term.is-open")) {
+        if (other === term) continue;
+        other.classList.remove("is-open");
+        other.querySelector("button").setAttribute("aria-expanded", "false");
+      }
+      place();
       button.setAttribute("aria-expanded", String(!open));
-      button.parentElement.classList.toggle("is-open", !open);
+      term.classList.toggle("is-open", !open);
     });
   }
 
