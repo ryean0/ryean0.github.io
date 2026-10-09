@@ -37,6 +37,8 @@ function initChrome() {
   const menu = document.getElementById("nav-menu");
   const progress = document.getElementById("progress");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canAnimate = !reduceMotion && typeof IntersectionObserver === "function";
+  if (canAnimate) document.documentElement.classList.add("motion");
   const flow = document.querySelector(".flow");
   const trust = document.querySelector(".trust-stage");
   let ticking = false;
@@ -48,15 +50,14 @@ function initChrome() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
       nav.classList.toggle("is-scrolled", window.scrollY > 8);
-      if (reduceMotion) return;
-      if (flow) {
+      if (!reduceMotion && canAnimate && flow) {
         const rect = flow.getBoundingClientRect();
         const view = window.innerHeight;
-        const drawn = Math.min(1, Math.max(0, (view * 0.86 - rect.top) / (view * 0.62)));
+        const drawn = Math.min(1, Math.max(0, (view * 0.9 - rect.top) / (view * 0.38)));
         flow.style.setProperty("--draw", drawn.toFixed(3));
         flow.dataset.step = String(Math.min(4, Math.floor(drawn * 5)));
       }
-      if (trust && trust.offsetHeight > window.innerHeight + 80) {
+      if (!reduceMotion && trust && trust.offsetHeight > window.innerHeight + 80) {
         const start = trust.getBoundingClientRect().top + window.scrollY;
         const span = trust.offsetHeight - window.innerHeight;
         const progressTrust = Math.min(1, Math.max(0, (window.scrollY - start) / span));
@@ -69,6 +70,7 @@ function initChrome() {
   window.addEventListener("resize", onScroll);
 
   if (reduceMotion) {
+    document.documentElement.classList.remove("motion");
     if (flow) {
       flow.classList.add("is-settled");
       flow.dataset.step = "4";
@@ -76,15 +78,40 @@ function initChrome() {
     }
     if (trust) trust.dataset.step = "3";
     document.querySelectorAll(".reveal").forEach((node) => node.classList.add("is-in"));
-  } else {
-    const revealObserver = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add("is-in");
-        revealObserver.unobserve(entry.target);
-      }
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    document.querySelectorAll(".reveal").forEach((node) => revealObserver.observe(node));
+  } else if (canAnimate) {
+    const revealNodes = [...document.querySelectorAll(".reveal")];
+    let sawObserver = false;
+    let revealObserver;
+    try {
+      revealObserver = new IntersectionObserver((entries) => {
+        sawObserver = true;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-in");
+          revealObserver.unobserve(entry.target);
+        }
+      }, { threshold: 0.12, rootMargin: "0px 0px -4% 0px" });
+    } catch {
+      document.documentElement.classList.remove("motion");
+      revealObserver = null;
+    }
+    if (revealObserver) {
+      const revealVisible = () => {
+        for (const node of revealNodes) {
+          const rect = node.getBoundingClientRect();
+          if (rect.bottom > 0 && rect.top < window.innerHeight) node.classList.add("is-in");
+        }
+      };
+      revealNodes.forEach((node) => revealObserver.observe(node));
+      revealVisible();
+      window.addEventListener("scroll", revealVisible, { passive: true });
+      window.setTimeout(() => {
+        if (!sawObserver) {
+          document.documentElement.classList.remove("motion");
+          revealNodes.forEach((node) => node.classList.add("is-in"));
+        }
+      }, 1000);
+    }
   }
 
   toggle.addEventListener("click", () => {
