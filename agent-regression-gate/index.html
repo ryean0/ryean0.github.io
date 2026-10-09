@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CI Agent Regression Harness</title>
-  <meta name="description" content="Know if a new AI agent got worse than the one you already run, before you ship it. A suite-level verdict at 90% confidence, and no verdict when the data is bad.">
+  <meta name="description" content="Catch agent regressions before they ship. One suite-level status at 90% confidence, and no verdict when the run is not valid.">
   <link rel="canonical" href="https://ryean0.github.io/agent-regression-gate/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ryean0.github.io/agent-regression-gate/">
   <meta property="og:title" content="CI Agent Regression Harness">
-  <meta property="og:description" content="Know if a new AI agent got worse before you ship it. Paired scenarios, a 90% confidence bar, and no verdict on bad data.">
+  <meta property="og:description" content="Catch agent regressions before they ship. Paired scenarios, a 90% interval, and no verdict on an invalid run.">
   <meta property="og:image" content="https://ryean0.github.io/agent-regression-gate/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CI Agent Regression Harness">
-  <meta name="twitter:description" content="Know if a new AI agent got worse before you ship it.">
+  <meta name="twitter:description" content="Catch agent regressions before they ship.">
   <meta name="twitter:image" content="https://ryean0.github.io/agent-regression-gate/og.png">
-  <meta name="theme-color" content="#f3f0e8">
+  <meta name="theme-color" content="#070708">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./css/site.css">
   <script type="application/ld+json">
@@ -28,7 +28,7 @@
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "CI",
     "url": "https://ryean0.github.io/agent-regression-gate/",
-    "description": "Know if a new AI agent got worse than the one you already run, before you ship it."
+    "description": "Catch agent regressions before they ship."
   }
   </script>
 </head>
@@ -39,16 +39,16 @@
   <header class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="#product">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0e5c45"/><path d="M8 12.5h16M8 19.5h10" stroke="#f4f1ea" stroke-width="2.25" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1.5" y="1.5" width="29" height="29" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 12.5h16M8 19.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
         Harness
       </a>
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
       <nav id="nav-menu" class="nav-links" aria-label="Product">
         <a href="#product">Product</a>
         <a href="#method">Method</a>
-        <a href="#trust">Trust</a>
+        <a href="#trust">Gate</a>
         <a href="#results">Results</a>
-        <a href="#demo">Simulator</a>
+        <a href="#demo">Console</a>
         <a href="#faq">FAQ</a>
         <button type="button" class="btn btn-primary" data-pilot>Request a pilot</button>
       </nav>
@@ -61,29 +61,29 @@
         <div>
           <p class="eyebrow">CI Agent Regression Harness</p>
           <h1>
-            <span class="line">Know if a new agent got worse</span>
-            <span class="line">before you ship it.</span>
+            <span class="line">Catch agent regressions</span>
+            <span class="line">before they ship.</span>
           </h1>
           <p class="lede">
-            It runs the same scenarios on the agent you have and the agent you want to ship.
-            Then it says, at a 90% confidence level, whether the new one is a
-            <span class="term"><button type="button" aria-expanded="false" aria-controls="tip-regression">likely regression</button><span class="term-tip" id="tip-regression" role="tooltip">One suite-level call. The whole 90% interval for the pass-rate gap sits below zero. Not a grade on each scenario.</span></span>.
-            If the data is too thin or the infrastructure was flaky, it refuses to guess.
+            Compare a candidate agent with the one already in production, on the same scenarios.
+            The harness returns one suite status at 90% confidence:
+            <span class="term"><button type="button" aria-expanded="false" aria-controls="tip-regression">likely regression</button><span class="term-tip" id="tip-regression" role="tooltip">Suite status. The entire 90% interval for the pass-rate gap lies below zero. Scenarios are diagnostics, not individual gates.</span></span>,
+            pass, or invalid run.
           </p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="#results">See the results</a>
-            <a class="btn btn-ghost" href="#demo">Try the simulator</a>
+            <a class="btn btn-primary" href="#results">View results</a>
+            <a class="btn btn-ghost" href="#demo">Open console</a>
             <button type="button" class="btn btn-ghost" data-pilot>Request a pilot</button>
           </div>
-          <p class="fine">The results panel reads a results file. The simulator further down is separate sample data, not that file.</p>
+          <p class="fine">Results are read from a results file. The console replays a sample configuration in the browser.</p>
         </div>
-        <aside class="hero-card">
-          <h2>Three answers. Never a shrug.</h2>
-          <p class="lede">Every suite ends in one of these. There is no silent pass, and no per-scenario gate.</p>
+        <aside class="hero-card" aria-label="Suite statuses">
+          <p class="kicker">Suite check</p>
+          <h2>One status for the run.</h2>
           <ol class="answers">
-            <li data-kind="clear"><strong>No regression</strong><span>The new agent holds up on the same scenarios.</span></li>
-            <li data-kind="regress"><strong>Likely regression</strong><span>It got worse, and the 90% interval agrees.</span></li>
-            <li data-kind="invalid"><strong>Invalid run</strong><span>The data is not good enough to say either way.</span></li>
+            <li data-kind="clear"><strong>Pass</strong><span>The 90% interval does not sit below zero.</span></li>
+            <li data-kind="regress"><strong>Likely regression</strong><span>The candidate is worse, and the interval agrees.</span></li>
+            <li data-kind="invalid"><strong>Invalid run</strong><span>The data cannot support a verdict.</span></li>
           </ol>
         </aside>
       </div>
@@ -91,40 +91,40 @@
 
     <section class="section" aria-labelledby="spec-title">
       <div class="wrap">
-        <p class="kicker">Spec sheet</p>
-        <h2 id="spec-title">The bar, written down.</h2>
-        <p class="section-intro">These are decision rules, not a customer scoreboard. A <span class="term"><button type="button" aria-expanded="false" aria-controls="tip-rollout">rollout</button><span class="term-tip" id="tip-rollout" role="tooltip">One full try of one scenario. Pass scores 1. Fail scores 0.</span></span> is one try. A pass is 1. A fail is 0. The verdict is for the suite, not for each task.</p>
+        <p class="kicker">Specification</p>
+        <h2 id="spec-title">The decision rules.</h2>
+        <p class="section-intro">A <span class="term"><button type="button" aria-expanded="false" aria-controls="tip-rollout">rollout</button><span class="term-tip" id="tip-rollout" role="tooltip">One execution of one scenario. A pass scores 1. A fail scores 0.</span></span> is one execution. Pass is 1. Fail is 0. The status applies to the suite.</p>
         <div class="spec-grid">
-          <article class="spec"><b>90%</b><p>Confidence level. A regression is called only when the whole interval sits below zero.</p></article>
-          <article class="spec"><b>1 or 0</b><p>Every usable rollout is a pass or a fail. No partial credit.</p></article>
-          <article class="spec"><b>Paired</b><p>Outcomes are matched by scenario. Order does not matter. Each scenario is a diagnostic, not its own gate.</p></article>
-          <article class="spec"><b>5%</b><p>Miss ceiling. More than 5% of scheduled runs missing or broken by infrastructure, on either arm, and there is no verdict. Exactly 5% still scores.</p></article>
-          <article class="spec"><b>60% up</b><p>Each scenario needs at least ceil(0.6 × scheduled) usable runs on both arms. 5 needs 3. 7 needs 5. 20 needs 12.</p></article>
-          <article class="spec"><b>Hashed</b><p>Every scenario is content-hashed. A stale or edited test invalidates the run instead of changing the score.</p></article>
+          <article class="spec"><b>90%</b><p>Confidence level. A regression is called only when the full interval lies below zero.</p></article>
+          <article class="spec"><b>1 / 0</b><p>Every usable rollout is a pass or a fail. There is no partial credit.</p></article>
+          <article class="spec"><b>Paired</b><p>Outcomes are matched by scenario. Order does not change the result. A scenario is a diagnostic, not a gate.</p></article>
+          <article class="spec"><b>5%</b><p>Miss cap. Above 5% missing or infrastructure-broken on either arm, the run is invalid. Exactly 5% still scores.</p></article>
+          <article class="spec"><b>60%</b><p>Coverage floor. Each scenario needs at least ceil(0.6 × scheduled) usable rollouts on both arms. 5 needs 3. 20 needs 12.</p></article>
+          <article class="spec"><b>SHA-256</b><p>Scenarios are content-hashed. A stale or edited test invalidates the run.</p></article>
         </div>
       </div>
     </section>
 
     <section class="section" id="method">
       <div class="wrap">
-        <p class="kicker">How it works</p>
-        <h2>Same tasks. Both versions. One call.</h2>
-        <p class="section-intro">The harness sits in CI, between “the change looks fine” and “merge it.”</p>
+        <p class="kicker">Method</p>
+        <h2>Same scenarios. Both versions. One check.</h2>
+        <p class="section-intro">The job runs in CI, after the change is built and before it merges.</p>
         <ol class="steps">
-          <li class="step"><span class="step-no">01</span><div><h3>Lock the scenarios</h3><p>Write the tasks that matter. Each one is sealed with a content hash, so a stale or edited test cannot quietly move the score.</p></div></li>
-          <li class="step"><span class="step-no">02</span><div><h3>Run both versions</h3><p>The CI job runs every scenario on the baseline and on the candidate. Repeats are normal: twenty times on the current agent, five on the new one.</p></div></li>
-          <li class="step"><span class="step-no">03</span><div><h3>Score the rollouts</h3><p>Pass is 1. Fail is 0. If the candidate hangs because it is looping, or because it blew its step budget, that timeout is a fail.</p></div></li>
-          <li class="step"><span class="step-no">04</span><div><h3>Set infrastructure aside</h3><p>A provider outage, a rate limit, or a killed runner is not the agent’s fault. Those runs are excluded. If they pile up past 5% on either side, there is no verdict.</p></div></li>
-          <li class="step"><span class="step-no">05</span><div><h3>Publish one answer</h3><p>The scorer pairs the outcomes by scenario and reports a likely regression only at 90% confidence. Otherwise it says no regression, or invalid run. That answer is for the suite.</p></div></li>
+          <li class="step"><span class="step-no">01</span><div><h3>Lock the scenarios</h3><p>Define the tasks that matter. Each one is sealed with a content hash, so an edited test cannot move the score.</p></div></li>
+          <li class="step"><span class="step-no">02</span><div><h3>Run both arms</h3><p>The same suite runs on the baseline and the candidate. A typical budget is 20 rollouts on the current agent and 5 on the candidate.</p></div></li>
+          <li class="step"><span class="step-no">03</span><div><h3>Score rollouts</h3><p>Pass is 1. Fail is 0. A step-budget or loop timeout on the agent is a fail.</p></div></li>
+          <li class="step"><span class="step-no">04</span><div><h3>Exclude infrastructure</h3><p>Provider 5xx, rate limits, and a killed runner are not the agent’s score. If those misses exceed 5% on either arm, there is no verdict.</p></div></li>
+          <li class="step"><span class="step-no">05</span><div><h3>Publish the suite status</h3><p>Paired by scenario, at 90% confidence: pass, likely regression, or invalid run.</p></div></li>
         </ol>
         <figure>
-          <figcaption class="vh" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Pipeline from hashed scenarios, through a CI runner, into baseline and candidate rollouts, then a scorer, then one suite verdict.</figcaption>
+          <figcaption class="sr-only">Pipeline from hashed scenarios, through a CI job, into baseline and candidate rollouts, a scorer, and one suite status.</figcaption>
           <ol class="pipeline">
-            <li><p class="pipe-index">01</p><h3>Scenarios</h3><p>The tasks you care about, sealed before the run starts.</p><p class="callout"><span>Callout</span> Content hash on every test</p></li>
-            <li><p class="pipe-index">02</p><h3>CI runner</h3><p>One job. The suite does not change between versions.</p><p class="callout"><span>Callout</span> Same scenarios, both versions</p></li>
-            <li><p class="pipe-index">03</p><h3>Two arms</h3><div class="split"><p><strong>Baseline</strong> Today’s agent. Often 20 rollouts.</p><p><strong>Candidate</strong> The version to ship. Often 5 rollouts.</p></div><p class="callout"><span>Callout</span> Agent timeout = fail. Infrastructure timeout is excluded.</p></li>
-            <li><p class="pipe-index">04</p><h3>Scorer</h3><p>Pass rates, paired by scenario, with a 90% interval on the gap.</p><p class="callout"><span>Callout</span> Each scenario informs the suite. It does not get its own gate.</p></li>
-            <li><p class="pipe-index">05</p><h3>Verdict</h3><p>One suite answer: regression, no regression, or no verdict.</p><p class="callout"><span>Callout</span> Bad data does not get a score</p></li>
+            <li><p class="pipe-index">01</p><h3>Scenarios</h3><p>Tasks sealed before the run starts.</p><p class="note">Content hash on every test</p></li>
+            <li><p class="pipe-index">02</p><h3>CI job</h3><p>One suite. It does not change between versions.</p><p class="note">Same scenarios, both arms</p></li>
+            <li><p class="pipe-index">03</p><h3>Two arms</h3><div class="split"><p><strong>Baseline</strong>Current agent. Often 20 rollouts.</p><p><strong>Candidate</strong>Version under test. Often 5 rollouts.</p></div><p class="note">Agent timeout = fail. Infrastructure timeout is excluded.</p></li>
+            <li><p class="pipe-index">04</p><h3>Scorer</h3><p>Pass rates, paired by scenario, with a 90% interval on the gap.</p><p class="note">Scenarios inform the suite. They are not gates.</p></li>
+            <li><p class="pipe-index">05</p><h3>Status</h3><p>Pass, likely regression, or invalid run.</p><p class="note">An invalid run is not scored</p></li>
           </ol>
         </figure>
       </div>
@@ -132,33 +132,33 @@
 
     <section class="section" id="trust">
       <div class="wrap">
-        <p class="kicker">Why you can trust the call</p>
-        <h2>It would rather say nothing than say the wrong thing.</h2>
+        <p class="kicker">Gate behavior</p>
+        <h2>No verdict when the run cannot support one.</h2>
         <div class="trust-grid">
-          <article class="trust"><h3>Fair comparison</h3><p>Outcomes are paired by scenario. A difficult refund and an easy password reset do not get stirred into one average that hides the miss. The order of the list does not change the answer.</p><p class="annotation">candidate rate − baseline rate, then an unweighted mean</p></article>
-          <article class="trust"><h3>Honest about hangs</h3><p>If the candidate times out because it is looping or it spent its step budget, that counts as a fail. Timeouts from infrastructure — provider 5xx, rate limits, a CI runner killed — are excluded instead.</p><p class="annotation">agent timeout → score 0 · infra timeout → set aside</p></article>
-          <article class="trust"><h3>Refuses bad data</h3><p>If more than 5% of scheduled rollouts on either arm are missing or broken by infrastructure, the run is invalid. Exactly 5% is fine. Each scenario also needs a floor of usable runs on both arms.</p><p class="annotation">5 → 3 usable · 7 → 5 · 20 → 12 · 6% on one arm → no verdict</p></article>
-          <article class="trust"><h3>Tamper-evident scenarios</h3><p>Each test is content-hashed. If the text in the results does not match the suite, the run is invalid. Stale tests and quiet edits get caught before they become a score.</p><p class="annotation">SHA-256 of the scenario text, checked before the verdict</p></article>
+          <article class="trust"><h3>Paired comparison</h3><p>Each scenario contributes one difference: candidate pass rate minus baseline pass rate. Those differences are averaged without weights. List order does not change the result.</p><p class="annotation">unweighted mean of per-scenario gaps</p></article>
+          <article class="trust"><h3>Timeout policy</h3><p>A loop or an exhausted step budget scores 0 and stays in the sample. Provider 5xx, rate limits, and a killed CI runner are excluded from the score and counted toward the miss cap.</p><p class="annotation">agent timeout → 0 · infrastructure timeout → excluded</p></article>
+          <article class="trust"><h3>Validity</h3><p>More than 5% of scheduled rollouts missing or infrastructure-broken, on either arm, invalidates the run. Exactly 5% remains valid. Each scenario also has a coverage floor on both arms.</p><p class="annotation">5 → 3 usable · 7 → 5 · 20 → 12 · 6% on one arm → invalid</p></article>
+          <article class="trust"><h3>Content hashes</h3><p>Each scenario is hashed. If the recorded text does not match the suite, the run is invalid before a score is published.</p><p class="annotation">SHA-256 of the scenario text</p></article>
         </div>
       </div>
     </section>
 
     <section class="section" id="results">
       <div class="wrap">
-        <p class="kicker">Results file</p>
-        <h2>What the suite decided.</h2>
-        <p class="section-intro">This panel reads <code>data/results.preliminary.json</code>, a local results.json v1 file. Rates are fraction strings such as 3/5 or 0.6. The verdict is the suite field <code>likely_regression</code>. Scenario rows are diagnostics.</p>
+        <p class="kicker">results.json</p>
+        <h2>Recorded suite status.</h2>
+        <p class="section-intro">This panel reads <code>data/results.preliminary.json</code>. Rates are fraction strings such as <code>3/5</code> or <code>0.6</code>. The status is the suite field <code>likely_regression</code>. Scenario rows are diagnostics.</p>
         <div id="results-root" class="results-panel" aria-live="polite">
           <p>Loading results…</p>
         </div>
       </div>
     </section>
 
-    <section class="section simulator" id="demo">
+    <section class="section" id="demo">
       <div class="wrap">
-        <p class="kicker">Simulator</p>
-        <h2>A separate sample run.</h2>
-        <p class="section-intro">This is not the results file. Pick a scenario set and a candidate, and the page scores simulated rollouts in your browser. Nothing here is a customer result.</p>
+        <p class="kicker">Product console</p>
+        <h2>Sample run viewer.</h2>
+        <p class="section-intro">Replay a configuration locally. This view does not read the results file and it is not a customer benchmark.</p>
         <div id="demo-root"></div>
       </div>
     </section>
@@ -166,15 +166,15 @@
     <section class="section" id="faq">
       <div class="wrap">
         <p class="kicker">FAQ</p>
-        <h2>Plain answers.</h2>
+        <h2>Operational questions.</h2>
         <div class="faq-list">
-          <details><summary>What does the harness decide?</summary><p>Whether a new version of an agent got worse than the one you already run, before you ship it. The answer is one suite-level call, not a pass or a block on each scenario.</p></details>
-          <details><summary>What is a rollout?</summary><p>One try at one scenario. Pass scores 1. Fail scores 0. The harness repeats the scenario because a single try can be lucky.</p></details>
-          <details><summary>Why can the candidate have fewer runs?</summary><p>Twenty baseline runs against five candidate runs is a normal plan. Each scenario becomes a pass rate, then each scenario counts once toward the suite. Extra runs do not buy an extra vote.</p></details>
-          <details><summary>What does 90% confidence mean?</summary><p>A likely regression is called only when the entire 90% confidence interval for the pass-rate gap sits below zero. If the interval still includes “no real change,” the harness does not call a regression.</p></details>
-          <details><summary>When does it refuse a verdict?</summary><p>If more than 5% of scheduled runs on either side are missing or broken by infrastructure. Exactly 5% is still scored. And each scenario needs at least 60% of its scheduled runs usable, rounded up: 5 needs 3, 7 needs 5, 20 needs 12.</p></details>
-          <details><summary>Does a timeout count as a failure?</summary><p>If the agent was looping or it used up its step budget, yes. If the timeout was infrastructure — a provider error, a rate limit, or the CI runner being killed — that run is set aside.</p></details>
-          <details><summary>Are the numbers on this page customer results?</summary><p>No. The results panel shows the bundled preliminary example file. The simulator uses labeled sample data. Neither is a customer benchmark.</p></details>
+          <details><summary>What does the harness decide?</summary><p>Whether a candidate agent regressed relative to the one already running, before the change ships. The output is one suite status, not a pass or a block on each scenario.</p></details>
+          <details><summary>What is a rollout?</summary><p>One execution of one scenario. Pass scores 1. Fail scores 0. Scenarios are repeated because a single execution is not a stable estimate.</p></details>
+          <details><summary>Why does the candidate have fewer rollouts?</summary><p>Twenty baseline rollouts against five candidate rollouts is a normal budget. Each scenario becomes a pass rate, then each scenario counts once. Additional rollouts do not add weight.</p></details>
+          <details><summary>What does 90% confidence mean here?</summary><p>A likely regression is reported only when the entire 90% interval for the pass-rate gap lies below zero. If the interval still includes no change, the harness does not call a regression.</p></details>
+          <details><summary>When is a run invalid?</summary><p>When more than 5% of scheduled rollouts on either arm are missing or broken by infrastructure. Exactly 5% is still scored. Each scenario also needs at least 60% of its scheduled rollouts usable, rounded up: 5 needs 3, 7 needs 5, 20 needs 12.</p></details>
+          <details><summary>Does a timeout count as a failure?</summary><p>A loop or an exhausted step budget scores 0. A provider error, a rate limit, or a killed CI runner is excluded and counts toward the 5% miss cap.</p></details>
+          <details><summary>Are the figures on this page customer results?</summary><p>No. The results panel shows the bundled preliminary file. The console replays labeled sample configurations. Neither is a customer benchmark.</p></details>
         </div>
       </div>
     </section>
@@ -182,10 +182,10 @@
     <section class="close">
       <div class="wrap">
         <p class="kicker">Pilot</p>
-        <h2>Put the next agent change behind a verdict.</h2>
-        <p class="lede">Bring a suite you already care about. We will wire the baseline, the candidate, and a gate your CI can fail.</p>
+        <h2>Put the next agent change behind a check.</h2>
+        <p class="lede">Bring a suite you already run. We connect the baseline, the candidate, and a status your CI can fail.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="#demo">Try the simulator</a>
+          <a class="btn btn-primary" href="#demo">Open console</a>
           <button type="button" class="btn btn-ghost" data-pilot>Request a pilot</button>
         </div>
       </div>
@@ -194,9 +194,9 @@
 
   <footer class="footer">
     <div class="wrap footer-inner">
-      <p>CI Agent Regression Harness. Relative paths. Drop in a new results file without changing the page.</p>
+      <p>CI Agent Regression Harness. Relative paths. Replace the results file without changing the page.</p>
       <nav aria-label="Elsewhere">
-        <a href="https://github.com/rphua-dev/ci-agent-regression-harness" rel="noopener noreferrer">Harness source</a>
+        <a href="https://github.com/rphua-dev/ci-agent-regression-harness" rel="noopener noreferrer">Source</a>
         <a href="https://ryean0.github.io/">Portfolio</a>
         <a href="mailto:ryanphua.dev@outlook.com">Email</a>
       </nav>
@@ -207,7 +207,7 @@
     <form id="pilot-form">
       <p class="kicker">Pilot</p>
       <h2 id="pilot-title">Request a pilot</h2>
-      <p class="lede">This opens an email draft. Nothing is stored on this page.</p>
+      <p class="lede">Opens an email draft. Nothing is stored on this page.</p>
       <div class="fields">
         <label>Name <input name="name" autocomplete="name" required></label>
         <label>Work email <input name="email" type="email" autocomplete="email" required></label>

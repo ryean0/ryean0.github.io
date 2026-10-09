@@ -244,7 +244,7 @@ export function scoreRun(scenarios, options = {}) {
     return {
       verdict: "invalid_run",
       headline: "Invalid run",
-      why: `${invalidReasons.join(" ")} No regression verdict is published from data this incomplete.`,
+      why: `${invalidReasons.join(" ")} No suite verdict is published.`,
       invalidReasons,
       confidence,
       meanDelta: null,
@@ -272,14 +272,14 @@ export function scoreRun(scenarios, options = {}) {
   const band = `${formatPoints(lower)} to ${formatPoints(upper)}`;
   const percent = formatPercent(Math.round(confidence * 100), 100);
   const why = likely
-    ? `Across ${rows.length} scenarios, the candidate's pass rate averaged ${gap} versus the baseline. Each scenario counts once. The ${percent} confidence interval for that gap is ${band}. The whole interval is below zero, so this is a likely regression: the new version did worse by more than noise.`
+    ? `Suite gap ${gap} across ${rows.length} scenarios, candidate minus baseline. The ${percent} interval is ${band}, entirely below zero.`
     : lower > 0
-      ? `Across ${rows.length} scenarios, the candidate's pass rate averaged ${gap} versus the baseline. Each scenario counts once. The ${percent} confidence interval is ${band}, entirely above zero, so the new version looks better here. That is not reported as a regression.`
-      : `Across ${rows.length} scenarios, the average gap is ${gap} (candidate minus baseline). Each scenario counts once. The ${percent} confidence interval is ${band}. It is not entirely below zero, so the harness does not call a regression.`;
+      ? `Suite gap ${gap} across ${rows.length} scenarios. The ${percent} interval is ${band}, entirely above zero. The check does not call a regression.`
+      : `Suite gap ${gap} across ${rows.length} scenarios. The ${percent} interval is ${band}. It is not entirely below zero, so the suite check passes.`;
 
   return {
     verdict: likely ? "likely_regression" : "no_regression",
-    headline: likely ? "Likely regression" : "No regression",
+    headline: likely ? "Likely regression" : "Pass",
     why,
     invalidReasons: [],
     confidence,

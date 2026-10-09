@@ -1,12 +1,12 @@
 import { CANDIDATES, SCENARIO_SETS, buildRun } from "./demo-data.js";
 import { parseResults } from "./results.js";
-import { METHOD_NOTES, formatPercent, formatPoints, formatSignedNumber, interpretSlot, scoreRun } from "./verdict.js";
+import { METHOD_NOTES, armMissExceeds, formatPercent, formatPoints, formatSignedNumber, scoreRun } from "./verdict.js";
 
 const EMAIL = "ryanphua.dev@outlook.com";
 const SLOT_LABEL = {
   pass: "Pass",
   fail: "Fail",
-  agent_timeout: "Agent timeout, counted as a fail",
+  agent_timeout: "Step-budget timeout, scored 0",
   infra_timeout: "Infrastructure timeout, excluded",
   missing: "Missing result, excluded",
 };
@@ -156,9 +156,9 @@ function renderResults(view) {
   ];
 
   root.replaceChildren(el("div", { class: "panel" }, [
-    el("p", { class: "kicker" }, "Suite verdict"),
+    el("p", { class: "kicker" }, "Suite check"),
     el("article", { class: "verdict", "data-verdict": view.verdict }, [
-      el("p", { class: "kicker" }, view.status === "preliminary" ? "Preliminary file" : "Final file"),
+      el("p", { class: "kicker" }, view.status === "preliminary" ? "Preliminary" : "Final"),
       el("h3", {}, view.headline),
       el("p", { class: "why" }, view.why),
     ]),
@@ -166,8 +166,8 @@ function renderResults(view) {
     ...armRows.map(([label, base, cand]) => el("div", { class: "sheet" }, [
       el("span", {}, label), el("strong", {}, String(base)), el("strong", {}, String(cand)),
     ])),
-    el("p", { class: "fine" }, "Exactly 5% of scheduled rollouts may be environment misses. More than that, on either arm, is over the line. The suite verdict above is the file’s likely_regression field, not a second score computed in the browser."),
-    el("h3", { style: "margin-top:1.4rem;font-size:1.25rem" }, "Scenario diagnostics"),
+    el("p", { class: "fine" }, "Environment misses may equal 5% of scheduled rollouts. Above that, on either arm, is over the cap. The suite check is the file’s likely_regression field."),
+    el("h3", { class: "block-title" }, "Scenario diagnostics"),
     el("table", { class: "diag" }, [
       el("caption", {}, "Diagnostics only. These rates do not pass or block a scenario."),
       el("thead", {}, el("tr", {}, [el("th", { scope: "col" }, "Scenario"), el("th", { scope: "col" }, "Baseline rate"), el("th", { scope: "col" }, "Candidate rate")])),
@@ -189,12 +189,12 @@ function renderResults(view) {
 
 function renderChart(chart) {
   const body = chart.status === "coming_soon"
-    ? el("div", { class: "chart-frame" }, "Coming soon. No series is drawn for this check.")
+    ? el("div", { class: "chart-frame" }, "No series. This check is not in the file yet.")
     : chart.points.length
       ? mdeSvg(chart)
       : el("div", { class: "chart-frame" }, [
-          el("p", {}, `${chart.yLabel || chart.title} against ${chart.xLabel || "rollout budget"}.`),
-          el("p", {}, "Preliminary. This file does not include a series yet."),
+          el("p", {}, `${chart.yLabel || chart.title} · ${chart.xLabel || "rollout budget"}`),
+          el("p", {}, "No series in this file."),
         ]);
   return el("figure", { class: "chart" }, [
     el("header", {}, [
@@ -221,8 +221,8 @@ function mdeSvg(chart) {
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", `${chart.title}. ${chart.points.map((point) => `${point.budget} rollouts, drop ${point.dropText}`).join(". ")}`);
-  svg.innerHTML = `<line x1="${pad}" y1="${height - pad}" x2="${width - 16}" y2="${height - pad}" stroke="#1c1915"/><line x1="${pad}" y1="16" x2="${pad}" y2="${height - pad}" stroke="#1c1915"/><polyline fill="none" stroke="#0e5c45" stroke-width="2" points="${coords.join(" ")}"/>`;
-  return el("div", { class: "chart-frame", style: "background:#fff" }, svg);
+  svg.innerHTML = `<line x1="${pad}" y1="${height - pad}" x2="${width - 16}" y2="${height - pad}" stroke="#a1a1aa"/><line x1="${pad}" y1="16" x2="${pad}" y2="${height - pad}" stroke="#a1a1aa"/><polyline fill="none" stroke="#f4f4f5" stroke-width="1.5" points="${coords.join(" ")}"/>`;
+  return el("div", { class: "chart-frame" }, svg);
 }
 
 function renderResultsError(error) {
@@ -239,25 +239,11 @@ function renderResultsError(error) {
   );
 }
 
-function tally(slots, shown) {
-  let passes = 0;
-  let valid = 0;
-  for (const slot of slots.slice(0, shown)) {
-    const item = interpretSlot(slot);
-    if (item.valid) {
-      valid += 1;
-      if (item.score === 1) passes += 1;
-    }
-  }
-  return { passes, valid, rate: valid ? passes / valid : null };
-}
-
 function renderDemo() {
   const root = document.getElementById("demo-root");
   let setId = SCENARIO_SETS[0].id;
   let candidateId = "stable";
   let phase = "idle";
-  let revealed = 0;
   let result = null;
   let input = null;
   let token = 0;
@@ -265,28 +251,33 @@ function renderDemo() {
 
   const live = el("div", { "aria-live": "polite", "aria-atomic": "true" });
   const stage = el("div");
-  const shell = el("div", { class: "sim-shell" }, [
-    el("p", { class: "sim-banner" }, [
-      el("strong", {}, "Simulated demo data"),
-      el("span", {}, "Not the results file. Not a customer benchmark."),
+  const shell = el("div", { class: "console" }, [
+    el("div", { class: "console-bar" }, [
+      el("strong", {}, "Sample run"),
+      el("span", {}, "Local configuration. Not results.json. Not a customer benchmark."),
     ]),
-    el("div", { class: "pickers" }, [
-      fieldset("Scenario set", "scenario-set", SCENARIO_SETS, setId, (id) => { setId = id; reset(); paint(); }),
-      fieldset("Candidate", "candidate", CANDIDATES, candidateId, (id) => { candidateId = id; reset(); paint(); }),
-    ]),
-    el("div", { class: "runbar" }, [
-      el("button", { type: "button", class: "btn btn-primary", id: "run-btn", onclick: run }, "Run comparison"),
-      el("p", {}, "Twenty baseline runs and five candidate runs on every scenario."),
-    ]),
-    el("ul", { class: "legend" }, [
-      legendItem("pass", "Pass"),
-      legendItem("fail", "Fail"),
-      legendItem("agent_timeout", "Agent timeout, counts as a fail"),
-      legendItem("infra_timeout", "Infrastructure or missing, excluded"),
+    el("div", { class: "console-body" }, [
+      el("div", { class: "pickers" }, [
+        fieldset("Suite", "scenario-set", SCENARIO_SETS, setId, (id) => { setId = id; reset(); paint(); }),
+        fieldset("Configuration", "candidate", CANDIDATES, candidateId, (id) => { candidateId = id; reset(); paint(); }),
+      ]),
+      el("div", { class: "runbar" }, [
+        el("button", { type: "button", class: "btn btn-primary", id: "run-btn", onclick: run }, "Run"),
+        el("p", {}, "20 baseline · 5 candidate · paired by scenario"),
+      ]),
+      el("ul", { class: "legend" }, [
+        legendItem("pass", "Pass"),
+        legendItem("fail", "Fail"),
+        legendItem("agent_timeout", "Step-budget timeout"),
+        legendItem("infra_timeout", "Excluded"),
+      ]),
     ]),
     stage,
     live,
-    mathNotes(),
+    el("details", { class: "math" }, [
+      el("summary", {}, "Scoring notes"),
+      ...Object.values(METHOD_NOTES).map((text) => el("p", {}, text)),
+    ]),
   ]);
   root.replaceChildren(shell);
 
@@ -308,14 +299,7 @@ function renderDemo() {
   }
 
   function legendItem(kind, label) {
-    return el("li", {}, [el("i", { class: "dot", "data-kind": kind, "aria-hidden": "true" }), label]);
-  }
-
-  function mathNotes() {
-    return el("details", { class: "math" }, [
-      el("summary", {}, "How the simulator calculates a verdict"),
-      ...Object.values(METHOD_NOTES).map((text) => el("p", {}, text)),
-    ]);
+    return el("li", {}, [el("i", { class: "cell", "data-kind": kind, "aria-hidden": "true" }), label]);
   }
 
   function clearTimers() {
@@ -326,7 +310,6 @@ function renderDemo() {
     token += 1;
     clearTimers();
     phase = "idle";
-    revealed = 0;
     result = null;
     input = null;
   }
@@ -338,90 +321,174 @@ function renderDemo() {
     result = scoreRun(input);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      revealed = Number.POSITIVE_INFINITY;
       phase = "done";
       paint();
       return;
     }
-    revealed = 0;
     phase = "running";
     paint();
-    const maxSlots = Math.max(...input.flatMap((scenario) => [scenario.baseline.scheduled, scenario.candidate.scheduled]));
-    let step = 0;
-    const tick = () => {
+    const fill = stage.querySelector(".timeline-fill");
+    requestAnimationFrame(() => {
+      if (token !== mine || !fill) return;
+      fill.dataset.on = "1";
+    });
+    timers.push(window.setTimeout(() => {
       if (token !== mine) return;
-      step += 1;
-      revealed = step;
-      if (step >= maxSlots) {
-        timers.push(window.setTimeout(() => {
-          if (token !== mine) return;
-          phase = "done";
-          paint();
-          live.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }, 320));
-        paint();
-        return;
-      }
+      phase = "done";
       paint();
-      timers.push(window.setTimeout(tick, 46));
-    };
-    timers.push(window.setTimeout(tick, 46));
+    }, 720));
   }
 
   function paint() {
     const button = document.getElementById("run-btn");
     if (button) {
       button.disabled = phase === "running";
-      button.textContent = phase === "running" ? "Running…" : phase === "done" ? "Run again" : "Run comparison";
+      button.textContent = phase === "running" ? "Running" : phase === "done" ? "Run again" : "Run";
     }
     const set = SCENARIO_SETS.find((item) => item.id === setId);
-    stage.replaceChildren(...set.scenarios.map((scenario) => {
-      const raw = input?.find((row) => row.id === scenario.id);
-      const scored = result?.scenarios.find((row) => row.id === scenario.id);
-      return el("article", { class: "scenario" }, [
-        el("h3", {}, scenario.name),
-        el("p", { class: "prompt" }, scenario.prompt),
-        el("p", { class: "hash" }, `Sealed ${scenario.expectedHash.slice(0, 8)}…${scenario.expectedHash.slice(-4)}`),
-        phase !== "idle" && raw ? el("div", { class: "arms" }, [
-          armView("Baseline", "baseline", raw.baseline.slots, raw.baseline.scheduled, phase === "done" ? scored?.baseline : null),
-          armView("Candidate", "candidate", raw.candidate.slots, raw.candidate.scheduled, phase === "done" ? scored?.candidate : null),
-        ]) : null,
-      ]);
-    }));
-    live.replaceChildren(phase === "done" && result ? verdictCard(result) : el("p", { class: "fine" }, phase === "running" ? "Running simulated rollouts." : "Run the comparison to watch both arms fill in."));
+    const show = phase !== "idle" && input && result;
+    stage.replaceChildren(
+      el("div", { class: "console-body" }, [
+        timelineBlock(),
+        show ? gridBlock(set) : el("p", { class: "fine" }, phase === "idle" ? "Select a configuration and run." : ""),
+        show && phase === "done" ? rateBlock(result) : null,
+        show && phase === "done" ? missBlock(result) : null,
+      ].filter(Boolean)),
+    );
+    if (phase === "done" && result) live.replaceChildren(verdictCard(result));
+    else if (phase === "running") live.replaceChildren(el("p", { class: "fine" }, "Run in progress."));
+    else live.replaceChildren();
   }
 
-  function armView(name, which, slots, scheduled, official) {
-    const liveCount = official
-      ? { passes: official.passes, valid: official.valid, rate: official.passRate }
-      : tally(slots, revealed);
-    const width = liveCount.rate == null ? 0 : Math.round(liveCount.rate * 1000) / 10;
-    const label = liveCount.valid === 0 ? "No usable runs yet" : `${liveCount.passes} of ${liveCount.valid} passed`;
-    return el("div", { class: "arm", "data-arm": which }, [
+  function timelineBlock() {
+    return el("div", { class: "dash-block", style: "border-top:0;padding-top:0" }, [
+      el("div", { class: "timeline-meta" }, [
+        el("span", {}, "Run timeline"),
+        el("span", { class: "mono" }, phase === "idle" ? "idle" : phase === "running" ? "scoring" : "complete"),
+      ]),
+      el("div", { class: "timeline-track", "aria-hidden": "true" }, el("i", {
+        class: "timeline-fill",
+        "data-on": phase === "done" ? "1" : "0",
+      })),
+    ]);
+  }
+
+  function gridBlock(set) {
+    return el("div", { class: "dash-block" }, [
+      el("h3", {}, "Rollouts"),
+      ...set.scenarios.map((scenario) => {
+        const raw = input.find((row) => row.id === scenario.id);
+        const scored = result.scenarios.find((row) => row.id === scenario.id);
+        const settled = phase === "done";
+        return el("article", { class: "scenario" }, [
+          el("h3", {}, scenario.name),
+          el("p", { class: "hash" }, scenario.id),
+          el("div", { class: "arms" }, [
+            armGrid("Baseline", raw.baseline, settled ? scored.baseline : null),
+            armGrid("Candidate", raw.candidate, settled ? scored.candidate : null),
+          ]),
+        ]);
+      }),
+    ]);
+  }
+
+  function armGrid(name, arm, official) {
+    const label = official
+      ? `${official.passes}/${official.valid} pass`
+      : `${arm.scheduled} scheduled`;
+    return el("div", {}, [
       el("p", { class: "arm-label" }, [name, el("b", {}, label)]),
-      el("div", { class: "dots", "aria-hidden": "true" }, slots.slice(0, scheduled).map((slot, index) => el("i", {
-        class: "dot",
-        "data-kind": index < revealed ? slot : "",
-        title: index < revealed ? SLOT_LABEL[slot] : "Waiting",
+      el("div", { class: "cells", "aria-hidden": "true" }, arm.slots.slice(0, arm.scheduled).map((slot) => el("i", {
+        class: "cell",
+        "data-kind": official ? slot : "",
+        title: official ? SLOT_LABEL[slot] : "Pending",
       }))),
-      el("div", { class: "track", "aria-hidden": "true" }, el("span", { style: `width:${width}%` })),
+    ]);
+  }
+
+  function rateBlock(scored) {
+    const rows = [
+      rateRow("Baseline", scored.baseline),
+      rateRow("Candidate", scored.candidate),
+    ];
+    return el("div", { class: "dash-block" }, [
+      el("h3", {}, "Pass rate"),
+      ...rows,
+      scored.meanDelta == null ? el("p", { class: "fine" }, "No interval. The run is invalid.") : interval(scored),
+    ]);
+  }
+
+  function rateRow(name, arm) {
+    const text = arm.passRate == null ? "—" : formatPercent(arm.passes, arm.valid);
+    const width = arm.passRate == null ? 0 : Math.round(arm.passRate * 1000) / 10;
+    return el("div", { class: "rate-row" }, [
+      el("span", {}, name),
+      el("span", { class: "mono" }, text),
+      el("span", { class: "rate-track", "aria-hidden": "true" }, el("i", { style: `width:${width}%` })),
+    ]);
+  }
+
+  function interval(scored) {
+    const pad = Math.max(0.02, (scored.upper - scored.lower) * 0.35);
+    let min = Math.min(scored.lower, scored.meanDelta, 0) - pad;
+    let max = Math.max(scored.upper, scored.meanDelta, 0) + pad;
+    if (max - min < 0.05) max = min + 0.05;
+    const x = (value) => ((value - min) / (max - min)) * 100;
+    const start = x(scored.lower);
+    return el("div", { style: "margin-top:0.7rem" }, [
+      el("div", { class: "timeline-meta" }, [
+        el("span", {}, "90% interval on the gap"),
+        el("span", { class: "mono" }, `${formatSignedNumber(scored.lower)} to ${formatSignedNumber(scored.upper)} pp`),
+      ]),
+      el("div", { class: "ci-scale", "aria-hidden": "true" }, [
+        el("i", { class: "ci-zero", style: `left:${x(0)}%` }),
+        el("i", { class: "ci-band", style: `left:${start}%;width:${Math.max(0.8, x(scored.upper) - start)}%` }),
+        el("i", { class: "ci-mean", style: `left:${x(scored.meanDelta)}%` }),
+      ]),
+      el("div", { class: "ci-labels mono" }, [
+        el("span", {}, formatSignedNumber(min)),
+        el("span", {}, "0"),
+        el("span", {}, formatSignedNumber(max)),
+      ]),
+    ]);
+  }
+
+  function missBlock(scored) {
+    return el("div", { class: "dash-block" }, [
+      el("h3", {}, "Miss rate · 5% cap"),
+      missMeter("Baseline", scored.baseline),
+      missMeter("Candidate", scored.candidate),
+    ]);
+  }
+
+  function missMeter(name, arm) {
+    const over = armMissExceeds(arm.excluded, arm.scheduled);
+    const rate = arm.scheduled ? arm.excluded / arm.scheduled : 0;
+    const fill = Math.min(100, (rate / 0.2) * 100);
+    return el("div", { style: "margin-top:0.55rem" }, [
+      el("div", { class: "meter-top" }, [
+        el("span", {}, name),
+        el("span", { class: "mono" }, formatPercent(arm.excluded, arm.scheduled)),
+        el("span", {}, over ? "Over cap" : "Within cap"),
+      ]),
+      el("div", { class: "meter-track", "aria-hidden": "true" }, [
+        el("i", { class: "meter-fill", "data-over": over ? "1" : "0", style: `width:${fill}%` }),
+        el("i", { class: "meter-cap", style: "left:25%" }),
+      ]),
     ]);
   }
 
   function verdictCard(scored) {
     const rows = [];
-    if (scored.meanDelta != null) {
-      rows.push(["Average gap", formatPoints(scored.meanDelta)]);
-      rows.push(["90% interval", `${formatSignedNumber(scored.lower)} to ${formatSignedNumber(scored.upper)} percentage points`]);
-    }
-    rows.push(["Baseline excluded", `${scored.baseline.excluded} of ${scored.baseline.scheduled} (${formatPercent(scored.baseline.excluded, scored.baseline.scheduled)})`]);
-    rows.push(["Candidate excluded", `${scored.candidate.excluded} of ${scored.candidate.scheduled} (${formatPercent(scored.candidate.excluded, scored.candidate.scheduled)})`]);
-    if (scored.candidate.agentTimeouts > 0) rows.push(["Agent timeouts", `${scored.candidate.agentTimeouts} counted as fails`]);
-    return el("article", { class: "verdict", "data-verdict": scored.verdict }, [
-      el("p", { class: "kicker" }, "Simulator verdict"),
-      el("h3", {}, scored.headline),
-      el("dl", { class: "statline" }, rows.map(([label, value]) => el("div", {}, [el("dt", {}, label), el("dd", {}, value)]))),
-      el("p", { class: "why" }, scored.why),
+    if (scored.meanDelta != null) rows.push(["Gap", formatPoints(scored.meanDelta)]);
+    if (scored.candidate.agentTimeouts > 0) rows.push(["Step-budget timeouts", `${scored.candidate.agentTimeouts} scored 0`]);
+    return el("div", { class: "console-body", style: "padding-top:0" }, [
+      el("article", { class: "verdict", "data-verdict": scored.verdict }, [
+        el("p", { class: "kicker" }, "Suite check"),
+        el("h3", {}, scored.headline),
+        rows.length ? el("dl", { class: "statline" }, rows.map(([label, value]) => el("div", {}, [el("dt", {}, label), el("dd", {}, value)]))) : null,
+        el("p", { class: "why" }, scored.why),
+      ]),
     ]);
   }
 

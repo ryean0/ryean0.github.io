@@ -72,23 +72,23 @@ const CHECKOUT = [
 export const SCENARIO_SETS = [
   {
     id: "support",
-    name: "Support desk",
-    summary: "Four customer tasks. Twenty baseline runs and five candidate runs on each.",
+    name: "support-desk",
+    summary: "4 scenarios · 20 baseline · 5 candidate",
     scenarios: SUPPORT,
   },
   {
     id: "checkout",
-    name: "Checkout assistant",
-    summary: "Three shopping tasks, with the same twenty-versus-five plan.",
+    name: "checkout",
+    summary: "3 scenarios · 20 baseline · 5 candidate",
     scenarios: CHECKOUT,
   },
 ];
 
 export const CANDIDATES = [
-  { id: "stable", name: "Stable update", summary: "A routine change. Pass rates stay near the agent you already run." },
-  { id: "subtle", name: "Subtle regression", summary: "The new agent is a bit worse on the same tasks. One lucky run would hide it." },
-  { id: "loops", name: "Agent that loops", summary: "The candidate burns its step budget and never finishes. Those timeouts count as fails." },
-  { id: "flaky", name: "Flaky infrastructure", summary: "Rate limits drop some candidate runs. Too many of those, and the harness refuses a verdict." },
+  { id: "stable", name: "Candidate v2.1: stable", summary: "Pass rates hold against the current agent." },
+  { id: "subtle", name: "Candidate v2.2: regression", summary: "Pass rates drop on the same scenarios." },
+  { id: "loops", name: "Candidate v2.3: step-budget timeouts", summary: "Step-budget timeouts score as fails." },
+  { id: "flaky", name: "Infra degradation: provider 5xx", summary: "Infrastructure misses exceed the 5% cap." },
 ];
 
 const CANDIDATE_SLOTS = {
