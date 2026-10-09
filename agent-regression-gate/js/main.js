@@ -36,13 +36,56 @@ function initChrome() {
   const toggle = document.getElementById("nav-toggle");
   const menu = document.getElementById("nav-menu");
   const progress = document.getElementById("progress");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const flow = document.querySelector(".flow");
+  const trust = document.querySelector(".trust-stage");
+  let ticking = false;
   const onScroll = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
-    nav.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+      nav.classList.toggle("is-scrolled", window.scrollY > 8);
+      if (reduceMotion) return;
+      if (flow) {
+        const rect = flow.getBoundingClientRect();
+        const view = window.innerHeight;
+        const drawn = Math.min(1, Math.max(0, (view * 0.86 - rect.top) / (view * 0.62)));
+        flow.style.setProperty("--draw", drawn.toFixed(3));
+        flow.dataset.step = String(Math.min(4, Math.floor(drawn * 5)));
+      }
+      if (trust && trust.offsetHeight > window.innerHeight + 80) {
+        const start = trust.getBoundingClientRect().top + window.scrollY;
+        const span = trust.offsetHeight - window.innerHeight;
+        const progressTrust = Math.min(1, Math.max(0, (window.scrollY - start) / span));
+        trust.dataset.step = String(Math.min(3, Math.floor(progressTrust * 4)));
+      }
+    });
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+
+  if (reduceMotion) {
+    if (flow) {
+      flow.classList.add("is-settled");
+      flow.dataset.step = "4";
+      flow.style.setProperty("--draw", "1");
+    }
+    if (trust) trust.dataset.step = "3";
+    document.querySelectorAll(".reveal").forEach((node) => node.classList.add("is-in"));
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add("is-in");
+        revealObserver.unobserve(entry.target);
+      }
+    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(".reveal").forEach((node) => revealObserver.observe(node));
+  }
 
   toggle.addEventListener("click", () => {
     const open = menu.classList.toggle("is-open");

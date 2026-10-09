@@ -220,13 +220,13 @@ export function bannerFor(status) {
   if (status === "preliminary") {
     return {
       tone: "preliminary",
-      title: "Preliminary results",
-      body: "This results file is marked preliminary. It is not a final gate, and it is not a customer benchmark. A final file sets status to final and this banner comes down.",
+      title: "Preliminary",
+      body: "Not a final gate, and not a customer benchmark.",
     };
   }
   return {
     tone: "final",
-    title: "Final results",
-    body: "This results file is marked final.",
+    title: "Final",
+    body: "This results file is the recorded suite check.",
   };
 }
