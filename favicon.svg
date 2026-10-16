@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ryan Phua">
+  <rect width="64" height="64" rx="12" fill="#070708"/>
+  <path d="M16 48V16h12.2c6.8 0 11 3.5 11 9.1 0 3.7-2 6.6-5.1 7.9L41.5 48H33l-6.4-13.4H23.2V48H16zm7.2-19.6h3.6c2.9 0 4.6-1.4 4.6-3.8s-1.7-3.6-4.6-3.6h-3.6v7.4z" fill="#f4f4f5"/>
+  <path d="M44 16h7.4v24.6c0 4.2-2.9 6.6-7.2 6.6H40.6V40.4h2.8c1.7 0 2.6-.8 2.6-2.2V16z" fill="#ff7a1a"/>
+</svg>
