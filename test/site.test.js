@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { GITHUB_URL, LINKEDIN_URL, RESUME_URL, SITE_URL } from "../js/content.js";
+import { emailHref } from "../js/mail.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => fs.readFileSync(path.join(root, rel), "utf8");
@@ -59,6 +61,10 @@ test("linkedin is configured and shown beside github", () => {
     assert.ok(part.includes(LINKEDIN_URL), "missing linkedin");
     assert.ok(part.includes(GITHUB_URL), "missing github");
   }
+});
+
+test("email target is assembled from parts", () => {
+  assert.equal(emailHref(), `mailto:${["ryanphua.dev", "outlook.com"].join("@")}`);
 });
 
 test("resume stays a request until RESUME_URL is set", () => {
