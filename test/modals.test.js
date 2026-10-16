@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   EXPERIENCES,
+  PROJECTS,
   IMAGE_CREDITS,
   SAMPLE_LABEL,
   modalView,
@@ -18,7 +19,8 @@ const home = read("index.html");
 const modalJs = read("js/modal.js");
 const css = read("css/site.css");
 
-const ids = ["exp-mlc", "exp-solarbrio", "exp-dso", "exp-usac"];
+const ids = ["exp-mlc", "exp-usac", "exp-solarbrio", "exp-daily-bruin", "exp-dso"];
+const projectIds = ["exp-anubys", "exp-runops", "exp-bruincreates", "exp-music", "exp-paxos", "exp-nlp", "exp-snake"];
 
 function sliceBetween(html, start, end) {
   const from = html.indexOf(start);
@@ -35,6 +37,11 @@ test("each experience opens a dialog", () => {
     assert.match(home, new RegExp(`data-exp-card="${id}"`));
     assert.match(home, new RegExp(`aria-labelledby="${id}-title"`));
   }
+  assert.equal(PROJECTS.map((entry) => entry.id).join(","), projectIds.join(","));
+  for (const id of projectIds) {
+    assert.match(home, new RegExp(`data-exp="${id}"`));
+    assert.match(home, new RegExp(`data-exp-card="${id}"`));
+  }
   assert.match(home, /id="experience-dialog"/);
   assert.match(home, /aria-labelledby="exp-dialog-title"/);
   assert.match(home, /aria-modal="true"/);
@@ -49,16 +56,17 @@ test("each experience opens a dialog", () => {
 });
 
 test("external links are chips outside the title", () => {
-  const solarbrio = sliceBetween(home, 'data-exp="exp-solarbrio"', '<a class="ext-chip"');
-  const usac = sliceBetween(home, 'data-exp="exp-usac"', '<a class="ext-chip"');
-  assert.equal(solarbrio.includes("<a"), false);
-  assert.equal(usac.includes("<a"), false);
+  for (const id of ["exp-solarbrio", "exp-usac", "exp-mlc", "exp-anubys"]) {
+    const trigger = sliceBetween(home, `data-exp="${id}"`, "</div>\n            </div>");
+    assert.equal(trigger.includes("<a"), false, id);
+  }
   assert.match(home, /class="ext-chip" href="https:\/\/solarbrio\.com\/" target="_blank" rel="noopener noreferrer"/);
   assert.match(home, /class="ext-chip" href="https:\/\/www\.uclacec\.com\/" target="_blank" rel="noopener noreferrer"/);
-  const mlc = sliceBetween(home, 'data-exp="exp-mlc"', 'data-exp="exp-solarbrio"');
+  assert.match(home, /class="ext-chip" href="https:\/\/www\.psych\.ucla\.edu\/faculty-page\/castel\/" target="_blank" rel="noopener noreferrer"/);
+  assert.match(home, /class="ext-chip" href="https:\/\/anubys\.dev\/" target="_blank" rel="noopener noreferrer"/);
   const dso = sliceBetween(home, 'data-exp="exp-dso"', "</ol>");
-  assert.equal(mlc.includes("ext-chip"), false);
   assert.equal(dso.includes("ext-chip"), false);
+  assert.equal(dso.includes("20%"), false);
   assert.equal(home.includes("(SDR)"), false);
   assert.match(home, /signal detection theory \(SDT\)/);
 });
@@ -79,7 +87,7 @@ test("footer credit stays exact and every image is credited", () => {
     assert.equal(bytes.subarray(0, 4).toString("ascii"), "RIFF");
     assert.equal(bytes.subarray(8, 12).toString("ascii"), "WEBP");
   }
-  const used = new Set(EXPERIENCES.map((entry) => entry.image));
+  const used = new Set([...EXPERIENCES, ...PROJECTS].map((entry) => entry.image));
   for (const src of used) assert.ok(IMAGE_CREDITS.some((credit) => credit.src === src), src);
   const files = fs.readdirSync(path.join(root, "assets")).filter((name) => name.endsWith(".webp"));
   assert.equal(files.length, IMAGE_CREDITS.length);
@@ -87,7 +95,7 @@ test("footer credit stays exact and every image is credited", () => {
 });
 
 test("modal copy follows the clearance flags", () => {
-  const byId = Object.fromEntries(EXPERIENCES.map((entry) => [entry.id, entry]));
+  const byId = Object.fromEntries([...EXPERIENCES, ...PROJECTS].map((entry) => [entry.id, entry]));
   assert.equal(byId["exp-dso"].metricsCleared, false);
   assert.equal(byId["exp-dso"].diagram, null);
   assert.equal(byId["exp-mlc"].metricsCleared, true);
@@ -114,11 +122,10 @@ test("modal copy follows the clearance flags", () => {
   assert.equal(cleared.charts[0].percent, 20);
   assert.equal(cleared.diagram, null);
 
-  for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac"]) {
+  for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac", "exp-daily-bruin", ...projectIds]) {
     const view = modalView(byId[id]);
     assert.ok(view.diagram.nodes.length >= 3, id);
     assert.equal(view.diagram.nodes.includes("SDR"), false);
-    assert.ok(view.charts.length > 0, id);
     assert.ok(view.metrics.length > 0, id);
     assert.ok(view.samples.length > 0, id);
     for (const item of view.samples) {
@@ -126,6 +133,10 @@ test("modal copy follows the clearance flags", () => {
       assert.match(item.code, /Illustrative example, not production code/);
     }
   }
+  assert.ok(modalView(byId["exp-daily-bruin"]).charts.length > 0);
+  assert.match(byId["exp-daily-bruin"].samples[0].code, /PactV3/);
+  assert.match(byId["exp-runops"].samples[0].code, /READ_ONLY_TOOLS/);
+  assert.match(byId["exp-bruincreates"].samples[0].code, /ListingSearchController/);
 
   assert.deepEqual(byId["exp-solarbrio"].diagram.nodes, ["Amplify V2", "AppSync resolvers", "Redis", "DynamoDB"]);
   assert.deepEqual(byId["exp-mlc"].diagram.nodes, ["CSV sources", "Validated dataset", "Signal detection theory (SDT)", "lme4"]);
@@ -140,13 +151,14 @@ test("modal copy follows the clearance flags", () => {
 });
 
 test("charts use resume figures only", () => {
-  const byId = Object.fromEntries(EXPERIENCES.map((entry) => [entry.id, entry]));
+  const byId = Object.fromEntries([...EXPERIENCES, ...PROJECTS].map((entry) => [entry.id, entry]));
   const solar = byId["exp-solarbrio"].charts;
-  assert.deepEqual(solar[0].bars.map((bar) => bar.value), [20, 9]);
-  assert.equal(solar[1].percent, 30);
+  assert.deepEqual(solar[0].bars.map((bar) => bar.value), [13, 9]);
+  assert.equal(solar[1].low, 30);
+  assert.equal(solar[1].high, 45);
   const usac = byId["exp-usac"].charts;
   assert.deepEqual(usac[0].bars.map((bar) => bar.display), ["baseline", "~3x faster"]);
-  assert.deepEqual(usac[1].bars.map((bar) => bar.display), [">3.5 wk", "~1 wk"]);
+  assert.deepEqual(usac[1].bars.map((bar) => bar.display), ["~4 wk", "<1 wk"]);
   assert.equal(usac[2].low, 30);
   assert.equal(usac[2].high, 50);
   assert.equal(byId["exp-mlc"].charts[0].from, 12);

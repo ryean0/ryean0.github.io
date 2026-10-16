@@ -5,10 +5,15 @@
 
 const KEYWORDS = {
   r: ["library", "in", "if", "for", "while", "function", "return"],
-  ts: ["import", "from", "const", "export", "async", "await", "return", "if", "type", "new"],
-  python: ["from", "import", "def", "return", "with", "for", "in", "as", "if", "None", "True", "False"],
+  ts: ["import", "from", "const", "export", "async", "await", "return", "if", "type", "new", "test"],
+  python: ["from", "import", "def", "return", "with", "for", "in", "as", "if", "None", "True", "False", "class", "raise"],
   yaml: ["true", "false", "null"],
+  java: ["public", "class", "private", "return", "if", "new", "void", "int"],
+  go: ["package", "func", "if", "return"],
+  verilog: ["module", "input", "output", "wire", "reg", "always", "begin", "end", "endmodule"],
 };
+
+const HASH_COMMENT = new Set(["r", "python", "yaml", "bash"]);
 
 function escapeHtml(value) {
   return value
@@ -33,8 +38,8 @@ function commentIndex(line, lang) {
       quote = ch;
       continue;
     }
-    if (lang === "ts" && ch === "/" && line[i + 1] === "/") return i;
-    if (lang !== "ts" && ch === "#") return i;
+    if (HASH_COMMENT.has(lang) && ch === "#") return i;
+    if (!HASH_COMMENT.has(lang) && ch === "/" && line[i + 1] === "/") return i;
   }
   return -1;
 }

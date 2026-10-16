@@ -283,6 +283,7 @@ h1 { font-size: var(--h1); margin-bottom: 0.45rem; }
   .stat:nth-child(-n+3) { grid-column: span 2; }
   .stat:nth-child(n+4) { grid-column: span 3; }
   .work-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+  .work-grid > :only-child { grid-column: 1 / -1; }
   .role-block {
     border-left: 0;
     padding: 0 0 1.8rem;

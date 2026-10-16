@@ -34,7 +34,7 @@ function walk(dir, out = []) {
 const files = walk(root);
 
 test("required sections are on the home page", () => {
-  for (const id of ["hero", "impact", "work", "experience", "skills", "certifications", "education", "contact", "footer"]) {
+  for (const id of ["hero", "impact", "work", "experience", "projects", "skills", "certifications", "education", "contact", "footer"]) {
     assert.match(home, new RegExp(`id="${id}"`));
   }
   assert.match(home, /<h1[^>]*>Ryan Phua<\/h1>/);
@@ -114,32 +114,45 @@ test("resume facts are present and typos are fixed", () => {
   assert.match(home, /Sep 2021 – Dec 2025/);
   assert.match(home, /B\.S\. Computer Science/);
   assert.match(home, /Distributed Systems/);
-  assert.match(home, /Cloud Security &amp; Networking/);
+  assert.match(home, /Computer Networking/);
+  assert.match(home, /Machine Learning \(NLP\)/);
   assert.equal(home.includes("GPA"), false);
   assert.equal(home.includes("3.43"), false);
   assert.match(home, /Oct 2025 – Aug 2026/);
   assert.match(home, /Jun 2024 – Sep 2024/);
   assert.match(home, /Jun 2022 – Jul 2023/);
+  assert.match(home, /Jan 2022 – Apr 2024/);
+  assert.match(home, /Sep 2023 – Jul 2025/);
   assert.match(home, /12 heterogeneous CSV data sources/);
   assert.equal(home.includes("heterogenous"), false);
   assert.match(home, /12,000 row x 20 col/);
   assert.match(home, /226 study participants/);
-  assert.match(home, /~30%/);
-  assert.match(home, /~20 to ~9 minutes/);
-  assert.match(home, /5 custom GraphQL resolvers/);
-  assert.match(home, /3 \(dev\/stage\/prod\)/);
-  assert.match(home, /~20%/);
-  assert.match(home, /&gt;47000 student users/);
+  assert.match(home, /30-45%/);
+  assert.match(home, /~13 to ~9 minutes/);
+  assert.match(home, /custom GraphQL resolvers on AWS AppSync/);
+  assert.match(home, /dev, stage, and prod/);
+  assert.equal(home.includes("~20 to ~9"), false);
+  assert.equal(home.includes("47000"), false);
+  assert.equal(home.includes("47,000"), false);
   assert.match(home, /30-50%/);
-  assert.match(home, /top 5 hottest API endpoints/);
+  assert.equal(home.includes("top 5 hottest"), false);
   assert.match(home, /~3x/);
-  assert.match(home, /pre Elasticache baseline/);
-  assert.match(home, /&gt;3\.5 weeks to ~1 week/);
+  assert.match(home, /cache-free baseline/);
+  assert.match(home, /~4 weeks to under 1 week/);
   assert.match(home, /www\.uclacec\.com/);
+  assert.match(home, /The Daily Bruin/);
+  assert.match(home, /DBOnline Media Team/);
+  assert.match(home, /RunOpsAI/);
+  assert.match(home, /BruinCreates/);
+  assert.match(home, /Paxos on GKE/);
+  assert.match(home, /Basys-3/);
+  assert.match(home, /75% to 89%/);
   assert.match(home, /Certified AI Security Professional \(CAISP\)/);
   assert.equal(home.includes("Certfied"), false);
   assert.match(home, /SAA-C03/);
-  assert.match(home, /BlockChain Council/);
+  assert.match(home, /Blockchain Council/);
+  assert.match(home, /AWS Certified Cloud Practitioner/);
+  assert.match(home, /HarvardX Professional Certificate in Data Science/);
   assert.match(home, /Pytorch &amp; Tensorflow/);
   assert.match(home, /\$38/);
   assert.match(home, /0 ms/);
@@ -157,6 +170,32 @@ test("share metadata, favicon, and stylesheet", () => {
   assert.equal(png.readUInt32BE(16), 1200);
   assert.equal(png.readUInt32BE(20), 630);
   assert.equal(fs.existsSync(path.join(root, ".nojekyll")), true);
+});
+
+test("staged site has no email, phone, or GPA", () => {
+  const site = path.join(root, "_site");
+  fs.rmSync(site, { recursive: true, force: true });
+  fs.mkdirSync(site);
+  for (const name of ["index.html", "favicon.svg", "og.png", "robots.txt", "sitemap.xml", ".nojekyll"]) {
+    fs.copyFileSync(path.join(root, name), path.join(site, name));
+  }
+  for (const dir of ["css", "js", "assets", "anubys", "projects"]) {
+    fs.cpSync(path.join(root, dir), path.join(site, dir), { recursive: true });
+  }
+  const email = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+  const staged = walk(site);
+  for (const file of staged) {
+    if (!/\.(html|css|js|svg|txt|xml|yml|md|json)$/.test(file)) continue;
+    const text = fs.readFileSync(file, "utf8");
+    const rel = path.relative(root, file);
+    assert.equal(text.includes(outlook), false, rel);
+    assert.equal(text.includes(uclaMail), false, rel);
+    assert.equal(text.includes(phone), false, rel);
+    assert.equal(text.includes("GPA"), false, rel);
+    assert.equal(text.toLowerCase().includes("gpa"), false, rel);
+    assert.equal(text.includes("3.43"), false, rel);
+    assert.equal(email.test(text), false, rel);
+  }
 });
 
 test("pages workflow tests the site and deploys the static root", () => {

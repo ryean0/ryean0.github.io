@@ -1,4 +1,4 @@
-import { EXPERIENCES, SAMPLE_LABEL, modalView } from "./content.js";
+import { ENTRIES, SAMPLE_LABEL, modalView } from "./content.js";
 import { highlight } from "./highlight.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -8,7 +8,7 @@ function reducedMotion() {
 }
 
 function entryById(id) {
-  return EXPERIENCES.find((entry) => entry.id === id) || null;
+  return ENTRIES.find((entry) => entry.id === id) || null;
 }
 
 function findTrigger(id) {
@@ -402,7 +402,7 @@ function render(entry, mount, background) {
   const sheet = h("div", "exp-sheet exp-stagger");
   const header = h("header", "exp-header");
   const top = h("div", "exp-header-top");
-  top.append(h("p", "kicker", "Experience"));
+  top.append(h("p", "kicker", entry.kind === "project" ? "Project" : "Experience"));
   const close = h("button", "exp-close");
   close.type = "button";
   close.setAttribute("data-exp-close", "");
