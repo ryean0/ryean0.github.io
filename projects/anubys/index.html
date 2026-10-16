@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Anubys · Ryan Phua</title>
+  <meta name="description" content="Anubys is Ryan Phua's CI-native agent regression harness. It compares a candidate LLM agent to a baseline on paired scenarios and returns Pass, Block, or Insufficient evidence. Public beta.">
+  <link rel="canonical" href="https://ryean0.github.io/projects/anubys/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ryean0.github.io/projects/anubys/">
+  <meta property="og:title" content="Anubys · Ryan Phua">
+  <meta property="og:description" content="A CI-native agent regression harness. 0 ms in production. $38 spend stop. Public beta.">
+  <meta property="og:image" content="https://ryean0.github.io/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Anubys · Ryan Phua">
+  <meta name="twitter:description" content="A CI-native agent regression harness. 0 ms in production. $38 spend stop. Public beta.">
+  <meta name="twitter:image" content="https://ryean0.github.io/og.png">
+  <meta name="theme-color" content="#070708">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/site.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to main content</a>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../../">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M16 48V16h12.2c6.8 0 11 3.5 11 9.1 0 3.7-2 6.6-5.1 7.9L41.5 48H33l-6.4-13.4H23.2V48H16zm7.2-19.6h3.6c2.9 0 4.6-1.4 4.6-3.8s-1.7-3.6-4.6-3.6h-3.6v7.4z" fill="currentColor"/><path d="M44 16h7.4v24.6c0 4.2-2.9 6.6-7.2 6.6H40.6V40.4h2.8c1.7 0 2.6-.8 2.6-2.2V16z" fill="#ff7a1a"/></svg>
+        <span>Ryan Phua</span>
+      </a>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+      <nav id="nav-menu" class="nav-links" aria-label="Primary">
+        <a href="../../#work" aria-current="page">Work</a>
+        <a href="../../#experience">Experience</a>
+        <a href="../../#skills">Skills</a>
+        <a href="../../#education">Education</a>
+        <a href="../../#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main id="content">
+    <section class="section page-head" id="anubys" aria-labelledby="anubys-title">
+      <div class="wrap">
+        <p class="kicker">Featured project · Public beta</p>
+        <h1 id="anubys-title">Anubys</h1>
+        <p class="lede">Anubys is my portfolio product aimed at delivering scalable, cost-efficient &amp; effective AI model infrastructure to guarantee accountable, reproducible, and retraceable ML workflows for enterprise-scale tooling and/or individual hobbyists.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://anubys.dev/" rel="noopener noreferrer">Open anubys.dev</a>
+          <a class="btn btn-ghost" href="../../#work">All work</a>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="check" aria-labelledby="check-title">
+      <div class="wrap">
+        <p class="kicker">What it does</p>
+        <h2 id="check-title">A merge check, with a verdict.</h2>
+        <p class="section-intro">Anubys compares a candidate LLM agent to a baseline on paired scenarios in CI and returns a stats-backed merge check. It runs when a pull request opens. Production traffic does not pass through it.</p>
+        <ul class="verdict-board">
+          <li class="verdict" data-verdict="pass"><h3>Pass</h3><p class="role-meta">The gap stays inside the bar the suite set.</p></li>
+          <li class="verdict" data-verdict="block"><h3>Block</h3><p class="role-meta">The evidence says the candidate is behind the baseline.</p></li>
+          <li class="verdict" data-verdict="insufficient"><h3>Insufficient evidence</h3><p class="role-meta">The interval is too wide to decide the merge.</p></li>
+        </ul>
+        <dl class="facts">
+          <div>
+            <dt>Added in production</dt>
+            <dd>0 ms</dd>
+          </div>
+          <div>
+            <dt>Spend stop</dt>
+            <dd>$38</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+    <section class="section" id="stack" aria-labelledby="stack-title">
+      <div class="wrap">
+        <p class="kicker">How it is built</p>
+        <h2 id="stack-title">Stack</h2>
+        <div class="split">
+          <article class="panel">
+            <h3>In the pipeline</h3>
+            <ul class="chips">
+              <li>Python</li>
+              <li>GitHub Actions</li>
+              <li>Gemini API</li>
+              <li>Terraform</li>
+            </ul>
+            <p class="role-summary" style="margin-top:0.8rem">Keyless CI uses OIDC IAM roles. Results can land in S3. The marketing site is static on GitHub Pages with a custom domain.</p>
+          </article>
+          <article class="panel">
+            <h3>Status</h3>
+            <p class="role-summary">Public beta. The harness repository is not public yet, so this page links the product site only.</p>
+            <div class="card-links">
+              <a class="btn btn-primary" href="https://anubys.dev/" rel="noopener noreferrer">anubys.dev</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer" id="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="brand">Ryan Phua</p>
+        <p>DevOps Software Engineer. Los Angeles, open to relocation.</p>
+      </div>
+      <nav aria-label="Portfolio">
+        <p>Portfolio</p>
+        <a href="../../#work">Work</a>
+        <a href="../../#experience">Experience</a>
+        <a href="../../#contact">Contact</a>
+      </nav>
+      <nav aria-label="Elsewhere">
+        <p>Elsewhere</p>
+        <a href="https://github.com/ryean0" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/rphua-dev" rel="noopener noreferrer">LinkedIn</a>
+        <button type="button" class="linkish" data-email>Email</button>
+      </nav>
+    </div>
+    <div class="wrap footer-bottom">
+      <p>© 2026 Ryan Phua</p>
+      <p><a href="https://github.com/ryean0" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/rphua-dev" rel="noopener noreferrer">LinkedIn</a></p>
+      <p class="credit">Developed with Grok Bot 2026</p>
+    </div>
+  </footer>
+  <script type="module" src="../../js/main.js"></script>
+</body>
+</html>
