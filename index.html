@@ -176,33 +176,37 @@
               <a class="btn btn-ghost" href="projects/anubys/">Project details</a>
             </div>
           </article>
-          <article class="card reveal">
-            <p class="card-kicker">Campus platform</p>
-            <h3>USAC Campus Events Commission</h3>
-            <p class="card-date">Oct 2023 – Jul 2025 · Los Angeles (UCLA) · <a href="https://www.uclacec.com/" rel="noopener noreferrer">www.uclacec.com</a></p>
-            <dl>
-              <div class="field">
-                <dt>Problem</dt>
-                <dd>The undergraduate events site had to publish daily updates for a campus of student users, while hot API paths and a long setup kept the web team slow.</dd>
-              </div>
-              <div class="field">
-                <dt>Approach</dt>
-                <dd>Maintained and upgraded key backend features, with data preloading and caching via AWS ElastiCache, GitHub Actions for CI/CD, and Docker-Compose so dev and production environments came up in one step.</dd>
-              </div>
-              <div class="field">
-                <dt>Outcome</dt>
-                <dd>Daily event updates for &gt;47000 student users at UCLA. Direct database query load cut by 30-50% under peak web traffic. p95 latency on the top 5 hottest API endpoints improved by ~3x versus pre Elasticache baseline metrics. New developer onboarding went from &gt;3.5 weeks to ~1 week.</dd>
-              </div>
-            </dl>
-            <ul class="chips" aria-label="Stack">
-              <li>AWS ElastiCache</li>
-              <li>GitHub Actions</li>
-              <li>Docker-Compose</li>
-              <li>CI/CD</li>
-            </ul>
-            <div class="card-links">
-              <a class="btn btn-ghost" href="https://www.uclacec.com/" rel="noopener noreferrer">www.uclacec.com</a>
+          <article class="card reveal has-chip" data-exp-card="exp-usac">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-usac" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-usac-title">
+              <p class="card-kicker">Campus platform</p>
+              <h3 id="exp-usac-title" class="exp-title">
+                <span class="exp-name">USAC Campus Events Commission</span>
+                <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="sr-only">Open</span>
+              </h3>
+              <p class="card-date">Oct 2023 – Jul 2025 · Los Angeles (UCLA)</p>
+              <dl>
+                <div class="field">
+                  <dt>Problem</dt>
+                  <dd>The undergraduate events site had to publish daily updates for a campus of student users, while hot API paths and a long setup kept the web team slow.</dd>
+                </div>
+                <div class="field">
+                  <dt>Approach</dt>
+                  <dd>Maintained and upgraded key backend features, with data preloading and caching via AWS ElastiCache, GitHub Actions for CI/CD, and Docker-Compose so dev and production environments came up in one step.</dd>
+                </div>
+                <div class="field">
+                  <dt>Outcome</dt>
+                  <dd>Daily event updates for &gt;47000 student users at UCLA. Direct database query load cut by 30-50% under peak web traffic. p95 latency on the top 5 hottest API endpoints improved by ~3x versus pre Elasticache baseline metrics. New developer onboarding went from &gt;3.5 weeks to ~1 week.</dd>
+                </div>
+              </dl>
+              <ul class="chips" aria-label="Stack">
+                <li>AWS ElastiCache</li>
+                <li>GitHub Actions</li>
+                <li>Docker-Compose</li>
+                <li>CI/CD</li>
+              </ul>
             </div>
+            <a class="ext-chip" href="https://www.uclacec.com/" target="_blank" rel="noopener noreferrer">www.uclacec.com</a>
           </article>
         </div>
       </div>
@@ -213,44 +217,63 @@
         <p class="kicker">Timeline</p>
         <h2 id="experience-title">Experience</h2>
         <ol class="timeline">
-          <li class="role-block reveal">
-            <p class="role-when">Oct 2025 – Aug 2026</p>
-            <div>
-              <h3>Memory &amp; Lifespan Cognition (MLC) Lab</h3>
-              <p class="role-title">Technical Research Assistant, Statistics &amp; Software</p>
-              <p class="role-meta">UCLA Dept. of Psychology</p>
-              <p class="role-summary">Social psychology lab investigating phishing email detection and decision biases amongst various age groups.</p>
-              <ul>
-                <li>Streamlined and sanitized 12 heterogeneous CSV data sources into a single 12,000 row x 20 col dataset across 226 study participants, with schema validation on each entry so ingestion stayed consistent.</li>
-                <li>Translated the lab's signal detection theory (SDR) statistical framework into a fully parameterized, end-to-end pipeline in R/RStudio with integrated ggplot2 visualisations, surfacing a response-bias shift that raw accuracy metrics had obscured.</li>
-                <li>Implemented mixed-effects modeling simulations in R (lme4, binomial logit) with BOBYQA optimizer tuning, and automated likelihood-ratio test and AIC comparisons for model switching and selection.</li>
-              </ul>
+          <li class="role-block reveal" data-exp-card="exp-mlc">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-mlc" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-mlc-title">
+              <p class="role-when">Oct 2025 – Aug 2026</p>
+              <div>
+                <h3 id="exp-mlc-title" class="exp-title">
+                  <span class="exp-name">Memory &amp; Lifespan Cognition (MLC) Lab</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Technical Research Assistant, Statistics &amp; Software</p>
+                <p class="role-meta">UCLA Dept. of Psychology</p>
+                <p class="role-summary">Social psychology lab investigating phishing email detection and decision biases amongst various age groups.</p>
+                <ul>
+                  <li>Streamlined and sanitized 12 heterogeneous CSV data sources into a single 12,000 row x 20 col dataset across 226 study participants, with schema validation on each entry so ingestion stayed consistent.</li>
+                  <li>Translated the lab's signal detection theory (SDT) statistical framework into a fully parameterized, end-to-end pipeline in R/RStudio with integrated ggplot2 visualisations, surfacing a response-bias shift that raw accuracy metrics had obscured.</li>
+                  <li>Implemented mixed-effects modeling simulations in R (lme4, binomial logit) with BOBYQA optimizer tuning, and automated likelihood-ratio test and AIC comparisons for model switching and selection.</li>
+                </ul>
+              </div>
             </div>
           </li>
-          <li class="role-block reveal">
-            <p class="role-when">Jun 2024 – Sep 2024</p>
-            <div>
-              <h3><a href="https://solarbrio.com/" rel="noopener noreferrer">Solarbrio (Ectios)</a></h3>
-              <p class="role-title">Full-Stack Software Engineering (UI &amp; Pipeline)</p>
-              <p class="role-meta">San Francisco (Hybrid) · Geospatial Resource Analysis Platform Series A</p>
-              <ul>
-                <li>Supported and documented migration of the delivery stack from AWS Amplify V1 to V2, cutting 6-mo AWS resource costs by ~30% and compressing end-to-end CodeBuild pipeline runtime from ~20 to ~9 minutes.</li>
-                <li>Developed and tested 5 custom GraphQL resolvers on AWS AppSync (TypeScript) to replace deprecated dependencies, automating Amplify CodeGen across 3 (dev/stage/prod) runtime envs.</li>
-                <li>Integrated ElastiCache (Redis) caching at the resolver level on high-traffic query paths, reducing DynamoDB read amplification and improving tail latency under peak usage.</li>
-              </ul>
+          <li class="role-block reveal has-chip" data-exp-card="exp-solarbrio">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-solarbrio" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-solarbrio-title">
+              <p class="role-when">Jun 2024 – Sep 2024</p>
+              <div>
+                <h3 id="exp-solarbrio-title" class="exp-title">
+                  <span class="exp-name">Solarbrio (Ectios)</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Full-Stack Software Engineering (UI &amp; Pipeline)</p>
+                <p class="role-meta">San Francisco (Hybrid) · Geospatial Resource Analysis Platform Series A</p>
+                <ul>
+                  <li>Supported and documented migration of the delivery stack from AWS Amplify V1 to V2, cutting 6-mo AWS resource costs by ~30% and compressing end-to-end CodeBuild pipeline runtime from ~20 to ~9 minutes.</li>
+                  <li>Developed and tested 5 custom GraphQL resolvers on AWS AppSync (TypeScript) to replace deprecated dependencies, automating Amplify CodeGen across 3 (dev/stage/prod) runtime envs.</li>
+                  <li>Integrated ElastiCache (Redis) caching at the resolver level on high-traffic query paths, reducing DynamoDB read amplification and improving tail latency under peak usage.</li>
+                </ul>
+              </div>
             </div>
+            <a class="ext-chip" href="https://solarbrio.com/" target="_blank" rel="noopener noreferrer">solarbrio.com</a>
           </li>
-          <li class="role-block reveal">
-            <p class="role-when">Jun 2022 – Jul 2023</p>
-            <div>
-              <h3>Defense Science Organization (DSO) National Laboratories</h3>
-              <p class="role-title">Machine-Learning Infrastructure (SWE) Research</p>
-              <p class="role-meta">Singapore · Satellite Sensors Lab, geospatial image segmentation ML pipeline (Convolutional Neural Networks)</p>
-              <ul>
-                <li>Deployed an offline, air-gapped Kubernetes cluster simulating on-satellite deployment and built a custom Docker registry mirroring OS repositories, enabling fully offline cluster initialization and successful launch of satellite-grade workloads.</li>
-                <li>Unblocked a preprocessing bottleneck in the ML/CV pipeline by parallelizing single-threaded OpenCV into vector operations via Python multiprocessing and TensorFlow, cutting preprocessing time by ~20%.</li>
-                <li>Developed custom Prometheus/Grafana dashboards for GPU (Nvidia CUDA) and memory monitoring across pipeline stages, benchmarking resource utilization for the lab's capacity planning.</li>
-              </ul>
+          <li class="role-block reveal" data-exp-card="exp-dso">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-dso" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-dso-title">
+              <p class="role-when">Jun 2022 – Jul 2023</p>
+              <div>
+                <h3 id="exp-dso-title" class="exp-title">
+                  <span class="exp-name">Defense Science Organization (DSO) National Laboratories</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Machine-Learning Infrastructure (SWE) Research</p>
+                <p class="role-meta">Singapore · Satellite Sensors Lab, geospatial image segmentation ML pipeline (Convolutional Neural Networks)</p>
+                <ul>
+                  <li>Deployed an offline, air-gapped Kubernetes cluster simulating on-satellite deployment and built a custom Docker registry mirroring OS repositories, enabling fully offline cluster initialization and successful launch of satellite-grade workloads.</li>
+                  <li>Unblocked a preprocessing bottleneck in the ML/CV pipeline by parallelizing single-threaded OpenCV into vector operations via Python multiprocessing and TensorFlow, cutting preprocessing time by ~20%.</li>
+                  <li>Developed custom Prometheus/Grafana dashboards for GPU (Nvidia CUDA) and memory monitoring across pipeline stages, benchmarking resource utilization for the lab's capacity planning.</li>
+                </ul>
+              </div>
             </div>
           </li>
         </ol>
@@ -416,12 +439,30 @@
         <button type="button" class="linkish" data-email>Email</button>
       </nav>
     </div>
+    <section class="wrap image-credits" id="image-credits" aria-labelledby="image-credits-title">
+      <h2 id="image-credits-title">Image credits</h2>
+      <ul>
+        <li><a href="https://commons.wikimedia.org/wiki/File:2019_UCLA_Royce_Hall_2.jpg" rel="noopener noreferrer">Royce Hall, UCLA</a> — Beyond My Ken, CC BY-SA 4.0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:San_Francisco_Skyline_9.jpg" rel="noopener noreferrer">San Francisco skyline from Coit Tower</a> — Keh52, CC BY-SA 4.0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Blue_Marble_Western_Hemisphere.jpg" rel="noopener noreferrer">Blue Marble, Western Hemisphere</a> — NASA/Goddard Space Flight Center/Reto Stöckli, Public domain</li>
+      </ul>
+    </section>
     <div class="wrap footer-bottom">
       <p>© 2026 Ryan Phua</p>
       <p><a href="https://github.com/ryean0" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/rphua-dev" rel="noopener noreferrer">LinkedIn</a></p>
       <p class="credit">Developed with Grok Bot 2026</p>
     </div>
   </footer>
+  <dialog id="experience-dialog" class="exp-dialog" aria-modal="true" aria-labelledby="exp-dialog-title" tabindex="-1">
+    <div class="exp-panel" data-exp-panel>
+      <div class="exp-bg" data-exp-bg aria-hidden="true" hidden></div>
+      <div class="exp-scroll">
+        <div data-exp-mount>
+          <h2 id="exp-dialog-title">Experience</h2>
+        </div>
+      </div>
+    </div>
+  </dialog>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 import { RESUME_URL } from "./content.js";
 import { bindEmails } from "./mail.js";
+import { initModals } from "./modal.js";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -192,3 +193,4 @@ bindEmails(document);
 initReveal();
 initStats();
 initConsole();
+initModals();
