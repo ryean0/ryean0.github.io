@@ -129,15 +129,15 @@ test("resume facts are present and typos are fixed", () => {
   assert.match(home, /226 study participants/);
   assert.match(home, /30-45%/);
   assert.match(home, /~13 to ~9 minutes/);
-  assert.match(home, /custom GraphQL resolvers on AWS AppSync/);
-  assert.match(home, /dev, stage, and prod/);
+  assert.match(home, /Developed and tested 5 custom GraphQL resolvers on AWS AppSync \(TypeScript\)/);
+  assert.match(home, /3 \(dev\/stage\/prod\) runtime envs/);
   assert.equal(home.includes("~20 to ~9"), false);
   assert.equal(home.includes("47000"), false);
   assert.equal(home.includes("47,000"), false);
   assert.match(home, /30-50%/);
-  assert.equal(home.includes("top 5 hottest"), false);
+  assert.match(home, /top 5 hottest API endpoints/);
   assert.match(home, /~3x/);
-  assert.match(home, /cache-free baseline/);
+  assert.match(home, /pre Elasticache baseline/);
   assert.match(home, /~4 weeks to under 1 week/);
   assert.match(home, /www\.uclacec\.com/);
   assert.match(home, /The Daily Bruin/);
@@ -195,6 +195,36 @@ test("staged site has no email, phone, or GPA", () => {
     assert.equal(text.toLowerCase().includes("gpa"), false, rel);
     assert.equal(text.includes("3.43"), false, rel);
     assert.equal(email.test(text), false, rel);
+  }
+});
+
+test("staged site contains no withheld DSO figures", () => {
+  const site = path.join(root, "_site");
+  fs.rmSync(site, { recursive: true, force: true });
+  fs.mkdirSync(site);
+  for (const name of ["index.html", "favicon.svg", "og.png", "robots.txt", "sitemap.xml", ".nojekyll"]) {
+    fs.copyFileSync(path.join(root, name), path.join(site, name));
+  }
+  for (const dir of ["css", "js", "assets", "anubys", "projects"]) {
+    fs.cpSync(path.join(root, dir), path.join(site, dir), { recursive: true });
+  }
+  const banned = [
+    "20%",
+    "Horovod",
+    "4-GPU",
+    "2.5-hour",
+    "2.5 hr",
+    "2.5-hr",
+    "0 crashes",
+    "dropped frames",
+    "throughput variance",
+  ];
+  for (const file of walk(site)) {
+    const text = fs.readFileSync(file);
+    const rel = path.relative(root, file);
+    for (const needle of banned) {
+      assert.equal(text.includes(Buffer.from(needle)), false, `${rel} contains ${needle}`);
+    }
   }
 });
 

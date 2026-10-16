@@ -120,10 +120,10 @@
             <p class="stat-label">CodeBuild</p>
             <p class="stat-note">Solarbrio · end-to-end pipeline</p>
           </article>
-          <article class="stat reveal" aria-label="~3x p95 latency">
+          <article class="stat reveal" aria-label="~3x p95 on the top 5 hottest endpoints">
             <p class="stat-value" data-final="~3x" data-count="3" data-prefix="~" data-suffix="x">~3x</p>
-            <p class="stat-label">p95 latency</p>
-            <p class="stat-note">USAC CEC · versus cache-free baseline</p>
+            <p class="stat-label">p95 on hot endpoints</p>
+            <p class="stat-note">USAC CEC · top 5 hottest APIs</p>
           </article>
           <article class="stat reveal" aria-label="30-50% fewer database queries">
             <p class="stat-value" data-final="30-50%">30-50%</p>
@@ -220,7 +220,7 @@
                 <p class="role-meta">Los Angeles, CA</p>
                 <ul>
                   <li>Containerized dev and production with Docker Compose so either environment starts in one step, cutting new-developer onboarding from ~4 weeks to under 1 week.</li>
-                  <li>Added Redis caching on AWS ElastiCache for hot API endpoints. Direct database query load fell 30-50% at peak traffic, and p95 latency improved by ~3x versus the cache-free baseline.</li>
+                  <li>Added Redis caching on AWS ElastiCache. Direct database query load fell 30-50% at peak traffic. p95 latency on the top 5 hottest API endpoints improved by ~3x versus pre Elasticache baseline metrics.</li>
                   <li>Started PR-gated CI on GitHub Actions. Moved builds onto AWS CodeBuild, cutting build time from ~13 minutes to ~7.5 minutes.</li>
                 </ul>
               </div>
@@ -240,7 +240,7 @@
                 <p class="role-meta">California · Geospatial resource analysis platform</p>
                 <ul>
                   <li>Led the delivery-stack migration from AWS Amplify V1 to V2 across 3 teams, cutting monthly AWS costs by 30-45% and compressing the end-to-end CodeBuild pipeline from ~13 to ~9 minutes.</li>
-                  <li>Built custom GraphQL resolvers on AWS AppSync (TypeScript) to replace deprecated dependencies, automating Amplify CodeGen across dev, stage, and prod.</li>
+                  <li>Developed and tested 5 custom GraphQL resolvers on AWS AppSync (TypeScript) to replace deprecated dependencies, automating Amplify CodeGen across 3 (dev/stage/prod) runtime envs.</li>
                   <li>Added ElastiCache (Redis) caching at the resolver level on high-traffic queries, and ported the pipeline pattern to Apollo GraphQL on GCP Cloud Run.</li>
                 </ul>
               </div>

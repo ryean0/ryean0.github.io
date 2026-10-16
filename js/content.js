@@ -5,7 +5,7 @@
  *
  * Experience modal copy is the resume, rewritten for the dialog.
  * Where resume variants disagree, the majority wording and figures are used.
- * DSO keeps metricsCleared false: figures, charts, and the diagram stay hidden.
+ * DSO figures are withheld pending clearance.
  */
 
 /** TODO: set RESUME_URL to a public resume PDF. Until then the control asks by email. */
@@ -474,7 +474,8 @@ export const EXPERIENCES = [
     summary: "Backend for UCLA's Campus Events Commission. Ryan joined as a backend and DevOps developer and later became Backend Lead. About 200 to 312 hours.",
     bullets: [
       "Containerized dev and production with Docker Compose so either environment starts in one step, cutting new-developer onboarding from ~4 weeks to under 1 week.",
-      "Added Redis caching on AWS ElastiCache for hot API endpoints. Direct database query load fell 30-50% at peak traffic, and p95 latency improved by ~3x versus the cache-free baseline.",
+      "Added Redis caching on AWS ElastiCache. Direct database query load fell 30-50% at peak traffic.",
+      "Made the 5 busiest API endpoints about 3x faster at p95 than before ElastiCache was added.",
       "Started PR-gated CI on GitHub Actions, which surfaced 8+ regressions that had been shipping without a blocking check.",
       "Consolidated 3+ repositories into a monorepo with shared CodeGen schemas, and added CloudWatch dashboards that caught 4 pre-deploy issues across 6 services.",
       "Moved ad-hoc builds to GitHub Actions on AWS CodeBuild, cutting build time from ~13 minutes to ~7.5 minutes and the deployment failure rate by ~25%.",
@@ -485,7 +486,7 @@ export const EXPERIENCES = [
     metricsCleared: true,
     metrics: [
       { final: "30–50%", label: "fewer database queries", note: "At peak traffic" },
-      { final: "~3x", label: "p95 latency", note: "Versus the cache-free baseline", count: 3, prefix: "~", suffix: "x" },
+      { final: "~3x", label: "p95 on the top 5 endpoints", note: "Faster than the pre-ElastiCache baseline", count: 3, prefix: "~", suffix: "x" },
       { final: "~4 → <1 wk", label: "onboarding", note: "About 4 weeks to under 1 week", countFrom: 4, countTo: 1, prefixFrom: "~", prefixTo: "<", suffixFrom: " wk", suffixTo: " wk" },
       { final: "8+", label: "regressions caught", note: "PR-gated GitHub Actions", count: 8, suffix: "+" },
       { final: "~13 → ~7.5 min", label: "build time", note: "GitHub Actions on CodeBuild", countFrom: 13, countTo: 7.5, decimalsTo: 1, prefixFrom: "~", prefixTo: "~", suffixTo: " min" },
@@ -494,8 +495,8 @@ export const EXPERIENCES = [
     charts: [
       {
         kind: "compare",
-        title: "p95 latency",
-        caption: "About 3x faster than the cache-free baseline",
+        title: "p95 on the top 5 endpoints",
+        caption: "About 3x faster after ElastiCache",
         bars: [
           { label: "Before", value: 3, display: "baseline" },
           { label: "After", value: 1, display: "~3x faster" },
@@ -548,7 +549,8 @@ export const EXPERIENCES = [
     summary: "Geospatial resource analysis platform. Ryan worked on the Amplify delivery migration, AppSync resolvers, and a cross-cloud port of the same pipeline pattern.",
     bullets: [
       "Led the delivery-stack migration from AWS Amplify V1 to V2, restoring stable CI/CD across 3 teams. Reduced monthly AWS costs by 30-45% and compressed the end-to-end CodeBuild pipeline from ~13 to ~9 minutes.",
-      "Built custom GraphQL resolvers on AWS AppSync in TypeScript to replace deprecated dependencies, and automated Amplify CodeGen across dev, stage, and prod.",
+      "Built and tested 5 custom GraphQL resolvers on AWS AppSync in TypeScript to replace deprecated dependencies.",
+      "Automated Amplify CodeGen across dev, stage, and prod.",
       "Added ElastiCache (Redis) caching at the resolver level on high-traffic queries, reducing DynamoDB read amplification and improving tail latency at peak usage.",
       "Ported the pipeline pattern to GCP with Apollo GraphQL on Cloud Run, and recreated Lambda handlers as Cloud Functions.",
       "Shipped an initial private Angular and Tailwind CSS component library so frontend teams shared one UI style.",
@@ -561,6 +563,7 @@ export const EXPERIENCES = [
       { final: "30–45%", label: "monthly AWS cost cut", note: "After the Amplify V2 migration" },
       { final: "~13 → ~9 min", label: "CodeBuild", note: "End-to-end pipeline", countFrom: 13, countTo: 9, prefixFrom: "~", prefixTo: "~", suffixTo: " min" },
       { final: "3", label: "teams", note: "Front and backend teams on the migration", count: 3 },
+      { final: "5", label: "resolvers", note: "Custom AppSync GraphQL resolvers", count: 5 },
     ],
     charts: [
       {
@@ -657,29 +660,16 @@ export const EXPERIENCES = [
     bullets: [
       "Deployed an offline, air-gapped Kubernetes cluster that simulated running on a satellite.",
       "Built a custom Docker registry mirroring OS repositories so the cluster could start fully offline and run satellite-grade workloads.",
-      {
-        text: "Cleared a preprocessing bottleneck by replacing single-threaded OpenCV code with vectorized operations using Python multiprocessing and TensorFlow",
-        figure: ", cutting preprocessing time by about 20%",
-      },
+      "Cleared a preprocessing bottleneck by replacing single-threaded OpenCV code with vectorized operations using Python multiprocessing and TensorFlow.",
       "Built Prometheus and Grafana dashboards to monitor GPU (NVIDIA CUDA) and memory use at each pipeline stage.",
       "Benchmarked resource use to inform the lab's capacity planning.",
     ],
     stack: ["Kubernetes", "Docker", "Python", "OpenCV", "TensorFlow", "Prometheus", "Grafana", "NVIDIA CUDA"],
     links: [],
-    // Figures and charts stay hidden. The diagram stays out.
+    // DSO figures are withheld pending clearance.
     metricsCleared: false,
-    metrics: [
-      { final: "~20%", label: "faster preprocessing", note: "Parallelized image preprocessing", count: 20, prefix: "~", suffix: "%" },
-    ],
-    charts: [
-      {
-        kind: "share",
-        title: "Preprocessing time",
-        caption: "About 20% faster",
-        percent: 20,
-        display: "~20%",
-      },
-    ],
+    metrics: [],
+    charts: [],
     diagram: null,
     limitedNote: "Details limited for confidentiality",
     samples: [

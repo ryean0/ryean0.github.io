@@ -113,14 +113,11 @@ test("modal copy follows the clearance flags", () => {
   assert.equal(dso.samples.length, 1);
   assert.match(dso.samples[0].code, /ProcessPoolExecutor/);
   assert.equal(dso.limitedNote, "Details limited for confidentiality");
+  assert.deepEqual(byId["exp-dso"].metrics, []);
+  assert.deepEqual(byId["exp-dso"].charts, []);
   assert.equal(hidden.includes("20%"), false);
-  assert.equal(hidden.includes("~20"), false);
-
-  const cleared = modalView({ ...byId["exp-dso"], metricsCleared: true });
-  assert.match(cleared.bullets.join(" "), /about 20%/);
-  assert.equal(cleared.metrics[0].final, "~20%");
-  assert.equal(cleared.charts[0].percent, 20);
-  assert.equal(cleared.diagram, null);
+  assert.equal(JSON.stringify(byId["exp-dso"]).includes("20%"), false);
+  assert.match(read("js/content.js"), /DSO figures are withheld pending clearance/);
 
   for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac", "exp-daily-bruin", ...projectIds]) {
     const view = modalView(byId[id]);
@@ -156,7 +153,9 @@ test("charts use resume figures only", () => {
   assert.deepEqual(solar[0].bars.map((bar) => bar.value), [13, 9]);
   assert.equal(solar[1].low, 30);
   assert.equal(solar[1].high, 45);
+  assert.equal(byId["exp-solarbrio"].metrics.find((metric) => metric.label === "resolvers").final, "5");
   const usac = byId["exp-usac"].charts;
+  assert.equal(usac[0].title, "p95 on the top 5 endpoints");
   assert.deepEqual(usac[0].bars.map((bar) => bar.display), ["baseline", "~3x faster"]);
   assert.deepEqual(usac[1].bars.map((bar) => bar.display), ["~4 wk", "<1 wk"]);
   assert.equal(usac[2].low, 30);
