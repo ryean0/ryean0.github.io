@@ -145,6 +145,9 @@ h1 { font-size: var(--h1); margin-bottom: 0.45rem; }
   border-left: 2px solid var(--accent);
   color: var(--muted);
 }
+.about-copy { display: grid; gap: 0.9rem; }
+.about-copy .section-intro { max-width: 44rem; }
+.about-copy a { color: var(--accent); }
 .about-label { margin: 1.6rem 0 0.2rem; font-size: 1.05rem; }
 .outside { margin-top: 1.6rem; }
 .outside ul { margin: 0.6rem 0 0; padding-left: 1.1rem; color: var(--muted); }

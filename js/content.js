@@ -36,7 +36,10 @@ export const IMPACT = {
 };
 
 export const ABOUT = {
-  bio: "I studied Computer Science at UCLA (B.S., December 2025), focusing on distributed systems, operating systems, networking and machine learning. During my studies, I spent a year at DSO National Laboratories in Singapore working on ML infrastructure. I speak English and intermediate Mandarin.",
+  paragraphs: [
+    "I earned my B.S. in Computer Science from UCLA in December 2025, just as generative AI was changing how software gets built. Instead of going straight into industry, I chose to stay close to research and keep learning. I joined UCLA's Memory and Lifespan Cognition Lab as a technical research assistant, building its data and statistics pipeline, while studying AI and ML on my own and building Anubys, an open-source harness that tests AI agents in CI.",
+    "Now I'm moving into full-time industry and enterprise software work. I bring hands-on cloud and DevOps experience and a current, practical view of AI and ML infrastructure. During my studies I also spent a year at DSO National Laboratories in Singapore working on ML infrastructure. I speak English and intermediate Mandarin.",
+  ],
 };
 
 export const CERTIFICATIONS = [

@@ -142,7 +142,12 @@ test("experience, work samples, and about me follow the outline", () => {
   assert.equal(FUN_FACTS.length, 0);
   assert.match(home, /data-fun-facts hidden/);
   assert.equal(about.includes(CONTACT_CAPTION), true);
-  assert.equal(about.includes(ABOUT.bio), true);
+  const intro = about.slice(0, about.indexOf('id="certifications"'));
+  const plain = intro.replace(/<[^>]+>/g, "");
+  for (const paragraph of ABOUT.paragraphs) assert.equal(plain.includes(paragraph), true);
+  assert.match(intro, /<a href="https:\/\/anubys\.dev\/" rel="noopener noreferrer">Anubys<\/a>/);
+  assert.equal(ABOUT.paragraphs.join("").includes("\u2014"), false);
+  assert.equal(intro.includes("\u2014"), false);
   assert.equal(home.includes(IMPACT.intro), true);
   for (const item of IMPACT.items) assert.equal(home.includes(item), true, item);
   assert.match(home, /src="assets\/profile\.webp"/);
@@ -156,9 +161,9 @@ test("experience, work samples, and about me follow the outline", () => {
 });
 
 test("resume facts are present and typos are fixed", () => {
-  assert.match(home, /B\.S\., December 2025/);
-  assert.match(home, /distributed systems/);
-  assert.match(home, /networking and machine learning/);
+  assert.match(home, /B\.S\. in Computer Science from UCLA in December 2025/);
+  assert.match(home, /technical research assistant/);
+  assert.match(home, /intermediate Mandarin/);
   assert.equal(home.includes("GPA"), false);
   assert.equal(home.includes("3.43"), false);
   assert.equal(home.includes("Expected"), false);
