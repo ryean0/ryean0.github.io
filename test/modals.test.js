@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
+  ENTRIES,
   EXPERIENCES,
   PROJECTS,
   IMAGE_CREDITS,
@@ -19,7 +20,7 @@ const home = read("index.html");
 const modalJs = read("js/modal.js");
 const css = read("css/site.css");
 
-const ids = ["exp-mlc", "exp-usac", "exp-solarbrio", "exp-daily-bruin", "exp-dso"];
+const ids = ["exp-mlc", "exp-solarbrio", "exp-dso"];
 const projectIds = ["exp-anubys", "exp-runops", "exp-bruincreates", "exp-music", "exp-paxos", "exp-nlp", "exp-snake"];
 
 function sliceBetween(html, start, end) {
@@ -64,6 +65,7 @@ test("external links are chips outside the title", () => {
   assert.match(home, /class="ext-chip" href="https:\/\/www\.uclacec\.com\/" target="_blank" rel="noopener noreferrer"/);
   assert.match(home, /class="ext-chip" href="https:\/\/www\.psych\.ucla\.edu\/faculty-page\/castel\/" target="_blank" rel="noopener noreferrer"/);
   assert.match(home, /class="ext-chip" href="https:\/\/anubys\.dev\/" target="_blank" rel="noopener noreferrer"/);
+  assert.match(home, /class="ext-chip" href="https:\/\/www\.dailybruin\.com\/" target="_blank" rel="noopener noreferrer"/);
   const dso = sliceBetween(home, 'data-exp="exp-dso"', "</ol>");
   assert.equal(dso.includes("ext-chip"), false);
   assert.equal(dso.includes("20%"), false);
@@ -87,7 +89,7 @@ test("footer credit stays exact and every image is credited", () => {
     assert.equal(bytes.subarray(0, 4).toString("ascii"), "RIFF");
     assert.equal(bytes.subarray(8, 12).toString("ascii"), "WEBP");
   }
-  const used = new Set([...EXPERIENCES, ...PROJECTS].map((entry) => entry.image));
+  const used = new Set(ENTRIES.map((entry) => entry.image));
   for (const src of used) assert.ok(IMAGE_CREDITS.some((credit) => credit.src === src), src);
   const files = fs.readdirSync(path.join(root, "assets")).filter((name) => name.endsWith(".webp"));
   assert.equal(files.length, IMAGE_CREDITS.length);
@@ -95,7 +97,7 @@ test("footer credit stays exact and every image is credited", () => {
 });
 
 test("modal copy follows the clearance flags", () => {
-  const byId = Object.fromEntries([...EXPERIENCES, ...PROJECTS].map((entry) => [entry.id, entry]));
+  const byId = Object.fromEntries(ENTRIES.map((entry) => [entry.id, entry]));
   assert.equal(byId["exp-dso"].metricsCleared, false);
   assert.equal(byId["exp-dso"].diagram, null);
   assert.equal(byId["exp-mlc"].metricsCleared, true);
@@ -148,7 +150,7 @@ test("modal copy follows the clearance flags", () => {
 });
 
 test("charts use resume figures only", () => {
-  const byId = Object.fromEntries([...EXPERIENCES, ...PROJECTS].map((entry) => [entry.id, entry]));
+  const byId = Object.fromEntries(ENTRIES.map((entry) => [entry.id, entry]));
   const solar = byId["exp-solarbrio"].charts;
   assert.deepEqual(solar[0].bars.map((bar) => bar.value), [13, 9]);
   assert.equal(solar[1].low, 30);

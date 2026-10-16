@@ -19,6 +19,40 @@ export const SITE_URL = "https://ryean0.github.io/";
 
 export const SAMPLE_LABEL = "Illustrative example, not production code";
 
+/**
+ * Impact and About Me copy. Edit these strings to swap the page text.
+ * index.html mirrors them so the page is readable without JavaScript.
+ */
+export const IMPACT = {
+  kicker: "Results",
+  title: "Impact",
+  intro: "A few outcomes from my work on cloud infrastructure and developer tooling.",
+  items: [
+    "Cut monthly AWS costs by 30–45% while moving Solarbrio's delivery stack to AWS Amplify V2.",
+    "Shortened Solarbrio's CodeBuild pipeline from about 13 minutes to about 9.",
+    "Added Redis caching for the Campus Events Commission, making its busiest endpoints about 3x faster at p95 and reducing database load at peak by 30–50%.",
+    "Containerized the Campus Events Commission's dev setup, which cut new-developer onboarding from about 4 weeks to under 1.",
+  ],
+};
+
+export const ABOUT = {
+  bio: "I studied Computer Science at UCLA (B.S., December 2025), focusing on distributed systems, operating systems, networking and machine learning. During my studies, I spent a year at DSO National Laboratories in Singapore working on ML infrastructure. I speak English and intermediate Mandarin.",
+};
+
+export const CERTIFICATIONS = [
+  { name: "AWS Solutions Architect Associate (SAA-C03)", when: "Dec 2025" },
+  { name: "AWS Certified Cloud Practitioner", when: "2024" },
+  { name: "Certified AI Security Professional (CAISP)", when: "May 2026" },
+  { name: "HarvardX Professional Certificate in Data Science", when: "2021" },
+];
+
+/** Outside-work notes. Leave empty until Ryan supplies them. */
+export const FUN_FACTS = [];
+
+export const CONTACT_CAPTION = "Based in Los Angeles, CA. Open to Relocation. Feel free to reach out at the following:";
+
+export const PROFILE_SRC = "assets/profile.webp";
+
 export const IMAGE_CREDITS = [
   {
     src: "assets/ucla-royce-hall.webp",
@@ -419,7 +453,7 @@ function sample(title, lang, code, filename) {
   return { title, lang, code, filename: filename || "", label: SAMPLE_LABEL };
 }
 
-export const EXPERIENCES = [
+const ROLES = [
   {
     id: "exp-mlc",
     org: "Memory and Lifespan Cognition Lab",
@@ -542,10 +576,10 @@ export const EXPERIENCES = [
   },
   {
     id: "exp-solarbrio",
-    org: "Ectios (Solarbrio)",
+    org: "Ectios",
     role: "Software Engineering Intern (Cloud & DevOps)",
     dates: "Jun 2024 – Sep 2024",
-    location: "California",
+    location: "Solarbrio Geospatial Platform · California",
     summary: "Geospatial resource analysis platform. Ryan worked on the Amplify delivery migration, AppSync resolvers, and a cross-cloud port of the same pipeline pattern.",
     bullets: [
       "Led the delivery-stack migration from AWS Amplify V1 to V2, restoring stable CI/CD across 3 teams. Reduced monthly AWS costs by 30-45% and compressed the end-to-end CodeBuild pipeline from ~13 to ~9 minutes.",
@@ -606,7 +640,7 @@ export const EXPERIENCES = [
       "Added Pact contract tests in CI so schema breaks between services and the frontend were caught before production, including 4+ failures.",
     ],
     stack: ["Firebase", "Google Cloud", "Docker", "GitHub Actions", "Jest", "Pact", "AWS EC2"],
-    links: [],
+    links: [{ href: "https://www.dailybruin.com/", label: "dailybruin.com" }],
     metricsCleared: true,
     metrics: [
       { final: "~50%", label: "shorter builds", note: "GitHub Actions replacing ad-hoc pushes", count: 50, prefix: "~", suffix: "%" },
@@ -955,7 +989,11 @@ export const PROJECTS = [
   },
 ];
 
-export const ENTRIES = [...EXPERIENCES, ...PROJECTS];
+export const EXPERIENCES = ["exp-mlc", "exp-solarbrio", "exp-dso"].map((id) => ROLES.find((role) => role.id === id));
+
+export const CAMPUS_WORK = ["exp-usac", "exp-daily-bruin"].map((id) => ROLES.find((role) => role.id === id));
+
+export const ENTRIES = [...EXPERIENCES, ...CAMPUS_WORK, ...PROJECTS];
 
 function bulletText(bullet, metricsOn) {
   if (typeof bullet === "string") return bullet;

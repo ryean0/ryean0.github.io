@@ -1,4 +1,4 @@
-import { RESUME_URL } from "./content.js";
+import { FUN_FACTS, RESUME_URL } from "./content.js";
 import { bindEmails } from "./mail.js";
 import { initModals } from "./modal.js";
 
@@ -70,7 +70,7 @@ function initResume() {
       node.replaceWith(link);
       continue;
     }
-    node.textContent = "Resume available on request";
+    node.textContent = "Resume";
     node.setAttribute("data-email", "");
   }
 }
@@ -191,8 +191,22 @@ function initConsole() {
   play();
 }
 
+function initFunFacts() {
+  const block = document.querySelector("[data-fun-facts]");
+  if (!block || !FUN_FACTS.length) return;
+  const list = block.querySelector("ul");
+  if (!list) return;
+  for (const fact of FUN_FACTS) {
+    const item = document.createElement("li");
+    item.textContent = fact;
+    list.append(item);
+  }
+  block.hidden = false;
+}
+
 initNav();
 initResume();
+initFunFacts();
 bindEmails(document);
 initReveal();
 initStats();

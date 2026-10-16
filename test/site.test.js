@@ -4,7 +4,17 @@ import path from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { GITHUB_URL, LINKEDIN_URL, RESUME_URL, SITE_URL } from "../js/content.js";
+import {
+  ABOUT,
+  CONTACT_CAPTION,
+  EXPERIENCES,
+  FUN_FACTS,
+  GITHUB_URL,
+  IMPACT,
+  LINKEDIN_URL,
+  RESUME_URL,
+  SITE_URL,
+} from "../js/content.js";
 import { emailHref } from "../js/mail.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,12 +44,16 @@ function walk(dir, out = []) {
 const files = walk(root);
 
 test("required sections are on the home page", () => {
-  for (const id of ["hero", "impact", "work", "experience", "projects", "skills", "certifications", "education", "contact", "footer"]) {
+  for (const id of ["hero", "impact", "work", "experience", "skills", "about", "footer"]) {
     assert.match(home, new RegExp(`id="${id}"`));
   }
+  assert.equal(home.includes('id="projects"'), false);
+  assert.equal(home.includes('id="contact"'), false);
+  assert.equal(home.includes('id="education"'), false);
   assert.match(home, /<h1[^>]*>Ryan Phua<\/h1>/);
   assert.match(home, /DevOps Software Engineer/);
   assert.match(home, /Los Angeles, open to relocation/);
+  assert.match(home, />Work Samples</);
 });
 
 test("footer credit is exact and last", () => {
@@ -55,9 +69,9 @@ test("linkedin is configured and shown beside github", () => {
   assert.equal(content.includes("TODO"), true);
   assert.equal(content.includes("LINKEDIN_URL = null"), false);
   const hero = home.slice(home.indexOf('id="hero"'), home.indexOf('id="impact"'));
-  const contact = home.slice(home.indexOf('id="contact"'), home.indexOf("<footer"));
+  const about = home.slice(home.indexOf('id="about"'), home.indexOf("<footer"));
   const footer = home.slice(home.indexOf('id="footer"'));
-  for (const part of [hero, contact, footer]) {
+  for (const part of [hero, about, footer]) {
     assert.ok(part.includes(LINKEDIN_URL), "missing linkedin");
     assert.ok(part.includes(GITHUB_URL), "missing github");
   }
@@ -70,7 +84,8 @@ test("email target is assembled from parts", () => {
 test("resume stays a request until RESUME_URL is set", () => {
   assert.equal(RESUME_URL, null);
   assert.match(content, /TODO: set RESUME_URL/);
-  assert.match(home, /Resume available on request/);
+  assert.match(home, /data-resume[^>]*>Resume</);
+  assert.equal(home.includes("Resume available on request"), false);
   assert.equal(home.includes('href="/assets/resumes/'), false);
 });
 
@@ -110,14 +125,43 @@ test("merge check never uses a Fail verdict", () => {
   assert.equal(detail.includes("ci-agent-regression-harness"), false);
 });
 
+test("experience, work samples, and about me follow the outline", () => {
+  const experience = home.slice(home.indexOf('id="experience"'), home.indexOf('id="skills"'));
+  const work = home.slice(home.indexOf('id="work"'), home.indexOf('id="experience"'));
+  const about = home.slice(home.indexOf('id="about"'), home.indexOf("<footer"));
+  const ids = [...experience.matchAll(/data-exp="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(ids, ["exp-mlc", "exp-solarbrio", "exp-dso"]);
+  assert.deepEqual(EXPERIENCES.map((entry) => entry.id), ids);
+  assert.equal(experience.includes("exp-usac"), false);
+  assert.equal(experience.includes("exp-runops"), false);
+  assert.ok(work.includes('data-exp="exp-usac"'));
+  assert.ok(work.includes('data-exp="exp-daily-bruin"'));
+  assert.ok(work.includes('data-exp="exp-runops"'));
+  assert.ok(work.includes("https://www.uclacec.com/"));
+  assert.ok(work.includes("https://www.dailybruin.com/"));
+  assert.equal(FUN_FACTS.length, 0);
+  assert.match(home, /data-fun-facts hidden/);
+  assert.equal(about.includes(CONTACT_CAPTION), true);
+  assert.equal(about.includes(ABOUT.bio), true);
+  assert.equal(home.includes(IMPACT.intro), true);
+  for (const item of IMPACT.items) assert.equal(home.includes(item), true, item);
+  assert.match(home, /src="assets\/profile\.webp"/);
+  assert.match(home, /class="portrait-fallback"/);
+  assert.match(home, />RP</);
+  const certs = about.slice(about.indexOf('id="certifications"'), about.indexOf("data-fun-facts"));
+  assert.ok(certs.indexOf("SAA-C03") < certs.indexOf("AWS Certified Cloud Practitioner"));
+  assert.match(certs, /Dec 2025/);
+  assert.equal(home.includes("Nothing here is rounded"), false);
+  assert.equal(home.includes("View work"), false);
+});
+
 test("resume facts are present and typos are fixed", () => {
-  assert.match(home, /Sep 2021 – Dec 2025/);
-  assert.match(home, /B\.S\. Computer Science/);
-  assert.match(home, /Distributed Systems/);
-  assert.match(home, /Computer Networking/);
-  assert.match(home, /Machine Learning \(NLP\)/);
+  assert.match(home, /B\.S\., December 2025/);
+  assert.match(home, /distributed systems/);
+  assert.match(home, /networking and machine learning/);
   assert.equal(home.includes("GPA"), false);
   assert.equal(home.includes("3.43"), false);
+  assert.equal(home.includes("Expected"), false);
   assert.match(home, /Oct 2025 – Aug 2026/);
   assert.match(home, /Jun 2024 – Sep 2024/);
   assert.match(home, /Jun 2022 – Jul 2023/);
@@ -139,6 +183,7 @@ test("resume facts are present and typos are fixed", () => {
   assert.match(home, /~3x/);
   assert.match(home, /pre Elasticache baseline/);
   assert.match(home, /~4 weeks to under 1 week/);
+  assert.match(home, /about 4 weeks to under 1/);
   assert.match(home, /www\.uclacec\.com/);
   assert.match(home, /The Daily Bruin/);
   assert.match(home, /DBOnline Media Team/);
