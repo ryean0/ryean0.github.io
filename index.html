@@ -53,6 +53,7 @@
       <nav id="nav-menu" class="nav-links" aria-label="Primary">
         <a href="#work">Work</a>
         <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
         <a href="#skills">Skills</a>
         <a href="#education">Education</a>
         <a href="#contact">Contact</a>
@@ -109,30 +110,30 @@
         <h2 id="impact-title">Impact</h2>
         <p class="section-intro">Figures below are the ones written on the resume. Nothing here is rounded into a new claim.</p>
         <div class="stats">
-          <article class="stat reveal" aria-label="~30% AWS cost cut">
-            <p class="stat-value" data-final="~30%" data-count="30" data-prefix="~" data-suffix="%">~30%</p>
-            <p class="stat-label">AWS cost cut</p>
-            <p class="stat-note">Solarbrio · 6-mo resource costs</p>
+          <article class="stat reveal" aria-label="30-45% monthly AWS cost cut">
+            <p class="stat-value" data-final="30-45%" data-count-from="30" data-count-to="45" data-suffix-from="%" data-suffix-to="%">30-45%</p>
+            <p class="stat-label">monthly AWS cost cut</p>
+            <p class="stat-note">Solarbrio · Amplify V2 migration</p>
           </article>
-          <article class="stat reveal" aria-label="CodeBuild ~20 to ~9 min">
-            <p class="stat-value" data-final="~20 → ~9 min" data-count-from="20" data-count-to="9" data-prefix-from="~" data-prefix-to="~" data-suffix-to=" min">~20 → ~9 min</p>
+          <article class="stat reveal" aria-label="CodeBuild ~13 to ~9 min">
+            <p class="stat-value" data-final="~13 → ~9 min" data-count-from="13" data-count-to="9" data-prefix-from="~" data-prefix-to="~" data-suffix-to=" min">~13 → ~9 min</p>
             <p class="stat-label">CodeBuild</p>
             <p class="stat-note">Solarbrio · end-to-end pipeline</p>
           </article>
-          <article class="stat reveal" aria-label="~3x p95 on hot endpoints">
+          <article class="stat reveal" aria-label="~3x p95 on the top 5 hottest endpoints">
             <p class="stat-value" data-final="~3x" data-count="3" data-prefix="~" data-suffix="x">~3x</p>
             <p class="stat-label">p95 on hot endpoints</p>
             <p class="stat-note">USAC CEC · top 5 hottest APIs</p>
           </article>
-          <article class="stat reveal" aria-label=">47,000 student users">
-            <p class="stat-value" data-final="&gt;47,000" data-count="47000" data-prefix="&gt;" data-commas="1">&gt;47,000</p>
-            <p class="stat-label">student users</p>
-            <p class="stat-note">USAC CEC · daily event updates</p>
+          <article class="stat reveal" aria-label="30-50% fewer database queries">
+            <p class="stat-value" data-final="30-50%">30-50%</p>
+            <p class="stat-label">fewer database queries</p>
+            <p class="stat-note">USAC CEC · at peak traffic</p>
           </article>
-          <article class="stat reveal" aria-label="onboarding >3.5 wk to ~1 wk">
-            <p class="stat-value" data-final="&gt;3.5 → ~1 wk" data-count-from="3.5" data-count-to="1" data-decimals="1" data-decimals-to="0" data-prefix-from="&gt;" data-prefix-to="~" data-suffix-from=" wk" data-suffix-to=" wk">&gt;3.5 → ~1 wk</p>
+          <article class="stat reveal" aria-label="onboarding ~4 weeks to under 1 week">
+            <p class="stat-value" data-final="~4 → &lt;1 wk" data-count-from="4" data-count-to="1" data-prefix-from="~" data-prefix-to="&lt;" data-suffix-from=" wk" data-suffix-to=" wk">~4 → &lt;1 wk</p>
             <p class="stat-label">onboarding</p>
-            <p class="stat-note">USAC CEC · &gt;3.5 wk to ~1 wk</p>
+            <p class="stat-note">USAC CEC · ~4 wk to &lt;1 wk</p>
           </article>
         </div>
       </div>
@@ -142,7 +143,7 @@
       <div class="wrap">
         <p class="kicker">Featured work</p>
         <h2 id="work-title">Work</h2>
-        <p class="section-intro">Anubys is the portfolio product. USAC Campus Events Commission is the campus platform.</p>
+        <p class="section-intro">Anubys is the portfolio product. The rest of the project list sits further down the page.</p>
         <div class="work-grid">
           <article class="card card-featured reveal">
             <p class="card-kicker">Featured · Public beta</p>
@@ -176,38 +177,6 @@
               <a class="btn btn-ghost" href="projects/anubys/">Project details</a>
             </div>
           </article>
-          <article class="card reveal has-chip" data-exp-card="exp-usac">
-            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-usac" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-usac-title">
-              <p class="card-kicker">Campus platform</p>
-              <h3 id="exp-usac-title" class="exp-title">
-                <span class="exp-name">USAC Campus Events Commission</span>
-                <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="sr-only">Open</span>
-              </h3>
-              <p class="card-date">Oct 2023 – Jul 2025 · Los Angeles (UCLA)</p>
-              <dl>
-                <div class="field">
-                  <dt>Problem</dt>
-                  <dd>The undergraduate events site had to publish daily updates for a campus of student users, while hot API paths and a long setup kept the web team slow.</dd>
-                </div>
-                <div class="field">
-                  <dt>Approach</dt>
-                  <dd>Maintained and upgraded key backend features, with data preloading and caching via AWS ElastiCache, GitHub Actions for CI/CD, and Docker-Compose so dev and production environments came up in one step.</dd>
-                </div>
-                <div class="field">
-                  <dt>Outcome</dt>
-                  <dd>Daily event updates for &gt;47000 student users at UCLA. Direct database query load cut by 30-50% under peak web traffic. p95 latency on the top 5 hottest API endpoints improved by ~3x versus pre Elasticache baseline metrics. New developer onboarding went from &gt;3.5 weeks to ~1 week.</dd>
-                </div>
-              </dl>
-              <ul class="chips" aria-label="Stack">
-                <li>AWS ElastiCache</li>
-                <li>GitHub Actions</li>
-                <li>Docker-Compose</li>
-                <li>CI/CD</li>
-              </ul>
-            </div>
-            <a class="ext-chip" href="https://www.uclacec.com/" target="_blank" rel="noopener noreferrer">www.uclacec.com</a>
-          </article>
         </div>
       </div>
     </section>
@@ -217,18 +186,18 @@
         <p class="kicker">Timeline</p>
         <h2 id="experience-title">Experience</h2>
         <ol class="timeline">
-          <li class="role-block reveal" data-exp-card="exp-mlc">
+          <li class="role-block reveal has-chip" data-exp-card="exp-mlc">
             <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-mlc" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-mlc-title">
               <p class="role-when">Oct 2025 – Aug 2026</p>
               <div>
                 <h3 id="exp-mlc-title" class="exp-title">
-                  <span class="exp-name">Memory &amp; Lifespan Cognition (MLC) Lab</span>
+                  <span class="exp-name">Memory and Lifespan Cognition Lab</span>
                   <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   <span class="sr-only">Open</span>
                 </h3>
                 <p class="role-title">Technical Research Assistant, Statistics &amp; Software</p>
                 <p class="role-meta">UCLA Dept. of Psychology</p>
-                <p class="role-summary">Social psychology lab investigating phishing email detection and decision biases amongst various age groups.</p>
+                <p class="role-summary">Social psychology lab studying how people of different ages spot phishing emails and the biases behind their decisions.</p>
                 <ul>
                   <li>Streamlined and sanitized 12 heterogeneous CSV data sources into a single 12,000 row x 20 col dataset across 226 study participants, with schema validation on each entry so ingestion stayed consistent.</li>
                   <li>Translated the lab's signal detection theory (SDT) statistical framework into a fully parameterized, end-to-end pipeline in R/RStudio with integrated ggplot2 visualisations, surfacing a response-bias shift that raw accuracy metrics had obscured.</li>
@@ -236,42 +205,82 @@
                 </ul>
               </div>
             </div>
+            <a class="ext-chip" href="https://www.psych.ucla.edu/faculty-page/castel/" target="_blank" rel="noopener noreferrer">Castel faculty page</a>
+          </li>
+          <li class="role-block reveal has-chip" data-exp-card="exp-usac">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-usac" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-usac-title">
+              <p class="role-when">Sep 2023 – Jul 2025</p>
+              <div>
+                <h3 id="exp-usac-title" class="exp-title">
+                  <span class="exp-name">Campus Events Commission (USAC)</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Backend and DevOps Developer, then Backend Lead</p>
+                <p class="role-meta">Los Angeles, CA</p>
+                <ul>
+                  <li>Containerized dev and production with Docker Compose so either environment starts in one step, cutting new-developer onboarding from ~4 weeks to under 1 week.</li>
+                  <li>Added Redis caching on AWS ElastiCache. Direct database query load fell 30-50% at peak traffic. p95 latency on the top 5 hottest API endpoints improved by ~3x versus pre Elasticache baseline metrics.</li>
+                  <li>Started PR-gated CI on GitHub Actions. Moved builds onto AWS CodeBuild, cutting build time from ~13 minutes to ~7.5 minutes.</li>
+                </ul>
+              </div>
+            </div>
+            <a class="ext-chip" href="https://www.uclacec.com/" target="_blank" rel="noopener noreferrer">www.uclacec.com</a>
           </li>
           <li class="role-block reveal has-chip" data-exp-card="exp-solarbrio">
             <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-solarbrio" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-solarbrio-title">
               <p class="role-when">Jun 2024 – Sep 2024</p>
               <div>
                 <h3 id="exp-solarbrio-title" class="exp-title">
-                  <span class="exp-name">Solarbrio (Ectios)</span>
+                  <span class="exp-name">Ectios (Solarbrio)</span>
                   <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   <span class="sr-only">Open</span>
                 </h3>
-                <p class="role-title">Full-Stack Software Engineering (UI &amp; Pipeline)</p>
-                <p class="role-meta">San Francisco (Hybrid) · Geospatial Resource Analysis Platform Series A</p>
+                <p class="role-title">Software Engineering Intern (Cloud &amp; DevOps)</p>
+                <p class="role-meta">California · Geospatial resource analysis platform</p>
                 <ul>
-                  <li>Supported and documented migration of the delivery stack from AWS Amplify V1 to V2, cutting 6-mo AWS resource costs by ~30% and compressing end-to-end CodeBuild pipeline runtime from ~20 to ~9 minutes.</li>
+                  <li>Led the delivery-stack migration from AWS Amplify V1 to V2 across 3 teams, cutting monthly AWS costs by 30-45% and compressing the end-to-end CodeBuild pipeline from ~13 to ~9 minutes.</li>
                   <li>Developed and tested 5 custom GraphQL resolvers on AWS AppSync (TypeScript) to replace deprecated dependencies, automating Amplify CodeGen across 3 (dev/stage/prod) runtime envs.</li>
-                  <li>Integrated ElastiCache (Redis) caching at the resolver level on high-traffic query paths, reducing DynamoDB read amplification and improving tail latency under peak usage.</li>
+                  <li>Added ElastiCache (Redis) caching at the resolver level on high-traffic queries, and ported the pipeline pattern to Apollo GraphQL on GCP Cloud Run.</li>
                 </ul>
               </div>
             </div>
             <a class="ext-chip" href="https://solarbrio.com/" target="_blank" rel="noopener noreferrer">solarbrio.com</a>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-daily-bruin">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-daily-bruin" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-daily-bruin-title">
+              <p class="role-when">Jan 2022 – Apr 2024</p>
+              <div>
+                <h3 id="exp-daily-bruin-title" class="exp-title">
+                  <span class="exp-name">The Daily Bruin</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">DevOps and Backend Lead, DBOnline Media Team</p>
+                <p class="role-meta">Los Angeles, CA · about 250 hours</p>
+                <ul>
+                  <li>Led the backend migration from legacy DigitalOcean and Apache hosting to Firebase on GCP, consolidating 5 services into one Dockerized monorepo with under 1% integration errors and 100% feature parity.</li>
+                  <li>Replaced ad-hoc local pushes with GitHub Actions deploys to AWS EC2, cutting build times by ~50% and the deployment failure rate by ~25%.</li>
+                  <li>Added Jest tests and Pact contract tests in CI, catching 4+ schema-breaking failures before production.</li>
+                </ul>
+              </div>
+            </div>
           </li>
           <li class="role-block reveal" data-exp-card="exp-dso">
             <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-dso" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-dso-title">
               <p class="role-when">Jun 2022 – Jul 2023</p>
               <div>
                 <h3 id="exp-dso-title" class="exp-title">
-                  <span class="exp-name">Defense Science Organization (DSO) National Laboratories</span>
+                  <span class="exp-name">DSO National Laboratories</span>
                   <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   <span class="sr-only">Open</span>
                 </h3>
-                <p class="role-title">Machine-Learning Infrastructure (SWE) Research</p>
-                <p class="role-meta">Singapore · Satellite Sensors Lab, geospatial image segmentation ML pipeline (Convolutional Neural Networks)</p>
+                <p class="role-title">Machine-Learning Infrastructure Research Intern</p>
+                <p class="role-meta">Singapore · geospatial image segmentation pipeline</p>
                 <ul>
-                  <li>Deployed an offline, air-gapped Kubernetes cluster simulating on-satellite deployment and built a custom Docker registry mirroring OS repositories, enabling fully offline cluster initialization and successful launch of satellite-grade workloads.</li>
-                  <li>Unblocked a preprocessing bottleneck in the ML/CV pipeline by parallelizing single-threaded OpenCV into vector operations via Python multiprocessing and TensorFlow, cutting preprocessing time by ~20%.</li>
-                  <li>Developed custom Prometheus/Grafana dashboards for GPU (Nvidia CUDA) and memory monitoring across pipeline stages, benchmarking resource utilization for the lab's capacity planning.</li>
+                  <li>Deployed an offline, air-gapped Kubernetes cluster simulating on-satellite deployment, with a custom Docker registry mirroring OS repositories so the cluster could start fully offline.</li>
+                  <li>Cleared a preprocessing bottleneck in the ML and CV pipeline by replacing single-threaded OpenCV code with vectorized operations using Python multiprocessing and TensorFlow.</li>
+                  <li>Built Prometheus and Grafana dashboards for GPU (NVIDIA CUDA) and memory use across pipeline stages, for the lab's capacity planning.</li>
                 </ul>
               </div>
             </div>
@@ -280,6 +289,148 @@
       </div>
     </section>
 
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="wrap">
+        <p class="kicker">Selected builds</p>
+        <h2 id="projects-title">Projects</h2>
+        <p class="section-intro">Anubys is the live product in Work. These cards are the rest of the project list from the resumes, with the same writeup as the roles above.</p>
+        <ol class="timeline">
+          <li class="role-block reveal has-chip" data-exp-card="exp-anubys">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-anubys" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-anubys-title">
+              <p class="role-when">Public beta</p>
+              <div>
+                <h3 id="exp-anubys-title" class="exp-title">
+                  <span class="exp-name">Anubys</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">CI-native agent regression harness</p>
+                <p class="role-meta">Portfolio product</p>
+                <ul>
+                  <li>Compares a candidate LLM agent to a baseline on paired scenarios in CI and returns Pass, Block, or Insufficient evidence.</li>
+                  <li>The check adds 0 ms in production and stops at a $38 spend cap.</li>
+                </ul>
+              </div>
+            </div>
+            <a class="ext-chip" href="https://anubys.dev/" target="_blank" rel="noopener noreferrer">anubys.dev</a>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-runops">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-runops" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-runops-title">
+              <p class="role-when">Oct 2025 – Present</p>
+              <div>
+                <h3 id="exp-runops-title" class="exp-title">
+                  <span class="exp-name">RunOpsAI</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">AI-native DevOps web console</p>
+                <p class="role-meta">Personal project · ~240 hours</p>
+                <ul>
+                  <li>Tracks CI runs with p50 and p95 latency, error rate, and queue depth on Prometheus and Grafana.</li>
+                  <li>CI gates cover tests, lint, and deploy checks.</li>
+                  <li>A guardrailed assistant returns schema-checked answers and can only call read-only tools.</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-bruincreates">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-bruincreates" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-bruincreates-title">
+              <p class="role-when">Feb 2023 – Jan 2024</p>
+              <div>
+                <h3 id="exp-bruincreates-title" class="exp-title">
+                  <span class="exp-name">BruinCreates</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Frontend lead, artwork exchange and marketplace</p>
+                <p class="role-meta">UCLA · ~110 hours</p>
+                <ul>
+                  <li>Led the React and Redux frontend and integrated Spring Boot REST APIs for listings, search, and seller workflows.</li>
+                  <li>Connected Instagram Basic Display and Graph APIs so sellers could show an art feed on their profile.</li>
+                  <li>Search on Elasticsearch cut latency by 50%, checked with ES Rally.</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-music">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-music" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-music-title">
+              <p class="role-when">~168 hours</p>
+              <div>
+                <h3 id="exp-music-title" class="exp-title">
+                  <span class="exp-name">Social music app</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Full-stack TypeScript, live chat and Spotify</p>
+                <p class="role-meta">UCLA project</p>
+                <ul>
+                  <li>Turned Figma wireframes into an MVP with Spotify discovery and AWS AI Personalize recommendations.</li>
+                  <li>The MongoDB schema change improved query execution time by 60%.</li>
+                  <li>API query latency fell by 3x after that refactor, checked on AWS CloudWatch.</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-paxos">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-paxos" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-paxos-title">
+              <p class="role-when">~108 hours</p>
+              <div>
+                <h3 id="exp-paxos-title" class="exp-title">
+                  <span class="exp-name">Paxos on GKE</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Distributed consensus course project</p>
+                <p class="role-meta">UCLA</p>
+                <ul>
+                  <li>Deployed a fault-tolerant key-value store on GKE, with Paxos election, sharding, and membership on StatefulSets.</li>
+                  <li>Terraform and AWS CloudFormation made the deploy repeatable.</li>
+                  <li>Failover on the Kubernetes deploy was 40% faster than the locally hosted version.</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-nlp">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-nlp" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-nlp-title">
+              <p class="role-when">~168 hours</p>
+              <div>
+                <h3 id="exp-nlp-title" class="exp-title">
+                  <span class="exp-name">AI-generated text detection</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">NLP course project</p>
+                <p class="role-meta">UCLA · PyTorch in Colab</p>
+                <ul>
+                  <li>Trained on about 200,000 text samples from 4 sources, including AI-written text.</li>
+                  <li>Stylometric features sit alongside the semantic signal.</li>
+                  <li>Development-set accuracy moved from 75% to 89%.</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-snake">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-snake" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-snake-title">
+              <p class="role-when">~108 hours</p>
+              <div>
+                <h3 id="exp-snake-title" class="exp-title">
+                  <span class="exp-name">Snake on a Basys-3 FPGA</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Verilog course project</p>
+                <p class="role-meta">UCLA · embedded systems</p>
+                <ul>
+                  <li>Snake in Verilog on a Basys-3 board, with VGA output and a 7-segment score.</li>
+                  <li>A clock divider takes the 100 MHz board clock down to a 25 MHz pixel clock.</li>
+                  <li>Food spawns from a linear-feedback shift register, only in empty cells.</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
     <section class="section" id="skills" aria-labelledby="skills-title">
       <div class="wrap">
         <p class="kicker">Technical skills</p>
@@ -309,6 +460,13 @@
               <li>Docker-Compose</li>
               <li>Kubernetes</li>
               <li>GitHub Pages</li>
+              <li>AWS Lambda</li>
+              <li>CodePipeline</li>
+              <li>CloudFormation</li>
+              <li>Firebase</li>
+              <li>GKE</li>
+              <li>Cloud Run</li>
+              <li>Cloud Functions</li>
             </ul>
           </article>
           <article class="skill-group reveal">
@@ -334,6 +492,8 @@
               <li>SQL</li>
               <li>Bash</li>
               <li>R</li>
+              <li>JavaScript</li>
+              <li>Verilog</li>
             </ul>
           </article>
           <article class="skill-group reveal">
@@ -357,6 +517,11 @@
               <li>ggplot2</li>
               <li>lme4</li>
               <li>RStudio</li>
+              <li>React</li>
+              <li>Redux</li>
+              <li>Angular</li>
+              <li>Tailwind CSS</li>
+              <li>Spring Boot</li>
             </ul>
           </article>
         </div>
@@ -369,12 +534,20 @@
         <h2 id="cert-title">Certifications</h2>
         <ul class="cert-list">
           <li class="cert reveal">
+            <h3>AWS Certified Cloud Practitioner</h3>
+            <p><time datetime="2024">2024</time></p>
+          </li>
+          <li class="cert reveal">
             <h3>AWS Solutions Architect Associate (SAA-C03)</h3>
             <p><time datetime="2025-12">Dec 2025</time></p>
           </li>
           <li class="cert reveal">
+            <h3>HarvardX Professional Certificate in Data Science</h3>
+            <p><time datetime="2021">2021</time></p>
+          </li>
+          <li class="cert reveal">
             <h3>Certified AI Security Professional (CAISP)</h3>
-            <p>BlockChain Council · <time datetime="2026-05">May 2026</time></p>
+            <p>Blockchain Council · <time datetime="2026-05">May 2026</time></p>
           </li>
         </ul>
       </div>
@@ -388,13 +561,14 @@
           <p class="role-when">Sep 2021 – Dec 2025</p>
           <h3>University of California, Los Angeles</h3>
           <p class="role-title">B.S. Computer Science</p>
-          <p class="role-meta">Los Angeles, CA</p>
+          <p class="role-meta">Henry Samueli School of Engineering and Applied Science · Los Angeles, CA</p>
           <h3 class="sr-only">Coursework</h3>
           <ul class="chips" aria-label="Coursework">
-            <li>Distributed Systems</li>
+            <li>Parallel &amp; Distributed Systems</li>
             <li>Operating Systems</li>
             <li>Algorithms &amp; Data Structures</li>
-            <li>Cloud Security &amp; Networking</li>
+            <li>Computer Networking</li>
+            <li>Machine Learning (NLP)</li>
           </ul>
         </article>
       </div>
@@ -428,6 +602,7 @@
         <p>Portfolio</p>
         <a href="#work">Work</a>
         <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
         <a href="#skills">Skills</a>
         <a href="#education">Education</a>
         <a href="#contact">Contact</a>
@@ -445,6 +620,13 @@
         <li><a href="https://commons.wikimedia.org/wiki/File:2019_UCLA_Royce_Hall_2.jpg" rel="noopener noreferrer">Royce Hall, UCLA</a> — Beyond My Ken, CC BY-SA 4.0</li>
         <li><a href="https://commons.wikimedia.org/wiki/File:San_Francisco_Skyline_9.jpg" rel="noopener noreferrer">San Francisco skyline from Coit Tower</a> — Keh52, CC BY-SA 4.0</li>
         <li><a href="https://commons.wikimedia.org/wiki/File:Blue_Marble_Western_Hemisphere.jpg" rel="noopener noreferrer">Blue Marble, Western Hemisphere</a> — NASA/Goddard Space Flight Center/Reto Stöckli, Public domain</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:The_New_York_Times_newsroom_1942.jpg" rel="noopener noreferrer">The New York Times newsroom, 1942</a> · Marjory Collins, Public domain</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Wikimedia_Foundation_Servers-8055_14.jpg" rel="noopener noreferrer">Wikimedia Foundation servers</a> · Victor Grigas, CC BY-SA 3.0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Entrance_of_Yale_University_Art_Gallery.jpg" rel="noopener noreferrer">Entrance of the Yale University Art Gallery</a> · Astarikov, Public domain</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Phonograph.jpg" rel="noopener noreferrer">Phonograph</a> · Harry Walker, CC0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Ethernet_cables.jpg" rel="noopener noreferrer">Ethernet cables</a> · Deavmi, CC BY-SA 3.0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Underwood_typewriter.jpg" rel="noopener noreferrer">Underwood typewriter</a> · Maksym Kozlenko, CC BY-SA 4.0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Printed_circuit_board.jpg" rel="noopener noreferrer">Printed circuit board</a> · Cjp24, CC BY-SA 3.0</li>
       </ul>
     </section>
     <div class="wrap footer-bottom">

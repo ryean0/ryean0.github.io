@@ -106,6 +106,10 @@ function paintStat(node, t) {
     return;
   }
   const ease = 1 - (1 - t) ** 3;
+  if (node.dataset.countFrom == null && node.dataset.count == null) {
+    node.textContent = finalText;
+    return;
+  }
   if (node.dataset.countFrom != null && node.dataset.countTo != null) {
     const left = Number(node.dataset.countFrom) * ease;
     const right = Number(node.dataset.countTo) * ease;
