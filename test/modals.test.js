@@ -20,7 +20,17 @@ const modalJs = read("js/modal.js");
 const css = read("css/site.css");
 
 const ids = ["exp-mlc", "exp-solarbrio", "exp-dso"];
-const projectIds = ["exp-usac", "exp-anubys"];
+const projectIds = [
+  "exp-usac",
+  "exp-anubys",
+  "exp-daily-bruin",
+  "exp-runops",
+  "exp-bruincreates",
+  "exp-music",
+  "exp-paxos",
+  "exp-nlp",
+  "exp-snake",
+];
 
 function sliceBetween(html, start, end) {
   const from = html.indexOf(start);
@@ -65,7 +75,7 @@ test("external links are chips outside the title", () => {
   assert.match(home, /class="ext-chip" href="https:\/\/anubys\.dev\/" target="_blank" rel="noopener noreferrer"/);
   const dso = sliceBetween(home, 'data-exp="exp-dso"', "</ol>");
   assert.equal(dso.includes("ext-chip"), false);
-  assert.match(dso, /~20%/);
+  assert.equal(dso.includes("20%"), false);
   assert.equal(home.includes("(SDR)"), false);
   assert.match(home, /signal detection theory \(SDT\)/);
 });
@@ -102,19 +112,21 @@ test("modal copy follows the resume and keeps DSO inside that wording", () => {
   assert.equal(byId["exp-usac"].metricsCleared, true);
 
   const dso = modalView(byId["exp-dso"]);
-  assert.equal(dso.showImpact, true);
+  const hidden = [byId["exp-dso"].summary, ...dso.bullets].join(" ");
+  assert.equal(dso.showImpact, false);
   assert.equal(dso.diagram, null);
   assert.equal(dso.samples.length, 0);
-  assert.equal(dso.limitedNote, null);
-  assert.equal(dso.charts.length, 1);
-  assert.equal(dso.charts[0].display, "~20%");
+  assert.equal(dso.charts.length, 0);
+  assert.equal(dso.metrics.length, 0);
+  assert.equal(hidden.includes("20%"), false);
+  assert.equal(JSON.stringify(byId["exp-dso"]).includes("20%"), false);
   const dsoText = JSON.stringify(byId["exp-dso"]);
   for (const extra of ["Horovod", "4-GPU", "2.5-hour", "dropped frames", "throughput variance"]) {
     assert.equal(dsoText.includes(extra), false, extra);
   }
   assert.match(read("js/content.js"), /no architecture diagram/);
 
-  for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac", "exp-anubys"]) {
+  for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac", "exp-anubys", "exp-daily-bruin", "exp-runops", "exp-bruincreates", "exp-music", "exp-paxos", "exp-nlp", "exp-snake"]) {
     const view = modalView(byId[id]);
     assert.ok(view.diagram.nodes.length >= 3, id);
     assert.equal(view.diagram.nodes.includes("SDR"), false);
@@ -150,10 +162,12 @@ test("charts use resume figures only", () => {
   assert.equal(usac[0].high, 50);
   assert.equal(byId["exp-mlc"].charts[0].from, 12);
   assert.equal(byId["exp-mlc"].charts[0].to, 12000);
-  assert.equal(byId["exp-dso"].charts[0].percent, 20);
+  assert.equal(byId["exp-dso"].charts.length, 0);
+  assert.equal(byId["exp-dso"].metrics.length, 0);
   assert.equal(byId["exp-anubys"].charts.length, 0);
   assert.equal(byId["exp-anubys"].metrics[0].final, "400+");
   const content = read("js/content.js");
+  assert.equal(content.includes("20%"), false);
   assert.equal(content.includes("(SDR)"), false);
   assert.equal(content.includes("30-45%"), false);
   assert.equal(content.includes("~13"), false);
