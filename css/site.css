@@ -144,6 +144,10 @@ a.chip-link {
   font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.01em;
 }
 a.chip-link:hover { border-color: rgba(var(--accent-rgb), 0.75); color: var(--accent); }
+a.chip-link:focus-visible, a.ext-chip:focus-visible, .exp-tab:focus-visible, .exp-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 .resume-download { font-weight: 560; }
 @media (max-width: 380px) {
   .contact-actions { align-items: stretch; }
@@ -207,8 +211,9 @@ a.chip-link:hover { border-color: rgba(var(--accent-rgb), 0.75); color: var(--ac
 }
 .stat-value {
   font-family: var(--mono); font-weight: 500; letter-spacing: -0.04em;
-  font-size: clamp(1.45rem, 1.1rem + 1vw, 1.85rem); color: var(--accent);
+  font-size: clamp(1.15rem, 0.7rem + 1vw, 1.55rem); color: var(--accent);
   text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.28);
+  white-space: nowrap;
 }
 .stat-label { margin-top: 0.25rem; color: var(--ink); font-weight: 520; letter-spacing: -0.02em; }
 .stat-note { margin-top: 0.35rem; color: var(--faint); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0; }

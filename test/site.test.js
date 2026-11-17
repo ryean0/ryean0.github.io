@@ -196,6 +196,9 @@ test("share metadata, favicon, and stylesheet", () => {
   assert.equal(SITE_URL, "https://ryean0.github.io/");
   assert.match(home, /rel="canonical" href="https:\/\/ryean0\.github\.io\/"/);
   assert.match(home, /property="og:image" content="https:\/\/ryean0\.github\.io\/og\.png"/);
+  assert.match(home, /property="og:image:alt"/);
+  assert.match(home, /rel="apple-touch-icon" href="apple-touch-icon.png"/);
+  assert.match(home, /name="robots" content="index, follow"/);
   assert.match(css, /#ff7a1a/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(read("favicon.svg"), /#ff7a1a/);
