@@ -133,9 +133,8 @@ test("merge check never uses a Fail verdict", () => {
 test("resume facts are present and typos are fixed", () => {
   assert.match(home, /Sep 2021 – Dec 2025/);
   assert.match(home, /B\.S\. Computer Science/);
-  assert.match(home, /Distributed Systems/);
-  assert.match(home, /Computer Networking/);
-  assert.match(home, /Machine Learning \(NLP\)/);
+  assert.match(home, /Los Angeles, CA/);
+  assert.equal(home.includes("Distributed Systems"), false);
   assert.equal(home.includes("GPA"), false);
   assert.equal(home.includes("3.43"), false);
   assert.match(home, /Oct 2025 – Aug 2026/);
@@ -165,12 +164,14 @@ test("resume facts are present and typos are fixed", () => {
   assert.equal(home.includes("BruinCreates"), false);
   assert.equal(home.includes("Paxos"), false);
   assert.equal(home.includes("Basys-3"), false);
-  assert.match(home, /Certified AI Security Professional \(CAISP\)/);
+  assert.match(home, /Certified AI Security Professional/);
   assert.equal(home.includes("Certfied"), false);
   assert.match(home, /SAA-C03/);
   assert.match(home, /Blockchain Council/);
-  assert.match(home, /AWS Certified Cloud Practitioner/);
-  assert.match(home, /HarvardX Professional Certificate in Data Science/);
+  assert.match(home, /datetime="2025-12"/);
+  assert.match(home, /datetime="2026-05"/);
+  assert.equal(home.includes("Cloud Practitioner"), false);
+  assert.equal(home.includes("HarvardX"), false);
   assert.match(home, /\$38/);
   assert.match(home, /0 ms/);
 });
