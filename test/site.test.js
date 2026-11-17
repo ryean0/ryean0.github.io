@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { createHash } from "node:crypto";
 
-import { GITHUB_URL, LINKEDIN_URL, RESUME_URL, SITE_URL } from "../js/content.js";
+import { EXPERIENCES, GITHUB_URL, LINKEDIN_URL, PROJECTS, RESUME_URL, SITE_URL } from "../js/content.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => fs.readFileSync(path.join(root, rel), "utf8");
@@ -55,7 +55,7 @@ test("footer credit is exact and last", () => {
 
 test("linkedin is configured and shown beside github", () => {
   assert.equal(LINKEDIN_URL, "https://www.linkedin.com/in/rphua-dev");
-  assert.equal(content.includes("TODO"), true);
+  assert.equal(content.includes("TODO"), false);
   assert.equal(content.includes("LINKEDIN_URL = null"), false);
   const hero = home.slice(home.indexOf('id="hero"'), home.indexOf('id="impact"'));
   const contact = home.slice(home.indexOf('id="contact"'), home.indexOf("<footer"));
@@ -141,25 +141,25 @@ test("resume facts are present and typos are fixed", () => {
   assert.match(home, /Oct 2025 – Aug 2026/);
   assert.match(home, /Jun 2024 – Sep 2024/);
   assert.match(home, /Jun 2022 – Jul 2023/);
-  assert.match(home, /Jan 2022 – Apr 2024/);
-  assert.match(home, /Sep 2023 – Jul 2025/);
-  assert.match(home, /12 heterogeneous CSV data sources/);
+  assert.match(home, /Oct 2023 – Jul 2025/);
+  assert.match(home, /12 heterogeneous CSV sources/);
   assert.equal(home.includes("heterogenous"), false);
-  assert.match(home, /12,000 row x 20 col/);
-  assert.match(home, /226 study participants/);
-  assert.match(home, /30-45%/);
-  assert.match(home, /~13 to ~9 minutes/);
-  assert.match(home, /Developed and tested 5 custom GraphQL resolvers on AWS AppSync \(TypeScript\)/);
-  assert.match(home, /3 \(dev\/stage\/prod\) runtime envs/);
-  assert.equal(home.includes("~20 to ~9"), false);
-  assert.equal(home.includes("47000"), false);
-  assert.equal(home.includes("47,000"), false);
+  assert.match(home, /12,000-row dataset covering 226 participants/);
+  assert.equal(home.includes("x 20"), false);
+  assert.match(home, /~30%/);
+  assert.match(home, /~20 to ~9 minutes/);
+  assert.equal(home.includes("30-45%"), false);
+  assert.equal(home.includes("~13 to ~9"), false);
+  assert.match(home, /5 custom GraphQL resolvers on AWS AppSync using TypeScript/);
+  assert.match(home, /dev, stage, and prod/);
+  assert.match(home, /47,000/);
   assert.match(home, /30-50%/);
-  assert.match(home, /top 5 hottest API endpoints/);
+  assert.match(home, /five busiest API endpoints/);
   assert.match(home, /~3x/);
-  assert.match(home, /pre Elasticache baseline/);
-  assert.match(home, /~4 weeks to under 1 week/);
+  assert.match(home, /pre-ElastiCache baseline/);
+  assert.match(home, /&gt;3\.5 weeks to ~1 week/);
   assert.match(home, /www\.uclacec\.com/);
+  assert.equal(home.includes("20%"), false);
   assert.match(home, /The Daily Bruin/);
   assert.match(home, /DBOnline Media Team/);
   assert.match(home, /RunOpsAI/);
@@ -167,15 +167,28 @@ test("resume facts are present and typos are fixed", () => {
   assert.match(home, /Paxos on GKE/);
   assert.match(home, /Basys-3/);
   assert.match(home, /75% to 89%/);
+  assert.match(home, /Social music app/);
   assert.match(home, /Certified AI Security Professional \(CAISP\)/);
   assert.equal(home.includes("Certfied"), false);
   assert.match(home, /SAA-C03/);
   assert.match(home, /Blockchain Council/);
   assert.match(home, /AWS Certified Cloud Practitioner/);
   assert.match(home, /HarvardX Professional Certificate in Data Science/);
-  assert.match(home, /Pytorch &amp; Tensorflow/);
   assert.match(home, /\$38/);
   assert.match(home, /0 ms/);
+});
+
+test("satellite wording stays inside the DSO entry", () => {
+  const card = home.slice(home.indexOf('data-exp-card="exp-dso"'), home.indexOf("</li>", home.indexOf('data-exp-card="exp-dso"')));
+  assert.match(card, /satellite/i);
+  assert.equal(/satellite/i.test(home.replace(card, "")), false);
+  const source = read("js/content.js");
+  const entry = EXPERIENCES.find((item) => item.id === "exp-dso");
+  assert.match(JSON.stringify(entry), /satellite/i);
+  const others = JSON.stringify([...EXPERIENCES.filter((item) => item.id !== "exp-dso"), ...PROJECTS]);
+  assert.equal(/satellite/i.test(others), false);
+  const withoutEntry = source.replace(source.slice(source.indexOf('id: "exp-dso"'), source.indexOf('id: "exp-usac"')), "");
+  assert.equal(/satellite/i.test(withoutEntry), false);
 });
 
 test("share metadata, favicon, and stylesheet", () => {

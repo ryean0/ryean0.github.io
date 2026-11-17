@@ -186,7 +186,8 @@ a.chip-link:hover { border-color: rgba(var(--accent-rgb), 0.75); color: var(--ac
 .pill[data-state="block"] { color: var(--accent); border-color: rgba(var(--accent-rgb), 0.55); box-shadow: 0 0 16px -8px rgba(var(--accent-rgb), 0.9); }
 .pill[data-state="beta"] { color: var(--accent); border-color: rgba(var(--accent-rgb), 0.45); }
 
-.section { padding: var(--space-section) 0; border-top: 1px solid var(--line); }
+.section { padding: var(--space-section) 0; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--header) + 0.75rem); }
+#hero { scroll-margin-top: var(--header); }
 .section h2 { font-size: var(--h2); margin-bottom: 0.55rem; }
 .section-intro { max-width: 38rem; color: var(--muted); }
 
@@ -428,6 +429,7 @@ html.exp-lock, html.exp-lock body { overflow: hidden; }
 .exp-stack, .exp-panels { padding: 0 1.25rem 0.4rem; }
 .exp-block-title { font-size: 0.95rem; margin: 1rem 0 0.45rem; }
 .exp-summary { color: var(--muted); }
+.exp-photo-credit { color: var(--faint); font-size: 0.75rem; margin: 0.85rem 0 0; }
 .exp-details { margin: 0; padding-left: 1.1rem; color: var(--muted); }
 .exp-details li + li { margin-top: 0.4rem; }
 .exp-tabs { display: flex; gap: 0.15rem; padding: 0 0.8rem; border-bottom: 1px solid var(--line); position: sticky; top: 7.4rem; z-index: 2; background: rgba(8, 8, 10, 0.92); }

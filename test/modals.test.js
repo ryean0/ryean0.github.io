@@ -19,8 +19,18 @@ const home = read("index.html");
 const modalJs = read("js/modal.js");
 const css = read("css/site.css");
 
-const ids = ["exp-mlc", "exp-usac", "exp-solarbrio", "exp-daily-bruin", "exp-dso"];
-const projectIds = ["exp-anubys", "exp-runops", "exp-bruincreates", "exp-music", "exp-paxos", "exp-nlp", "exp-snake"];
+const ids = ["exp-mlc", "exp-solarbrio", "exp-dso"];
+const projectIds = [
+  "exp-usac",
+  "exp-anubys",
+  "exp-daily-bruin",
+  "exp-runops",
+  "exp-bruincreates",
+  "exp-music",
+  "exp-paxos",
+  "exp-nlp",
+  "exp-snake",
+];
 
 function sliceBetween(html, start, end) {
   const from = html.indexOf(start);
@@ -56,13 +66,12 @@ test("each experience opens a dialog", () => {
 });
 
 test("external links are chips outside the title", () => {
-  for (const id of ["exp-solarbrio", "exp-usac", "exp-mlc", "exp-anubys"]) {
+  for (const id of ["exp-solarbrio", "exp-usac", "exp-mlc", "exp-anubys", "exp-dso"]) {
     const trigger = sliceBetween(home, `data-exp="${id}"`, "</div>\n            </div>");
     assert.equal(trigger.includes("<a"), false, id);
   }
   assert.match(home, /class="ext-chip" href="https:\/\/solarbrio\.com\/" target="_blank" rel="noopener noreferrer"/);
   assert.match(home, /class="ext-chip" href="https:\/\/www\.uclacec\.com\/" target="_blank" rel="noopener noreferrer"/);
-  assert.match(home, /class="ext-chip" href="https:\/\/www\.psych\.ucla\.edu\/faculty-page\/castel\/" target="_blank" rel="noopener noreferrer"/);
   assert.match(home, /class="ext-chip" href="https:\/\/anubys\.dev\/" target="_blank" rel="noopener noreferrer"/);
   const dso = sliceBetween(home, 'data-exp="exp-dso"', "</ol>");
   assert.equal(dso.includes("ext-chip"), false);
@@ -94,32 +103,30 @@ test("footer credit stays exact and every image is credited", () => {
   for (const name of files) assert.ok(IMAGE_CREDITS.some((credit) => credit.src.endsWith(name)));
 });
 
-test("modal copy follows the clearance flags", () => {
+test("modal copy follows the resume and keeps DSO inside that wording", () => {
   const byId = Object.fromEntries([...EXPERIENCES, ...PROJECTS].map((entry) => [entry.id, entry]));
-  assert.equal(byId["exp-dso"].metricsCleared, false);
   assert.equal(byId["exp-dso"].diagram, null);
+  assert.equal(byId["exp-dso"].samples.length, 0);
   assert.equal(byId["exp-mlc"].metricsCleared, true);
   assert.equal(byId["exp-solarbrio"].metricsCleared, true);
   assert.equal(byId["exp-usac"].metricsCleared, true);
-  assert.deepEqual(byId["exp-mlc"].publications, []);
-  assert.equal(byId["exp-usac"].screenshot, null);
 
   const dso = modalView(byId["exp-dso"]);
   const hidden = [byId["exp-dso"].summary, ...dso.bullets].join(" ");
   assert.equal(dso.showImpact, false);
-  assert.equal(dso.metrics.length, 0);
-  assert.equal(dso.charts.length, 0);
   assert.equal(dso.diagram, null);
-  assert.equal(dso.samples.length, 1);
-  assert.match(dso.samples[0].code, /ProcessPoolExecutor/);
-  assert.equal(dso.limitedNote, "Details limited for confidentiality");
-  assert.deepEqual(byId["exp-dso"].metrics, []);
-  assert.deepEqual(byId["exp-dso"].charts, []);
+  assert.equal(dso.samples.length, 0);
+  assert.equal(dso.charts.length, 0);
+  assert.equal(dso.metrics.length, 0);
   assert.equal(hidden.includes("20%"), false);
   assert.equal(JSON.stringify(byId["exp-dso"]).includes("20%"), false);
-  assert.match(read("js/content.js"), /DSO figures are withheld pending clearance/);
+  const dsoText = JSON.stringify(byId["exp-dso"]);
+  for (const extra of ["Horovod", "4-GPU", "2.5-hour", "dropped frames", "throughput variance"]) {
+    assert.equal(dsoText.includes(extra), false, extra);
+  }
+  assert.match(read("js/content.js"), /no architecture diagram/);
 
-  for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac", "exp-daily-bruin", ...projectIds]) {
+  for (const id of ["exp-mlc", "exp-solarbrio", "exp-usac", "exp-anubys", "exp-daily-bruin", "exp-runops", "exp-bruincreates", "exp-music", "exp-paxos", "exp-nlp", "exp-snake"]) {
     const view = modalView(byId[id]);
     assert.ok(view.diagram.nodes.length >= 3, id);
     assert.equal(view.diagram.nodes.includes("SDR"), false);
@@ -130,19 +137,12 @@ test("modal copy follows the clearance flags", () => {
       assert.match(item.code, /Illustrative example, not production code/);
     }
   }
-  assert.ok(modalView(byId["exp-daily-bruin"]).charts.length > 0);
-  assert.match(byId["exp-daily-bruin"].samples[0].code, /PactV3/);
-  assert.match(byId["exp-runops"].samples[0].code, /READ_ONLY_TOOLS/);
-  assert.match(byId["exp-bruincreates"].samples[0].code, /ListingSearchController/);
 
   assert.deepEqual(byId["exp-solarbrio"].diagram.nodes, ["Amplify V2", "AppSync resolvers", "Redis", "DynamoDB"]);
   assert.deepEqual(byId["exp-mlc"].diagram.nodes, ["CSV sources", "Validated dataset", "Signal detection theory (SDT)", "lme4"]);
   assert.deepEqual(byId["exp-usac"].diagram.nodes, ["GitHub Actions", "Docker Compose", "ElastiCache"]);
   assert.match(byId["exp-mlc"].summary + byId["exp-mlc"].bullets.join(" "), /signal detection theory \(SDT\)/);
   assert.match(modalJs, /Illustrative/);
-  assert.match(modalJs, /Details limited for confidentiality/);
-  assert.match(modalJs, /Publications coming soon/);
-  assert.match(modalJs, /Screenshot coming soon/);
   assert.match(modalJs, /Samples coming soon/);
   assert.match(read(".github/workflows/pages.yml"), /\bassets\b/);
 });
@@ -150,20 +150,27 @@ test("modal copy follows the clearance flags", () => {
 test("charts use resume figures only", () => {
   const byId = Object.fromEntries([...EXPERIENCES, ...PROJECTS].map((entry) => [entry.id, entry]));
   const solar = byId["exp-solarbrio"].charts;
-  assert.deepEqual(solar[0].bars.map((bar) => bar.value), [13, 9]);
-  assert.equal(solar[1].low, 30);
-  assert.equal(solar[1].high, 45);
-  assert.equal(byId["exp-solarbrio"].metrics.find((metric) => metric.label === "resolvers").final, "5");
+  assert.deepEqual(solar[0].bars.map((bar) => bar.value), [20, 9]);
+  assert.equal(solar[1].percent, 30);
+  assert.equal(solar[1].display, "~30%");
+  assert.equal(byId["exp-solarbrio"].metrics.find((metric) => metric.label === "GraphQL resolvers").final, "5");
   const usac = byId["exp-usac"].charts;
-  assert.equal(usac[0].title, "p95 on the top 5 endpoints");
-  assert.deepEqual(usac[0].bars.map((bar) => bar.display), ["baseline", "~3x faster"]);
-  assert.deepEqual(usac[1].bars.map((bar) => bar.display), ["~4 wk", "<1 wk"]);
-  assert.equal(usac[2].low, 30);
-  assert.equal(usac[2].high, 50);
+  assert.equal(usac[1].title, "p95 on the five busiest endpoints");
+  assert.deepEqual(usac[1].bars.map((bar) => bar.display), ["baseline", "~3x"]);
+  assert.deepEqual(usac[2].bars.map((bar) => bar.display), [">3.5 wk", "~1 wk"]);
+  assert.equal(usac[0].low, 30);
+  assert.equal(usac[0].high, 50);
   assert.equal(byId["exp-mlc"].charts[0].from, 12);
-  assert.equal(byId["exp-mlc"].charts[0].to, 1);
+  assert.equal(byId["exp-mlc"].charts[0].to, 12000);
+  assert.equal(byId["exp-dso"].charts.length, 0);
+  assert.equal(byId["exp-dso"].metrics.length, 0);
+  assert.equal(byId["exp-anubys"].charts.length, 0);
+  assert.equal(byId["exp-anubys"].metrics[0].final, "400+");
   const content = read("js/content.js");
+  assert.equal(content.includes("20%"), false);
   assert.equal(content.includes("(SDR)"), false);
+  assert.equal(content.includes("30-45%"), false);
+  assert.equal(content.includes("~13"), false);
   assert.equal(content.includes("$800"), false);
   assert.equal(content.includes("$440"), false);
 });
