@@ -68,7 +68,7 @@
           <p class="kicker">Los Angeles, open to relocation</p>
           <h1 id="hero-title">Ryan Phua</h1>
           <p class="role">DevOps Software Engineer</p>
-          <p class="lede">DevOps software engineer working on cloud delivery and machine learning infrastructure. Supported the AWS Amplify V1 to V2 migration at Solarbrio, and deployed an offline Kubernetes cluster for a satellite image segmentation pipeline at DSO National Laboratories. Anubys is a pip-installable Python framework for evaluating LLM agents in CI.</p>
+          <p class="lede">DevOps software engineer working on cloud delivery and machine learning infrastructure. Supported the AWS Amplify V1 to V2 migration at Solarbrio, and deployed an offline, air-gapped Kubernetes cluster for an ML image segmentation pipeline at DSO National Laboratories. Anubys is a pip-installable Python framework for evaluating LLM agents in CI.</p>
           <div class="cta-row">
             <a class="btn btn-primary" href="#work">View work</a>
             <a class="btn btn-ghost resume-download" href="assets/Ryan_Phua_Resume.pdf" download="Ryan_Phua_Resume.pdf" type="application/pdf">
@@ -135,10 +135,10 @@
             <p class="stat-label">onboarding</p>
             <p class="stat-note">USAC · &gt;3.5 wk to ~1 wk</p>
           </article>
-          <article class="stat reveal" aria-label="about 20 percent less preprocessing time">
-            <p class="stat-value" data-final="~20%" data-count="20" data-prefix="~" data-suffix="%">~20%</p>
-            <p class="stat-label">preprocessing time</p>
-            <p class="stat-note">DSO · ML and CV pipeline</p>
+          <article class="stat reveal" aria-label="5 custom GraphQL resolvers">
+            <p class="stat-value" data-final="5" data-count="5">5</p>
+            <p class="stat-label">GraphQL resolvers</p>
+            <p class="stat-note">Solarbrio · AppSync, TypeScript</p>
           </article>
           <article class="stat reveal" aria-label="12 sources to 12,000 rows and 226 participants">
             <p class="stat-value" data-final="12 → 12,000" data-count-from="12" data-count-to="12000" data-commas-to="1">12 → 12,000</p>
@@ -247,7 +247,7 @@
                 <p class="role-summary">A CNN machine learning pipeline for satellite image segmentation.</p>
                 <ul>
                   <li>Deployed an offline, air-gapped Kubernetes cluster simulating on-satellite deployment, with a custom Docker registry mirroring OS repositories so the cluster could initialize fully offline.</li>
-                  <li>Unblocked a preprocessing bottleneck in the ML/CV pipeline by parallelizing single-threaded OpenCV into vector operations with Python multiprocessing and TensorFlow, cutting preprocessing time by ~20%.</li>
+                  <li>Unblocked a preprocessing bottleneck in the ML/CV pipeline by parallelizing single-threaded OpenCV into vector operations with Python multiprocessing and TensorFlow.</li>
                   <li>Developed custom Prometheus and Grafana dashboards for GPU (Nvidia CUDA) and memory monitoring across pipeline stages, for the lab's capacity planning.</li>
                 </ul>
               </div>
@@ -259,9 +259,9 @@
 
     <section class="section" id="projects" aria-labelledby="projects-title">
       <div class="wrap">
-        <p class="kicker">Selected builds</p>
+        <p class="kicker">Work samples</p>
         <h2 id="projects-title">Projects</h2>
-        <p class="section-intro">USAC Campus Events Commission and Anubys. The same writeup opens in a dialog. Site links are chips, not the title.</p>
+        <p class="section-intro">Campus events, Anubys, Daily Bruin, and the other builds. The one-page resume leaves some of these off for space. Links are chips, not the title.</p>
         <ol class="timeline">
           <li class="role-block reveal has-chip" data-exp-card="exp-usac">
             <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-usac" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-usac-title">
@@ -278,6 +278,11 @@
                   <li>Maintained and upgraded backend features for a campus events website serving daily event updates to &gt;47,000 UCLA student users, with data preloading and caching on AWS ElastiCache.</li>
                   <li>Reduced direct database query load by 30-50% during peak web traffic and improved p95 latency across the five busiest API endpoints by ~3x versus the pre-ElastiCache baseline.</li>
                   <li>Reduced new developer onboarding from &gt;3.5 weeks to ~1 week with GitHub Actions CI/CD and Docker Compose for one-step environment setup.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>AWS ElastiCache</li>
+                  <li>GitHub Actions</li>
+                  <li>Docker Compose</li>
                 </ul>
               </div>
             </div>
@@ -298,9 +303,183 @@
                   <li>Designed the evaluation with non-inferiority hypothesis testing and paired, scenario-level comparisons.</li>
                   <li>GitHub Actions runs 400+ pytest tests on every pull request without exposing secrets or incurring model costs.</li>
                 </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>Python</li>
+                  <li>pytest</li>
+                  <li>GitHub Actions</li>
+                </ul>
               </div>
             </div>
             <a class="ext-chip" href="https://anubys.dev/" target="_blank" rel="noopener noreferrer">anubys.dev</a>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-daily-bruin">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-daily-bruin" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-daily-bruin-title">
+              <p class="role-when">Jan 2022 – Apr 2024</p>
+              <div>
+                <h3 id="exp-daily-bruin-title" class="exp-title">
+                  <span class="exp-name">The Daily Bruin</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">DevOps and Backend Lead, DBOnline Media Team</p>
+                <p class="role-meta">Los Angeles, CA</p>
+                <ul>
+                  <li>Led the backend migration from legacy DigitalOcean and Apache hosting to Firebase on GCP, consolidating 5 services into one Dockerized monorepo with under 1% integration errors and 100% feature parity.</li>
+                  <li>Replaced ad-hoc local pushes with GitHub Actions deploys to AWS EC2, cutting build times by ~50% and the deployment failure rate by ~25%.</li>
+                  <li>Added Jest tests and Pact contract tests in CI, catching 4+ schema-breaking failures before production.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>Firebase</li>
+                  <li>Google Cloud</li>
+                  <li>Docker</li>
+                  <li>GitHub Actions</li>
+                  <li>Jest</li>
+                  <li>Pact</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-runops">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-runops" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-runops-title">
+              <p class="role-when">Oct 2025 – Present</p>
+              <div>
+                <h3 id="exp-runops-title" class="exp-title">
+                  <span class="exp-name">RunOpsAI</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">AI-native DevOps web console</p>
+                <p class="role-meta">Personal project</p>
+                <ul>
+                  <li>Tracks CI runs with p50 and p95 latency, error rate, and queue depth on Prometheus and Grafana.</li>
+                  <li>CI gates cover tests, lint, and deploy checks.</li>
+                  <li>A guardrailed assistant returns schema-checked answers and can only call read-only tools.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>Prometheus</li>
+                  <li>Grafana</li>
+                  <li>Python</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-bruincreates">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-bruincreates" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-bruincreates-title">
+              <p class="role-when">Feb 2023 – Jan 2024</p>
+              <div>
+                <h3 id="exp-bruincreates-title" class="exp-title">
+                  <span class="exp-name">BruinCreates</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Frontend lead, artwork exchange and marketplace</p>
+                <p class="role-meta">UCLA</p>
+                <ul>
+                  <li>Led the React and Redux frontend and integrated Spring Boot REST APIs for listings, search, and seller workflows.</li>
+                  <li>Connected Instagram Basic Display and Graph APIs so sellers could show an art feed on their profile.</li>
+                  <li>Search on Elasticsearch cut latency by 50%, checked with ES Rally.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>React</li>
+                  <li>Redux</li>
+                  <li>Spring Boot</li>
+                  <li>Elasticsearch</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-music">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-music" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-music-title">
+              <p class="role-when">UCLA project</p>
+              <div>
+                <h3 id="exp-music-title" class="exp-title">
+                  <span class="exp-name">Social music app</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Full-stack TypeScript, live chat and Spotify</p>
+                <ul>
+                  <li>Turned Figma wireframes into an MVP with Spotify discovery and AWS AI Personalize recommendations.</li>
+                  <li>The MongoDB schema change improved query execution time by 60%.</li>
+                  <li>API query latency fell by 3x after that refactor, checked on AWS CloudWatch.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>TypeScript</li>
+                  <li>MongoDB</li>
+                  <li>Spotify API</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-paxos">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-paxos" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-paxos-title">
+              <p class="role-when">UCLA</p>
+              <div>
+                <h3 id="exp-paxos-title" class="exp-title">
+                  <span class="exp-name">Paxos on GKE</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Distributed consensus course project</p>
+                <ul>
+                  <li>Deployed a fault-tolerant key-value store on GKE, with Paxos election, sharding, and membership on StatefulSets.</li>
+                  <li>Terraform and AWS CloudFormation made the deploy repeatable.</li>
+                  <li>Failover on the Kubernetes deploy was 40% faster than the locally hosted version.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>GKE</li>
+                  <li>Kubernetes</li>
+                  <li>Terraform</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-nlp">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-nlp" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-nlp-title">
+              <p class="role-when">UCLA</p>
+              <div>
+                <h3 id="exp-nlp-title" class="exp-title">
+                  <span class="exp-name">AI-generated text detection</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">NLP course project</p>
+                <p class="role-meta">PyTorch in Colab</p>
+                <ul>
+                  <li>Trained on about 200,000 text samples from 4 sources, including AI-written text.</li>
+                  <li>Stylometric features sit alongside the semantic signal.</li>
+                  <li>Development-set accuracy moved from 75% to 89%.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>PyTorch</li>
+                  <li>Python</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="role-block reveal" data-exp-card="exp-snake">
+            <div class="exp-trigger" role="button" tabindex="0" data-exp="exp-snake" aria-haspopup="dialog" aria-controls="experience-dialog" aria-expanded="false" aria-labelledby="exp-snake-title">
+              <p class="role-when">UCLA</p>
+              <div>
+                <h3 id="exp-snake-title" class="exp-title">
+                  <span class="exp-name">Snake on a Basys-3 FPGA</span>
+                  <svg class="exp-affordance" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="sr-only">Open</span>
+                </h3>
+                <p class="role-title">Verilog course project</p>
+                <p class="role-meta">Embedded systems</p>
+                <ul>
+                  <li>Snake in Verilog on a Basys-3 board, with VGA output and a 7-segment score.</li>
+                  <li>A clock divider takes the 100 MHz board clock down to a 25 MHz pixel clock.</li>
+                  <li>Food spawns from a linear-feedback shift register, only in empty cells.</li>
+                </ul>
+                <ul class="chips" aria-label="Tech stack">
+                  <li>Verilog</li>
+                  <li>Basys-3 FPGA</li>
+                  <li>VGA</li>
+                </ul>
+              </div>
+            </div>
           </li>
         </ol>
       </div>
@@ -464,6 +643,12 @@
         <li><a href="https://commons.wikimedia.org/wiki/File:San_Francisco_Skyline_9.jpg" rel="noopener noreferrer">San Francisco skyline from Coit Tower</a>. Keh52, CC BY-SA 4.0.</li>
         <li><a href="https://commons.wikimedia.org/wiki/File:Blue_Marble_Western_Hemisphere.jpg" rel="noopener noreferrer">Blue Marble, Western Hemisphere</a>. NASA/Goddard Space Flight Center/Reto Stöckli, Public domain.</li>
         <li><a href="https://commons.wikimedia.org/wiki/File:Wikimedia_Foundation_Servers-8055_14.jpg" rel="noopener noreferrer">Wikimedia Foundation servers</a>. Victor Grigas, CC BY-SA 3.0.</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:The_New_York_Times_newsroom_1942.jpg" rel="noopener noreferrer">The New York Times newsroom, 1942</a>. Marjory Collins, Public domain.</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Entrance_of_Yale_University_Art_Gallery.jpg" rel="noopener noreferrer">Entrance of the Yale University Art Gallery</a>. Astarikov, Public domain.</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Phonograph.jpg" rel="noopener noreferrer">Phonograph</a>. Harry Walker, CC0.</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Ethernet_cables.jpg" rel="noopener noreferrer">Ethernet cables</a>. Deavmi, CC BY-SA 3.0.</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Underwood_typewriter.jpg" rel="noopener noreferrer">Underwood typewriter</a>. Maksym Kozlenko, CC BY-SA 4.0.</li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Printed_circuit_board.jpg" rel="noopener noreferrer">Printed circuit board</a>. Cjp24, CC BY-SA 3.0.</li>
       </ul>
     </section>
     <div class="wrap footer-bottom">
