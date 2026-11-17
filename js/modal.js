@@ -396,6 +396,9 @@ function render(entry, mount, background) {
   const image = document.createElement("img");
   image.src = entry.image;
   image.alt = "";
+  image.decoding = "async";
+  image.width = 1200;
+  image.height = 800;
   background.append(image);
   background.hidden = false;
 
@@ -602,8 +605,33 @@ export function initModals() {
     dialog.classList.toggle("is-reduced", reducedMotion());
     if (!dialog.open) dialog.showModal();
     play(true);
-    dialog.focus();
+    const closeButton = dialog.querySelector("[data-exp-close]");
+    if (closeButton) closeButton.focus();
+    else dialog.focus();
   };
+
+  const focusable = () => [...dialog.querySelectorAll("a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])")]
+    .filter((node) => !node.closest("[hidden]") && node.getClientRects().length > 0);
+
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && dialog.open) {
+      event.preventDefault();
+      dismiss();
+      return;
+    }
+    if (event.key !== "Tab" || !dialog.open) return;
+    const nodes = focusable();
+    if (!nodes.length) return;
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
 
   const closeModal = () => {
     if (!dialog.open || closing) return;
