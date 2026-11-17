@@ -1,5 +1,3 @@
-import { RESUME_URL } from "./content.js";
-import { bindEmails } from "./mail.js";
 import { initModals } from "./modal.js";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -57,21 +55,6 @@ function initNav() {
       }
     }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
     for (const section of sections) spy.observe(section);
-  }
-}
-
-function initResume() {
-  for (const node of document.querySelectorAll("[data-resume]")) {
-    if (RESUME_URL) {
-      const link = document.createElement("a");
-      link.href = RESUME_URL;
-      link.className = node.className;
-      link.textContent = "Resume";
-      node.replaceWith(link);
-      continue;
-    }
-    node.textContent = "Resume available on request";
-    node.setAttribute("data-email", "");
   }
 }
 
@@ -192,8 +175,6 @@ function initConsole() {
 }
 
 initNav();
-initResume();
-bindEmails(document);
 initReveal();
 initStats();
 initConsole();

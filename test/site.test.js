@@ -4,8 +4,9 @@ import path from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { createHash } from "node:crypto";
+
 import { GITHUB_URL, LINKEDIN_URL, RESUME_URL, SITE_URL } from "../js/content.js";
-import { emailHref } from "../js/mail.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => fs.readFileSync(path.join(root, rel), "utf8");
@@ -19,7 +20,9 @@ const workflow = read(".github/workflows/pages.yml");
 
 const outlook = ["ryanphua.dev", "outlook.com"].join("@");
 const uclaMail = ["rphua", ["g", "ucla", "edu"].join(".")].join("@");
+const gmail = ["ryanphua2", "gmail.com"].join("@");
 const phone = ["310", "869", "9907"].join("");
+const resumeSha = "35b64cbb2046785274958ae6e09962c56c39af70c062e53a1d6f4bb1996715c9";
 
 function walk(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -63,27 +66,44 @@ test("linkedin is configured and shown beside github", () => {
   }
 });
 
-test("email target is assembled from parts", () => {
-  assert.equal(emailHref(), `mailto:${["ryanphua.dev", "outlook.com"].join("@")}`);
-});
-
-test("resume stays a request until RESUME_URL is set", () => {
-  assert.equal(RESUME_URL, null);
-  assert.match(content, /TODO: set RESUME_URL/);
-  assert.match(home, /Resume available on request/);
-  assert.equal(home.includes('href="/assets/resumes/'), false);
+test("contact offers the resume PDF beside LinkedIn and GitHub", () => {
+  assert.equal(RESUME_URL, "assets/Ryan_Phua_Resume.pdf");
+  const pdfPath = path.join(root, RESUME_URL);
+  const pdf = fs.readFileSync(pdfPath);
+  assert.equal(createHash("sha256").update(pdf).digest("hex"), resumeSha);
+  assert.equal(pdf.subarray(0, 5).toString("latin1"), "%PDF-");
+  const contact = home.slice(home.indexOf('id="contact"'), home.indexOf("<footer"));
+  assert.match(contact, /<h2[^>]*>Contact me<\/h2>/);
+  assert.match(contact, /class="btn btn-primary resume-download" href="assets\/Ryan_Phua_Resume\.pdf" download="Ryan_Phua_Resume\.pdf"/);
+  assert.match(contact, /Download resume/);
+  assert.match(contact, /class="chip-link" href="https:\/\/www\.linkedin\.com\/in\/rphua-dev"/);
+  assert.match(contact, /class="chip-link" href="https:\/\/github\.com\/ryean0"/);
+  assert.equal(contact.toLowerCase().includes("mailto"), false);
+  assert.equal(home.includes("Resume available on request"), false);
+  assert.equal(home.includes("data-email"), false);
+  assert.equal(fs.existsSync(path.join(root, "js/mail.js")), false);
 });
 
 test("literal addresses and the phone number stay out of the repo", () => {
+  const banned = [outlook, uclaMail, gmail, phone];
   for (const file of files) {
+    if (file.endsWith(".pdf")) {
+      const bytes = fs.readFileSync(file);
+      const rel = path.relative(root, file);
+      for (const needle of banned) {
+        assert.equal(bytes.includes(Buffer.from(needle)), false, rel);
+      }
+      continue;
+    }
     if (!/\.(html|css|js|svg|txt|xml|yml|md|json)$/.test(file)) continue;
     const text = fs.readFileSync(file, "utf8");
-    assert.equal(text.includes(outlook), false, path.relative(root, file));
-    assert.equal(text.includes(uclaMail), false, path.relative(root, file));
-    assert.equal(text.toLowerCase().includes(["g", "ucla", "edu"].join(".")), false, path.relative(root, file));
-    assert.equal(text.includes(phone), false, path.relative(root, file));
+    const rel = path.relative(root, file);
+    for (const needle of banned) assert.equal(text.includes(needle), false, rel);
+    assert.equal(text.toLowerCase().includes(["g", "ucla", "edu"].join(".")), false, rel);
+    assert.equal(text.toLowerCase().includes(["mail", "to:"].join("")), false, rel);
   }
-  assert.equal(files.some((file) => file.toLowerCase().endsWith(".pdf")), false);
+  const pdfs = files.filter((file) => file.toLowerCase().endsWith(".pdf")).map((file) => path.relative(root, file));
+  assert.deepEqual(pdfs, ["assets/Ryan_Phua_Resume.pdf"]);
 });
 
 test("anubys redirect still points at the product site", () => {
@@ -220,6 +240,7 @@ test("staged site contains no withheld DSO figures", () => {
     "throughput variance",
   ];
   for (const file of walk(site)) {
+    if (file.toLowerCase().endsWith(".pdf")) continue;
     const text = fs.readFileSync(file);
     const rel = path.relative(root, file);
     for (const needle of banned) {
