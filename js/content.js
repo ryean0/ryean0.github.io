@@ -1,15 +1,14 @@
 /**
  * Site configuration that JavaScript needs at runtime.
  * Page copy lives in the HTML so the portfolio is readable without JavaScript.
- * The email address is not stored here. js/mail.js assembles it from parts.
+ * No email address and no phone number are stored here.
  *
  * Experience modal copy is the resume, rewritten for the dialog.
  * Where resume variants disagree, the majority wording and figures are used.
  * DSO figures are withheld pending clearance.
  */
 
-/** TODO: set RESUME_URL to a public resume PDF. Until then the control asks by email. */
-export const RESUME_URL = null;
+export const RESUME_URL = "assets/Ryan_Phua_Resume.pdf";
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/rphua-dev";
 
