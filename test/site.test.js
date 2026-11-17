@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { createHash } from "node:crypto";
 
-import { GITHUB_URL, LINKEDIN_URL, RESUME_URL, SITE_URL } from "../js/content.js";
+import { EXPERIENCES, GITHUB_URL, LINKEDIN_URL, PROJECTS, RESUME_URL, SITE_URL } from "../js/content.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => fs.readFileSync(path.join(root, rel), "utf8");
@@ -158,12 +158,15 @@ test("resume facts are present and typos are fixed", () => {
   assert.match(home, /pre-ElastiCache baseline/);
   assert.match(home, /&gt;3\.5 weeks to ~1 week/);
   assert.match(home, /www\.uclacec\.com/);
-  assert.match(home, /~20%/);
-  assert.equal(home.includes("The Daily Bruin"), false);
-  assert.equal(home.includes("RunOpsAI"), false);
-  assert.equal(home.includes("BruinCreates"), false);
-  assert.equal(home.includes("Paxos"), false);
-  assert.equal(home.includes("Basys-3"), false);
+  assert.equal(home.includes("20%"), false);
+  assert.match(home, /The Daily Bruin/);
+  assert.match(home, /DBOnline Media Team/);
+  assert.match(home, /RunOpsAI/);
+  assert.match(home, /BruinCreates/);
+  assert.match(home, /Paxos on GKE/);
+  assert.match(home, /Basys-3/);
+  assert.match(home, /75% to 89%/);
+  assert.match(home, /Social music app/);
   assert.match(home, /Certified AI Security Professional/);
   assert.equal(home.includes("Certfied"), false);
   assert.match(home, /SAA-C03/);
@@ -174,6 +177,19 @@ test("resume facts are present and typos are fixed", () => {
   assert.equal(home.includes("HarvardX"), false);
   assert.match(home, /\$38/);
   assert.match(home, /0 ms/);
+});
+
+test("satellite wording stays inside the DSO entry", () => {
+  const card = home.slice(home.indexOf('data-exp-card="exp-dso"'), home.indexOf("</li>", home.indexOf('data-exp-card="exp-dso"')));
+  assert.match(card, /satellite/i);
+  assert.equal(/satellite/i.test(home.replace(card, "")), false);
+  const source = read("js/content.js");
+  const entry = EXPERIENCES.find((item) => item.id === "exp-dso");
+  assert.match(JSON.stringify(entry), /satellite/i);
+  const others = JSON.stringify([...EXPERIENCES.filter((item) => item.id !== "exp-dso"), ...PROJECTS]);
+  assert.equal(/satellite/i.test(others), false);
+  const withoutEntry = source.replace(source.slice(source.indexOf('id: "exp-dso"'), source.indexOf('id: "exp-usac"')), "");
+  assert.equal(/satellite/i.test(withoutEntry), false);
 });
 
 test("share metadata, favicon, and stylesheet", () => {
@@ -230,6 +246,7 @@ test("staged site contains no withheld DSO figures", () => {
     fs.cpSync(path.join(root, dir), path.join(site, dir), { recursive: true });
   }
   const banned = [
+    "20%",
     "Horovod",
     "4-GPU",
     "2.5-hour",
