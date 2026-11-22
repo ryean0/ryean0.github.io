@@ -3,9 +3,9 @@
  * Page copy lives in the HTML so the portfolio is readable without JavaScript.
  * No email address and no phone number are stored here.
  *
- * Experience modal copy is the resume, rewritten for the dialog.
- * Where resume variants disagree, the majority wording and figures are used.
- * DSO figures are withheld pending clearance.
+ * Experience modal copy follows the public resume PDF.
+ * Charts use only figures written on that resume.
+ * DSO copy stays inside that wording, with no architecture diagram.
  */
 
 export const RESUME_URL = "assets/Ryan_Phua_Resume.pdf";
@@ -41,18 +41,18 @@ export const IMAGE_CREDITS = [
     href: "https://commons.wikimedia.org/wiki/File:Blue_Marble_Western_Hemisphere.jpg",
   },
   {
-    src: "assets/daily-bruin-newsroom.webp",
-    title: "The New York Times newsroom, 1942",
-    author: "Marjory Collins",
-    license: "Public domain",
-    href: "https://commons.wikimedia.org/wiki/File:The_New_York_Times_newsroom_1942.jpg",
-  },
-  {
     src: "assets/server-room.webp",
     title: "Wikimedia Foundation servers",
     author: "Victor Grigas",
     license: "CC BY-SA 3.0",
     href: "https://commons.wikimedia.org/wiki/File:Wikimedia_Foundation_Servers-8055_14.jpg",
+  },
+  {
+    src: "assets/daily-bruin-newsroom.webp",
+    title: "The New York Times newsroom, 1942",
+    author: "Marjory Collins",
+    license: "Public domain",
+    href: "https://commons.wikimedia.org/wiki/File:The_New_York_Times_newsroom_1942.jpg",
   },
   {
     src: "assets/art-gallery.webp",
@@ -210,6 +210,20 @@ const ymlCompose = [
   '      test: ["CMD-SHELL", "pg_isready -U app"]',
   "      interval: 5s",
   "      retries: 5",
+].join("\n");
+
+const ymlAnubys = [
+  "# Illustrative example, not production code",
+  "name: anubys",
+  "on: pull_request",
+  "",
+  "jobs:",
+  "  check:",
+  "    runs-on: ubuntu-latest",
+  "    steps:",
+  "      - uses: actions/checkout@v4",
+  "      - name: Run the offline pytest suite",
+  "        run: pytest",
 ].join("\n");
 
 const tsPact = [
@@ -400,19 +414,6 @@ const vlogSnake = [
   "endmodule",
 ].join("\n");
 
-const ymlAnubys = [
-  "# Illustrative example, not production code",
-  "name: anubys",
-  "on: pull_request",
-  "",
-  "jobs:",
-  "  check:",
-  "    runs-on: ubuntu-latest",
-  "    steps:",
-  "      - uses: actions/checkout@v4",
-  "      - name: Compare candidate with baseline",
-  "        run: anubys check",
-].join("\n");
 
 function sample(title, lang, code, filename) {
   return { title, lang, code, filename: filename || "", label: SAMPLE_LABEL };
@@ -422,177 +423,215 @@ export const EXPERIENCES = [
   {
     id: "exp-mlc",
     org: "Memory and Lifespan Cognition Lab",
-    role: "Technical Research Assistant, Statistics & Software",
+    role: "Technical Research Assistant, Statistics Software",
     dates: "Oct 2025 – Aug 2026",
-    location: "UCLA Dept. of Psychology",
-    summary: "The Memory and Lifespan Cognition Lab studies how people of different ages spot phishing emails and the biases behind their decisions. Ryan built the lab's data and statistics pipeline, from raw CSVs through model selection.",
+    location: "UCLA (Dept of Psychology)",
+    summary: "Social psychology lab investigating phishing email detection and decision biases among age groups.",
     bullets: [
-      "Merged and cleaned 12 separate CSV sources into one dataset of 12,000 rows by 20 columns covering 226 study participants, with schema checks on every entry so the data loaded cleanly.",
-      "Turned the lab's signal detection theory (SDT) framework into a fully parameterized, end-to-end pipeline in R, with ggplot2 charts built in.",
-      "The pipeline helped reveal a shift in response bias that raw accuracy numbers had hidden.",
-      "Built mixed-effects model simulations in R (lme4, binomial logit) and tuned the BOBYQA optimizer.",
-      "Automated likelihood-ratio tests and AIC comparisons so the team could compare competing models and pick one.",
+      "Streamlined 12 heterogeneous CSV sources into a validated 12,000-row dataset covering 226 participants, then built an end-to-end signal detection theory (SDT) pipeline in R and RStudio.",
+      "ggplot2 visualizations revealed a response-bias shift that raw accuracy metrics had obscured.",
+      "Automated mixed-effects model selection in R (lme4, binomial logit, BOBYQA optimizer) using likelihood-ratio tests and AIC comparisons, so competing models and environments could be switched without manual reconfiguration.",
     ],
     stack: ["R", "RStudio", "ggplot2", "lme4"],
-    links: [{ href: "https://www.psych.ucla.edu/faculty-page/castel/", label: "Castel faculty page" }],
+    links: [],
     metricsCleared: true,
     metrics: [
-      { final: "12 → 1", label: "dataset", note: "CSV sources merged", countFrom: 12, countTo: 1 },
-      { final: "12,000 x 20", label: "rows by columns", note: "One validated dataset", count: 12000, commas: true, suffix: " x 20" },
-      { final: "226", label: "participants", note: "Schema checks on every entry", count: 226 },
+      { final: "12", label: "CSV sources", note: "Heterogeneous files, validated on the way in", count: 12 },
+      { final: "12,000", label: "rows", note: "One validated dataset", count: 12000, commas: true },
+      { final: "226", label: "participants", note: "Covered by the dataset", count: 226 },
     ],
     charts: [
       {
         kind: "flow",
         title: "Sources into one dataset",
-        caption: "12 CSV sources merged into 1 dataset",
+        caption: "12 CSV sources validated into a 12,000-row dataset covering 226 participants",
         from: 12,
-        to: 1,
+        to: 12000,
         fromLabel: "12 CSV sources",
-        toLabel: "1 dataset",
+        toLabel: "12,000 rows",
       },
     ],
     diagram: {
-      caption: "R pipeline",
+      caption: "Technologies named on the resume",
       nodes: ["CSV sources", "Validated dataset", "Signal detection theory (SDT)", "lme4"],
     },
     samples: [
-      sample("Signal detection (d′ and criterion) per participant", "r", rSdt, "sdt-scores.R"),
-      sample("Mixed-effects model", "r", rMixed, "mixed-effects.R"),
+      sample("Signal detection scores", "r", rSdt, "sdt-scores.R"),
+      sample("Mixed-effects model selection", "r", rMixed, "mixed-effects.R"),
     ],
-    // TODO: add citations when the lab publishes them.
-    publications: [],
     image: "assets/ucla-royce-hall.webp",
+    imageCredit: "Royce Hall, UCLA",
   },
   {
-    id: "exp-usac",
-    org: "Campus Events Commission (USAC)",
-    role: "Backend and DevOps Developer, then Backend Lead",
-    dates: "Sep 2023 – Jul 2025",
-    location: "Los Angeles, CA",
-    summary: "Backend for UCLA's Campus Events Commission. Ryan joined as a backend and DevOps developer and later became Backend Lead. About 200 to 312 hours.",
+    id: "exp-solarbrio",
+    org: "Solarbrio (Ectios)",
+    role: "Full-Stack Software Engineering, UI and Pipeline",
+    dates: "Jun 2024 – Sep 2024",
+    location: "San Francisco",
+    summary: "A series A geospatial resource analytics platform.",
     bullets: [
-      "Containerized dev and production with Docker Compose so either environment starts in one step, cutting new-developer onboarding from ~4 weeks to under 1 week.",
-      "Added Redis caching on AWS ElastiCache. Direct database query load fell 30-50% at peak traffic.",
-      "Made the 5 busiest API endpoints about 3x faster at p95 than before ElastiCache was added.",
-      "Started PR-gated CI on GitHub Actions, which surfaced 8+ regressions that had been shipping without a blocking check.",
-      "Consolidated 3+ repositories into a monorepo with shared CodeGen schemas, and added CloudWatch dashboards that caught 4 pre-deploy issues across 6 services.",
-      "Moved ad-hoc builds to GitHub Actions on AWS CodeBuild, cutting build time from ~13 minutes to ~7.5 minutes and the deployment failure rate by ~25%.",
-      "As Backend Lead, ran sprint facilitation on Jira and pulled the team's deliverable timeline forward by 3 weeks.",
+      "Supported and documented the end-to-end migration of the delivery stack from AWS Amplify V1 to V2, cutting 6-month AWS resource costs by about 30% and reducing end-to-end CodeBuild pipeline runtime from about 20 minutes to about 9 minutes.",
+      "Developed and tested 5 custom GraphQL resolvers on AWS AppSync using TypeScript to replace deprecated dependencies, and automated Amplify CodeGen across 3 runtime environments (dev, stage, and prod).",
+      "Integrated ElastiCache (Redis) caching at the resolver level on high-traffic query paths, reducing DynamoDB read amplification and improving tail latency under peak usage.",
     ],
-    stack: ["AWS ElastiCache", "GitHub Actions", "Docker", "Docker Compose", "AWS CloudWatch", "AWS CodeBuild"],
-    links: [{ href: "https://www.uclacec.com/", label: "www.uclacec.com" }],
+    stack: ["AWS Amplify", "AWS CodeBuild", "AWS AppSync", "GraphQL", "TypeScript", "ElastiCache (Redis)", "DynamoDB"],
+    links: [{ href: "https://solarbrio.com/", label: "solarbrio.com" }],
     metricsCleared: true,
     metrics: [
-      { final: "30–50%", label: "fewer database queries", note: "At peak traffic" },
-      { final: "~3x", label: "p95 on the top 5 endpoints", note: "Faster than the pre-ElastiCache baseline", count: 3, prefix: "~", suffix: "x" },
-      { final: "~4 → <1 wk", label: "onboarding", note: "About 4 weeks to under 1 week", countFrom: 4, countTo: 1, prefixFrom: "~", prefixTo: "<", suffixFrom: " wk", suffixTo: " wk" },
-      { final: "8+", label: "regressions caught", note: "PR-gated GitHub Actions", count: 8, suffix: "+" },
-      { final: "~13 → ~7.5 min", label: "build time", note: "GitHub Actions on CodeBuild", countFrom: 13, countTo: 7.5, decimalsTo: 1, prefixFrom: "~", prefixTo: "~", suffixTo: " min" },
-      { final: "3 wk", label: "timeline pulled forward", note: "Jira sprint facilitation as Backend Lead", count: 3, suffix: " wk" },
+      { final: "~30%", label: "AWS resource cost", note: "6-month resource costs after the Amplify V2 migration", count: 30, prefix: "~", suffix: "%" },
+      { final: "~20 → ~9 min", label: "CodeBuild", note: "End-to-end pipeline runtime", countFrom: 20, countTo: 9, prefixFrom: "~", prefixTo: "~", suffixTo: " min" },
+      { final: "5", label: "GraphQL resolvers", note: "Custom AppSync resolvers in TypeScript", count: 5 },
     ],
     charts: [
       {
         kind: "compare",
-        title: "p95 on the top 5 endpoints",
-        caption: "About 3x faster after ElastiCache",
+        title: "CodeBuild runtime",
+        caption: "End-to-end pipeline, about 20 minutes to about 9 minutes",
         bars: [
-          { label: "Before", value: 3, display: "baseline" },
-          { label: "After", value: 1, display: "~3x faster" },
+          { label: "Before", value: 20, display: "~20 min" },
+          { label: "After", value: 9, display: "~9 min" },
         ],
       },
       {
-        kind: "compare",
-        title: "Onboarding",
-        caption: "About 4 weeks to under 1 week",
-        bars: [
-          { label: "Before", value: 4, display: "~4 wk" },
-          { label: "After", value: 1, display: "<1 wk" },
-        ],
+        kind: "share",
+        title: "AWS resource cost",
+        caption: "6-month AWS resource costs cut by about 30%",
+        percent: 30,
+        display: "~30%",
       },
+    ],
+    diagram: {
+      caption: "Technologies named on the resume",
+      nodes: ["Amplify V2", "AppSync resolvers", "Redis", "DynamoDB"],
+    },
+    samples: [
+      sample("AppSync resolver with a cache read", "ts", tsResolver, "resolver.ts"),
+    ],
+    image: "assets/san-francisco-skyline.webp",
+    imageCredit: "San Francisco skyline from Coit Tower",
+  },
+  {
+    id: "exp-dso",
+    org: "DSO National Laboratories",
+    role: "Machine-Learning Infrastructure Software Engineer",
+    dates: "Jun 2022 – Jul 2023",
+    location: "Singapore",
+    summary: "Sensors Lab. A CNN machine learning pipeline for satellite image segmentation.",
+    bullets: [
+      "Deployed an offline, air-gapped Kubernetes cluster simulating on-satellite deployment and built a custom Docker registry mirroring OS repositories, so the cluster could initialize fully offline and launch satellite-grade workloads.",
+      "Unblocked a preprocessing bottleneck in the ML/CV pipeline by parallelizing single-threaded OpenCV into vector operations with Python multiprocessing and TensorFlow.",
+      "Developed custom Prometheus and Grafana dashboards for GPU (Nvidia CUDA) and memory monitoring across pipeline stages, and benchmarked resource use for the lab's capacity planning.",
+    ],
+    stack: ["Kubernetes", "Docker", "Python", "OpenCV", "TensorFlow", "Prometheus", "Grafana", "Nvidia CUDA"],
+    links: [],
+    // The preprocessing percentage stays off the site until it is cleared.
+    metricsCleared: false,
+    metrics: [],
+    charts: [],
+    diagram: null,
+    samples: [],
+    image: "assets/nasa-blue-marble.webp",
+    imageCredit: "Blue Marble, Western Hemisphere",
+  },
+];
+
+export const PROJECTS = [
+  {
+    id: "exp-usac",
+    kind: "project",
+    org: "USAC Campus Events Commission",
+    role: "Campus events website",
+    dates: "Oct 2023 – Jul 2025",
+    location: "Los Angeles (UCLA)",
+    summary: "Undergraduate Student Activities Council. A campus events site with daily event updates.",
+    bullets: [
+      "Maintained and upgraded backend features for a campus events website serving daily event updates to more than 47,000 UCLA student users. UI performance and p95 latency improved through data preloading and caching with AWS ElastiCache.",
+      "Reduced direct database query load by 30-50% during peak web traffic, and improved p95 latency across the five busiest API endpoints by about 3x versus the pre-ElastiCache baseline.",
+      "Reduced new developer onboarding from more than 3.5 weeks to about 1 week by streamlining CI/CD with GitHub Actions and containerizing development and production with Docker Compose for one-step environment setup.",
+    ],
+    stack: ["AWS ElastiCache", "GitHub Actions", "Docker Compose"],
+    links: [{ href: "https://www.uclacec.com/", label: "uclacec.com" }],
+    metricsCleared: true,
+    metrics: [
+      { final: "30-50%", label: "database query load", note: "Fewer direct queries at peak traffic" },
+      { final: "~3x", label: "p95 latency", note: "Five busiest API endpoints versus the pre-ElastiCache baseline", count: 3, prefix: "~", suffix: "x" },
+      { final: ">3.5 → ~1 wk", label: "onboarding", note: "More than 3.5 weeks to about 1 week", countFrom: 3.5, countTo: 1, decimals: 1, prefixFrom: ">", prefixTo: "~", suffixFrom: " wk", suffixTo: " wk" },
+      { final: ">47,000", label: "student users", note: "Daily event updates on the campus site" },
+    ],
+    charts: [
       {
         kind: "range",
-        title: "Database queries at peak",
-        caption: "30 to 50% fewer direct queries",
+        title: "Database query load",
+        caption: "Direct database query load reduced 30-50% at peak traffic",
         low: 30,
         high: 50,
       },
       {
         kind: "compare",
-        title: "Build time",
-        caption: "About 13 min to about 7.5 min on CodeBuild",
+        title: "p95 on the five busiest endpoints",
+        caption: "About 3x versus the pre-ElastiCache baseline",
         bars: [
-          { label: "Before", value: 13, display: "~13 min" },
-          { label: "After", value: 7.5, display: "~7.5 min" },
+          { label: "Before", value: 3, display: "baseline" },
+          { label: "After", value: 1, display: "~3x" },
+        ],
+      },
+      {
+        kind: "compare",
+        title: "Onboarding",
+        caption: "More than 3.5 weeks to about 1 week",
+        bars: [
+          { label: "Before", value: 3.5, display: ">3.5 wk" },
+          { label: "After", value: 1, display: "~1 wk" },
         ],
       },
     ],
     diagram: {
-      caption: "Campus events backend",
+      caption: "Technologies named on the resume",
       nodes: ["GitHub Actions", "Docker Compose", "ElastiCache"],
     },
     samples: [
-      sample(".github/workflows/ci.yml", "yaml", ymlCi, ".github/workflows/ci.yml"),
-      sample("docker-compose.yml", "yaml", ymlCompose, "docker-compose.yml"),
+      sample("Pull request checks", "yaml", ymlCi, ".github/workflows/ci.yml"),
+      sample("One-step environments", "yaml", ymlCompose, "docker-compose.yml"),
     ],
-    // TODO: add a screenshot of the public campus events site.
-    screenshot: null,
     image: "assets/ucla-royce-hall.webp",
+    imageCredit: "Royce Hall, UCLA",
   },
   {
-    id: "exp-solarbrio",
-    org: "Ectios (Solarbrio)",
-    role: "Software Engineering Intern (Cloud & DevOps)",
-    dates: "Jun 2024 – Sep 2024",
-    location: "California",
-    summary: "Geospatial resource analysis platform. Ryan worked on the Amplify delivery migration, AppSync resolvers, and a cross-cloud port of the same pipeline pattern.",
+    id: "exp-anubys",
+    kind: "project",
+    org: "Anubys",
+    role: "CI-native regression harness for LLM agentic workflows",
+    dates: "Portfolio project",
+    location: "anubys.dev",
+    summary: "A pip-installable Python framework for LLM evaluation and regression testing of AI agents.",
     bullets: [
-      "Led the delivery-stack migration from AWS Amplify V1 to V2, restoring stable CI/CD across 3 teams. Reduced monthly AWS costs by 30-45% and compressed the end-to-end CodeBuild pipeline from ~13 to ~9 minutes.",
-      "Built and tested 5 custom GraphQL resolvers on AWS AppSync in TypeScript to replace deprecated dependencies.",
-      "Automated Amplify CodeGen across dev, stage, and prod.",
-      "Added ElastiCache (Redis) caching at the resolver level on high-traffic queries, reducing DynamoDB read amplification and improving tail latency at peak usage.",
-      "Ported the pipeline pattern to GCP with Apollo GraphQL on Cloud Run, and recreated Lambda handlers as Cloud Functions.",
-      "Shipped an initial private Angular and Tailwind CSS component library so frontend teams shared one UI style.",
-      "Worked with frontend, backend, and product on IAM and auth standards, reducing deployment drift across dev, stage, and prod.",
+      "Runs baseline and candidate models in simulated enterprise CI/CD pipelines to benchmark performance and detect regressions before production.",
+      "Uses non-inferiority hypothesis testing with paired, scenario-level comparisons, similar to A/B testing for a new model release.",
+      "A GitHub Actions pipeline runs 400+ pytest tests on every pull request without exposing secrets or incurring model costs. Paid LLM runs stay in a separate workflow.",
     ],
-    stack: ["AWS Amplify", "AWS AppSync", "GraphQL", "TypeScript", "AWS CodeBuild", "ElastiCache (Redis)", "DynamoDB", "Apollo GraphQL", "GCP Cloud Run"],
-    links: [{ href: "https://solarbrio.com/", label: "solarbrio.com" }],
+    stack: ["Python", "pytest", "GitHub Actions"],
+    links: [
+      { href: "https://anubys.dev/", label: "anubys.dev" },
+      { href: "projects/anubys/", label: "Project details" },
+    ],
     metricsCleared: true,
     metrics: [
-      { final: "30–45%", label: "monthly AWS cost cut", note: "After the Amplify V2 migration" },
-      { final: "~13 → ~9 min", label: "CodeBuild", note: "End-to-end pipeline", countFrom: 13, countTo: 9, prefixFrom: "~", prefixTo: "~", suffixTo: " min" },
-      { final: "3", label: "teams", note: "Front and backend teams on the migration", count: 3 },
-      { final: "5", label: "resolvers", note: "Custom AppSync GraphQL resolvers", count: 5 },
+      { final: "400+", label: "pytest tests", note: "Run on every pull request, without model cost", count: 400, suffix: "+" },
     ],
-    charts: [
-      {
-        kind: "compare",
-        title: "CodeBuild",
-        caption: "End-to-end pipeline, about 13 min to about 9 min",
-        bars: [
-          { label: "Before", value: 13, display: "~13 min" },
-          { label: "After", value: 9, display: "~9 min" },
-        ],
-      },
-      {
-        kind: "range",
-        title: "Monthly AWS resource cost",
-        caption: "30 to 45% lower monthly AWS costs",
-        low: 30,
-        high: 45,
-      },
-    ],
+    charts: [],
     diagram: {
-      caption: "Delivery path",
-      nodes: ["Amplify V2", "AppSync resolvers", "Redis", "DynamoDB"],
+      caption: "Technologies named on the resume",
+      nodes: ["Baseline and candidate", "Paired scenarios", "GitHub Actions"],
     },
     samples: [
-      sample("AppSync resolver with Redis caching", "ts", tsResolver, "resolver.ts"),
+      sample("Pull request test job", "yaml", ymlAnubys, ".github/workflows/anubys.yml"),
     ],
-    image: "assets/san-francisco-skyline.webp",
+    image: "assets/server-room.webp",
+    imageCredit: "Wikimedia Foundation servers",
   },
   {
     id: "exp-daily-bruin",
+    kind: "project",
     org: "The Daily Bruin",
     role: "DevOps and Backend Lead, DBOnline Media Team",
     dates: "Jan 2022 – Apr 2024",
@@ -649,70 +688,7 @@ export const EXPERIENCES = [
     ],
     image: "assets/daily-bruin-newsroom.webp",
   },
-  {
-    id: "exp-dso",
-    org: "DSO National Laboratories",
-    role: "Machine-Learning Infrastructure Research Intern",
-    dates: "Jun 2022 – Jul 2023",
-    location: "Singapore",
-    summary: "At DSO National Laboratories, Ryan built infrastructure for a geospatial image segmentation pipeline.",
-    bullets: [
-      "Deployed an offline, air-gapped Kubernetes cluster that simulated running on a satellite.",
-      "Built a custom Docker registry mirroring OS repositories so the cluster could start fully offline and run satellite-grade workloads.",
-      "Cleared a preprocessing bottleneck by replacing single-threaded OpenCV code with vectorized operations using Python multiprocessing and TensorFlow.",
-      "Built Prometheus and Grafana dashboards to monitor GPU (NVIDIA CUDA) and memory use at each pipeline stage.",
-      "Benchmarked resource use to inform the lab's capacity planning.",
-    ],
-    stack: ["Kubernetes", "Docker", "Python", "OpenCV", "TensorFlow", "Prometheus", "Grafana", "NVIDIA CUDA"],
-    links: [],
-    // DSO figures are withheld pending clearance.
-    metricsCleared: false,
-    metrics: [],
-    charts: [],
-    diagram: null,
-    limitedNote: "Details limited for confidentiality",
-    samples: [
-      sample("Python multiprocessing preprocessing", "python", pyPreprocess, "preprocess.py"),
-    ],
-    image: "assets/nasa-blue-marble.webp",
-  },
-];
 
-export const PROJECTS = [
-  {
-    id: "exp-anubys",
-    kind: "project",
-    org: "Anubys",
-    role: "CI-native agent regression harness",
-    dates: "Public beta",
-    location: "anubys.dev",
-    summary: "Anubys compares a candidate LLM agent to a baseline on paired scenarios in CI and returns one stats-backed merge check: Pass, Block, or Insufficient evidence. The check adds 0 ms in production and stops at a $38 spend cap.",
-    bullets: [
-      "Runs when a pull request opens. Production traffic does not pass through it.",
-      "The verdict is Pass, Block, or Insufficient evidence.",
-      "Keyless CI uses OIDC IAM roles. Results can land in S3. The site is static on GitHub Pages.",
-      "Status: public beta. The harness repository is not public yet.",
-    ],
-    stack: ["Python", "GitHub Actions", "AWS S3", "OIDC IAM roles", "Terraform", "Gemini API", "GitHub Pages"],
-    links: [
-      { href: "https://anubys.dev/", label: "anubys.dev" },
-      { href: "projects/anubys/", label: "Project details" },
-    ],
-    metricsCleared: true,
-    metrics: [
-      { final: "0 ms", label: "added in production", note: "The check stays in CI" },
-      { final: "$38", label: "spend stop", note: "Public beta cap" },
-    ],
-    charts: [],
-    diagram: {
-      caption: "Where the check runs",
-      nodes: ["Pull request", "Paired scenarios", "Merge verdict"],
-    },
-    samples: [
-      sample("CI step", "yaml", ymlAnubys, ".github/workflows/anubys.yml"),
-    ],
-    image: "assets/server-room.webp",
-  },
   {
     id: "exp-runops",
     kind: "project",

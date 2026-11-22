@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Anubys · Ryan Phua</title>
-  <meta name="description" content="Anubys is Ryan Phua's CI-native agent regression harness. It compares a candidate LLM agent to a baseline on paired scenarios and returns Pass, Block, or Insufficient evidence. Public beta.">
+  <meta name="description" content="Anubys is Ryan Phua's pip-installable Python framework for LLM evaluation and regression testing of AI agents. GitHub Actions runs 400+ pytest tests on every pull request.">
   <link rel="canonical" href="https://ryean0.github.io/projects/anubys/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ryean0.github.io/projects/anubys/">
   <meta property="og:title" content="Anubys · Ryan Phua">
-  <meta property="og:description" content="A CI-native agent regression harness. 0 ms in production. $38 spend stop. Public beta.">
+  <meta property="og:description" content="A pip-installable Python framework for LLM agent regression testing. 400+ pytest tests on every pull request.">
   <meta property="og:image" content="https://ryean0.github.io/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Anubys · Ryan Phua">
-  <meta name="twitter:description" content="A CI-native agent regression harness. 0 ms in production. $38 spend stop. Public beta.">
+  <meta name="twitter:description" content="A pip-installable Python framework for LLM agent regression testing. 400+ pytest tests on every pull request.">
   <meta name="twitter:image" content="https://ryean0.github.io/og.png">
   <meta name="theme-color" content="#070708">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
@@ -46,7 +46,7 @@
       <div class="wrap">
         <p class="kicker">Featured project · Public beta</p>
         <h1 id="anubys-title">Anubys</h1>
-        <p class="lede">Anubys is my portfolio product aimed at delivering scalable, cost-efficient &amp; effective AI model infrastructure to guarantee accountable, reproducible, and retraceable ML workflows for enterprise-scale tooling and/or individual hobbyists.</p>
+        <p class="lede">Anubys is a pip-installable Python framework for LLM evaluation and regression testing of AI agents. Baseline and candidate models run in simulated CI, and GitHub Actions runs 400+ pytest tests on every pull request.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://anubys.dev/" rel="noopener noreferrer">Open anubys.dev</a>
           <a class="btn btn-ghost" href="../../#work">All work</a>
@@ -57,7 +57,7 @@
       <div class="wrap">
         <p class="kicker">What it does</p>
         <h2 id="check-title">A merge check, with a verdict.</h2>
-        <p class="section-intro">Anubys compares a candidate LLM agent to a baseline on paired scenarios in CI and returns a stats-backed merge check. It runs when a pull request opens. Production traffic does not pass through it.</p>
+        <p class="section-intro">The check compares a candidate with a baseline on paired scenarios. The labels below are the three answers the example console uses.</p>
         <ul class="verdict-board">
           <li class="verdict" data-verdict="pass"><h3>Pass</h3><p class="role-meta">The gap stays inside the bar the suite set.</p></li>
           <li class="verdict" data-verdict="block"><h3>Block</h3><p class="role-meta">The evidence says the candidate is behind the baseline.</p></li>
@@ -65,12 +65,12 @@
         </ul>
         <dl class="facts">
           <div>
-            <dt>Added in production</dt>
-            <dd>0 ms</dd>
+            <dt>pytest tests on each pull request</dt>
+            <dd>400+</dd>
           </div>
           <div>
-            <dt>Spend stop</dt>
-            <dd>$38</dd>
+            <dt>Paid model runs</dt>
+            <dd>Separate workflow</dd>
           </div>
         </dl>
       </div>
@@ -84,11 +84,10 @@
             <h3>In the pipeline</h3>
             <ul class="chips">
               <li>Python</li>
+              <li>pytest</li>
               <li>GitHub Actions</li>
-              <li>Gemini API</li>
-              <li>Terraform</li>
             </ul>
-            <p class="role-summary" style="margin-top:0.8rem">Keyless CI uses OIDC IAM roles. Results can land in S3. The marketing site is static on GitHub Pages with a custom domain.</p>
+            <p class="role-summary" style="margin-top:0.8rem">The pull request workflow runs the tests without exposing secrets and without a model cost. Paid LLM runs stay in a separate workflow.</p>
           </article>
           <article class="panel">
             <h3>Status</h3>

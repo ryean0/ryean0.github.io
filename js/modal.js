@@ -1,4 +1,4 @@
-import { ENTRIES, SAMPLE_LABEL, modalView } from "./content.js";
+import { ENTRIES, IMAGE_CREDITS, SAMPLE_LABEL, modalView } from "./content.js";
 import { highlight } from "./highlight.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -429,7 +429,7 @@ function render(entry, mount, background) {
 
   const tabNames = [{ id: "overview", label: "Overview" }];
   if (view.showImpact) tabNames.push({ id: "impact", label: "Impact" });
-  tabNames.push({ id: "samples", label: "Samples" });
+  if (view.samples.length) tabNames.push({ id: "samples", label: "Samples" });
 
   for (const tab of tabNames) {
     const button = h("button", "exp-tab", tab.label);
@@ -454,6 +454,11 @@ function render(entry, mount, background) {
   const list = h("ul", "exp-details");
   for (const bullet of view.bullets) list.append(h("li", "", bullet));
   overview.append(list);
+
+  const photo = IMAGE_CREDITS.find((item) => item.src === entry.image);
+  if (photo) {
+    overview.append(h("p", "exp-photo-credit", `Background: ${photo.title}. ${photo.author}, ${photo.license}.`));
+  }
 
   if (view.diagram) overview.append(renderDiagram(view.diagram));
   else if (view.limitedNote) {
@@ -501,9 +506,11 @@ function render(entry, mount, background) {
   }
 
   const samples = panels.querySelector('[data-panel="samples"]');
-  samples.append(h("h3", "exp-block-title", "Work samples"));
-  if (!view.samples.length) samples.append(h("p", "exp-soon", "Samples coming soon"));
-  else for (const item of view.samples) samples.append(renderSample(item));
+  if (samples) {
+    samples.append(h("h3", "exp-block-title", "Work samples"));
+    if (!view.samples.length) samples.append(h("p", "exp-soon", "Samples coming soon"));
+    else for (const item of view.samples) samples.append(renderSample(item));
+  }
 
   sheet.append(tabs, panels);
   mount.append(sheet);
